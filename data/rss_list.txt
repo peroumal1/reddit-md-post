@@ -1,0 +1,4 @@
+https://www.karibinfo.com/rss
+https://la1ere.franceinfo.fr/guadeloupe/last-articles/rss
+https://rci.fm/guadeloupe/fb/articles_rss_gp
+https://www.guadeloupe.franceantilles.fr/actualite/rss.xml
