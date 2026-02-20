@@ -119,9 +119,9 @@ def main(rss_links, feed_output):
                                 "title": entry.title,
                                 "summary": clean_text(entry.summary_detail.value),
                                 "link": entry.link,
+                                "media_content": entry.get("media_content", ""),
                             }
                         )
-
     # sort from most recent to older
     sorted_list = sorted(feed_list, key=lambda item: item["published_date"])
     sorted_list.reverse()
