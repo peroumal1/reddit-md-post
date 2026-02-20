@@ -1,8 +1,10 @@
 from datetime import datetime
 from time import mktime
+from urllib.parse import urlsplit
 
 import click
 import feedparser
+import requests
 from bs4 import BeautifulSoup
 from py_markdown_table.markdown_table import markdown_table
 from sentence_transformers import SentenceTransformer
@@ -60,18 +62,40 @@ def get_last_run_date():
     return last_run_date
 
 
-def transform_list(list_sorted):
+def transform_list(list_sorted, with_images=False):
     list = []
     for item in list_sorted:
-        list.append(
-            {
-                "Titre": f"[{item['title']}]({item['link']})",
-                "Résumé": item["summary"],
-                "Date de publication": item["published_date"],
-            }
-        )
+        if with_images:
+            list.append(
+                {
+                    "Titre": f"[{item['title']}]({item['link']})",
+                    "Aperçu": f"![media]({item['media_content'][0]['url']})",
+                    "Résumé": item["summary"],
+                    "Date de publication": item["published_date"],
+                }
+            )
+        else:
+            list.append(
+                {
+                    "Titre": f"[{item['title']}]({item['link']})",
+                    "Résumé": item["summary"],
+                    "Date de publication": item["published_date"],
+                }
+            )
 
     return list
+
+
+def get_default_image_link(resource, origin_link):
+    img_link = resource.get("media_content", None)
+    if not img_link:
+        r = requests.get(origin_link)
+        soup = BeautifulSoup(r.text, features="html.parser")
+        o = urlsplit(origin_link)
+        default_img = soup.img.get("src")
+        default_url = o._replace(path=default_img).geturl()
+        return [{"url": default_url}]
+    return img_link
 
 
 # cleaning the HTML within the summaries
@@ -95,7 +119,8 @@ def clean_text(html_blob):
 @click.command()
 @click.argument("rss_links", default="data/rss_list.txt")
 @click.argument("feed_output", default="data/feed.md")
-def main(rss_links, feed_output):
+@click.option("--with-images", is_flag=True)
+def main(rss_links, feed_output, with_images):
     date_midnight = get_last_run_date()
     feed_list = []
 
@@ -119,13 +144,15 @@ def main(rss_links, feed_output):
                                 "title": entry.title,
                                 "summary": clean_text(entry.summary_detail.value),
                                 "link": entry.link,
-                                "media_content": entry.get("media_content", ""),
+                                "media_content": get_default_image_link(
+                                    entry, entry.link
+                                ),
                             }
                         )
     # sort from most recent to older
     sorted_list = sorted(feed_list, key=lambda item: item["published_date"])
     sorted_list.reverse()
-    new_list = transform_list(sorted_list)
+    new_list = transform_list(sorted_list, with_images)
     if not new_list:
         print("No new entries!")
     else:

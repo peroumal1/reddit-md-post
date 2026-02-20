@@ -11,7 +11,7 @@ Once mise is installed run `pdm add` to add all the python dependencies
 
 ## Running the aggregation script
 
-`pdm run aggregate_rss.py [rss_file] [output_md_file]`
+`pdm run aggregate_rss.py [rss_file] [output_md_file] --with-images`
 
 The aggregation script will read the RSS feeds on the links provided in `rss file`
 and will aggregate them in a Markdown table which will be output in `output_md_file`.
@@ -21,6 +21,9 @@ Both parameters are optional, as this will default to resp. `data/rss_list.txt` 
 When ran, the aggregation script will also try and detect similarities in summaries,
 to exclude similar links and avoid duplication: this is done thanks to a sentence transformer
 which is downloaded locally whenever called for the first time.
+
+The script also accepts a `--with-images` option which purpose is to get the media image when
+specified in the RSS feed, or the first image from the origin site when not available.
 
 Last, the date of last execution is stored locally in `.last-run` to avoid re-fetching multiple
 times the same links from the RSS feeds.
