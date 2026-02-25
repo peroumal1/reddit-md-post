@@ -8,7 +8,7 @@ from py_markdown_table.markdown_table import markdown_table
 from sentence_transformers import SentenceTransformer
 
 from rss_summary.formatting import format_feed_entries
-from rss_summary.last_run import get_last_run_date, set_last_run_date
+from rss_summary.last_run import get_last_run_date, restore_last_run_date, set_last_run_date
 from rss_summary.parsing import extract_first_paragraph, get_default_image_link
 from rss_summary.similarity import is_duplicate
 
@@ -17,7 +17,13 @@ from rss_summary.similarity import is_duplicate
 @click.argument("rss_links", default="data/rss_list.txt")
 @click.argument("feed_output", default="data/feed.md")
 @click.option("--with-images", is_flag=True)
-def main(rss_links, feed_output, with_images):
+@click.option("--dry-run", is_flag=True, help="Run without updating .last-run")
+@click.option("--restore", is_flag=True, help="Restore .last-run from backup and exit")
+def main(rss_links, feed_output, with_images, dry_run, restore):
+    if restore:
+        restore_last_run_date()
+        return
+
     date_midnight = get_last_run_date()
     feed_list = []
     seen_summaries = []
@@ -60,7 +66,8 @@ def main(rss_links, feed_output, with_images):
         )
         Path(feed_output).write_text(markdown)
 
-    set_last_run_date()
+    if not dry_run:
+        set_last_run_date()
 
 
 if __name__ == "__main__":
