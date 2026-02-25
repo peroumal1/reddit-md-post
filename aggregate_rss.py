@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 from time import mktime
 from urllib.parse import urlsplit
 
@@ -9,111 +10,75 @@ from bs4 import BeautifulSoup
 from py_markdown_table.markdown_table import markdown_table
 from sentence_transformers import SentenceTransformer
 
+LAST_RUN_FILE = Path(".last-run")
+DATE_FMT = "%d-%b-%Y (%H:%M:%S.%f)"
+SIMILARITY_THRESHOLD = 0.6
 
-# compare similarities between a string and a list
-# model is passed as an argument to avoid re-instanciating it
-# on every call
-def is_not_similar(model, string, list2):
-    # if the list to which we want to compare is empty there is no similarities
-    list1 = [string]
-    if not list2:
-        return True
-    # Compute embeddings for both lists
 
-    embeddings1 = model.encode(list1)
-    embeddings2 = model.encode(list2)
-
-    # Compute cosine similarities
-    similarities = model.similarity(embeddings1, embeddings2)
-
-    # Output the pairs with their score
-    for idx_i, sentence1 in enumerate(list1):
-        for idx_j, sentence2 in enumerate(list2):
-            if similarities[idx_i][idx_j] > 0.6:
-                print("Similarity detected!!")
-                print(f" - {sentence2: <30}: {similarities[idx_i][idx_j]:.4f}")
-                # if we have a similarity score higher than 0.6 we have at least one
-                # similar entry so we can exit safely
-                return False
-    # if we processed the whole list without a high similarity score we can exit
-    return True
+def is_duplicate(model, text, existing_summaries, threshold=SIMILARITY_THRESHOLD):
+    """Check if text is semantically similar to any entry in existing_summaries."""
+    if not existing_summaries:
+        return False
+    embeddings = model.encode([text])
+    existing_embeddings = model.encode(existing_summaries)
+    similarities = model.similarity(embeddings, existing_embeddings)
+    max_score = similarities[0].max().item()
+    if max_score > threshold:
+        print(f"Similarity detected (score: {max_score:.4f}), skipping duplicate.")
+    return max_score > threshold
 
 
 def set_last_run_date():
-    with open(".last-run", "w") as f:
-        last_run_date = datetime.today()
-        f.write(last_run_date.strftime("%d-%b-%Y (%H:%M:%S.%f)"))
+    LAST_RUN_FILE.write_text(datetime.today().strftime(DATE_FMT))
 
 
 def get_last_run_date():
     try:
-        with open(".last-run", "r") as f:
-            last_run_date = datetime.strptime(f.read(), "%d-%b-%Y (%H:%M:%S.%f)")
-
-    except FileNotFoundError:
-        last_run_date = datetime.today().replace(
-            hour=0, minute=0, second=0, microsecond=0
-        )
-    except ValueError:
-        last_run_date = datetime.today().replace(
-            hour=0, minute=0, second=0, microsecond=0
-        )
-
-    return last_run_date
+        return datetime.strptime(LAST_RUN_FILE.read_text(), DATE_FMT)
+    except (FileNotFoundError, ValueError):
+        return datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
 
 
-def transform_list(list_sorted, with_images=False):
-    list = []
-    for item in list_sorted:
+def format_feed_entries(entries, with_images=False):
+    """Transform feed entries into a list of dicts ready for markdown table rendering."""
+    rows = []
+    for item in entries:
+        row = {
+            "Titre": f"[{item['title']}]({item['link']})",
+            "Résumé": item["summary"],
+            "Date de publication": item["published_date"],
+        }
         if with_images:
-            list.append(
-                {
-                    "Titre": f"[{item['title']}]({item['link']})",
-                    "Aperçu": f"![media]({item['media_content'][0]['url']})",
-                    "Résumé": item["summary"],
-                    "Date de publication": item["published_date"],
-                }
-            )
-        else:
-            list.append(
-                {
-                    "Titre": f"[{item['title']}]({item['link']})",
-                    "Résumé": item["summary"],
-                    "Date de publication": item["published_date"],
-                }
-            )
-
-    return list
+            row["Aperçu"] = f"![media]({item['media_content'][0]['url']})"
+        rows.append(row)
+    return rows
 
 
 def get_default_image_link(resource, origin_link):
     img_link = resource.get("media_content", None)
     if not img_link:
-        r = requests.get(origin_link)
-        soup = BeautifulSoup(r.text, features="html.parser")
-        o = urlsplit(origin_link)
-        default_img = soup.img.get("src")
-        default_url = o._replace(path=default_img).geturl()
-        return [{"url": default_url}]
+        try:
+            r = requests.get(origin_link)
+            soup = BeautifulSoup(r.text, features="html.parser")
+            if soup.img:
+                o = urlsplit(origin_link)
+                default_img = soup.img.get("src")
+                default_url = o._replace(path=default_img).geturl()
+                return [{"url": default_url}]
+        except requests.RequestException:
+            pass
+        return [{"url": ""}]
     return img_link
 
 
-# cleaning the HTML within the summaries
-def clean_text(html_blob):
+def extract_first_paragraph(html_blob):
+    """Extract the first paragraph of text from an HTML blob."""
     soup = BeautifulSoup(html_blob, features="html.parser")
-    # get text
     text = soup.get_text()
-
-    # break into lines and remove leading and trailing space on each
     lines = (line.strip() for line in text.splitlines())
-    # break multi-headlines into a line each
     chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-    # drop blank lines
-    text_multilines = "\n".join(chunk for chunk in chunks if chunk).splitlines()
-    # cleaning for Karibinfo. The second paragraph contains l'article ... KARIBINFO
-    # so we clean it
-    text = text_multilines[0]
-    return text
+    paragraphs = "\n".join(chunk for chunk in chunks if chunk).splitlines()
+    return paragraphs[0] if paragraphs else ""
 
 
 @click.command()
@@ -123,48 +88,45 @@ def clean_text(html_blob):
 def main(rss_links, feed_output, with_images):
     date_midnight = get_last_run_date()
     feed_list = []
+    seen_summaries = []
 
     model = SentenceTransformer(
         "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
     )
-    # TODO: "last run variable"
+
     with open(rss_links) as rss_list:
         for line in rss_list:
-            d = feedparser.parse(line)
-            for entry in d.entries:
+            feed = feedparser.parse(line)
+            for entry in feed.entries:
                 feed_date = datetime.fromtimestamp(mktime(entry.published_parsed))
-                # filter and only display the entries that were created today
                 if feed_date > date_midnight:
-                    summaries = [d["summary"] for d in feed_list]
-                    # add only entries that are not similar to others
-                    if is_not_similar(model, entry.summary_detail.value, summaries):
+                    summary_text = entry.summary_detail.value
+                    if not is_duplicate(model, summary_text, seen_summaries):
+                        seen_summaries.append(summary_text)
                         feed_list.append(
                             {
                                 "published_date": feed_date,
                                 "title": entry.title,
-                                "summary": clean_text(entry.summary_detail.value),
+                                "summary": extract_first_paragraph(summary_text),
                                 "link": entry.link,
                                 "media_content": get_default_image_link(
                                     entry, entry.link
                                 ),
                             }
                         )
-    # sort from most recent to older
-    sorted_list = sorted(feed_list, key=lambda item: item["published_date"])
-    sorted_list.reverse()
-    new_list = transform_list(sorted_list, with_images)
-    if not new_list:
+
+    sorted_list = sorted(feed_list, key=lambda item: item["published_date"], reverse=True)
+    rows = format_feed_entries(sorted_list, with_images)
+
+    if not rows:
         print("No new entries!")
     else:
-        # generate a markdown table and write it to a file
         markdown = (
-            markdown_table(new_list)
+            markdown_table(rows)
             .set_params(row_sep="markdown", quote=False)
             .get_markdown()
         )
-
-        with open(feed_output, "w") as f:
-            f.write(markdown)
+        Path(feed_output).write_text(markdown)
 
     set_last_run_date()
 

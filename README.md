@@ -13,20 +13,30 @@ Once mise is installed run `pdm add` to add all the python dependencies
 
 `pdm run aggregate_rss.py [rss_file] [output_md_file] --with-images`
 
-The aggregation script will read the RSS feeds on the links provided in `rss file`
-and will aggregate them in a Markdown table which will be output in `output_md_file`.
-Both parameters are optional, as this will default to resp. `data/rss_list.txt` and
-`data/feed.md` if the script is called without arguments.
+The aggregation script reads RSS feeds from the links provided in `rss_file`
+and aggregates them into a Markdown table written to `output_md_file`.
+Both parameters are optional, defaulting to `data/rss_list.txt` and
+`data/feed.md` respectively.
 
-When ran, the aggregation script will also try and detect similarities in summaries,
-to exclude similar links and avoid duplication: this is done thanks to a sentence transformer
-which is downloaded locally whenever called for the first time.
+### Duplicate detection
 
-The script also accepts a `--with-images` option which purpose is to get the media image when
-specified in the RSS feed, or the first image from the origin site when not available.
+The script uses a sentence transformer model
+(`paraphrase-multilingual-mpnet-base-v2`) to detect semantically similar
+summaries and exclude duplicates. The model is downloaded locally on first run.
+The similarity threshold is configurable via the `SIMILARITY_THRESHOLD` constant
+(default: `0.6`).
 
-Last, the date of last execution is stored locally in `.last-run` to avoid re-fetching multiple
-times the same links from the RSS feeds.
+### Images
+
+The `--with-images` flag adds a preview column to the output table. It uses the
+`media_content` from the RSS feed when available, or falls back to the first
+`<img>` found on the article page.
+
+### Last run tracking
+
+The date of last execution is stored in `.last-run` so that only entries
+published since the previous run are fetched. If the file is missing or
+corrupted, the script defaults to midnight of the current day.
 
 
 ## Running the post_to_reddit script
