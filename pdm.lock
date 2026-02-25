@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:b1864cc8f85a97829639bd00b2f3d6202ae7d6f5a46abccf09697bfd5ad46c3f"
+content_hash = "sha256:a4b89b054384412a237e829edb021c9af31f1aa682ef6ad98551909037f995fd"
 
 [[metadata.targets]]
 requires_python = "==3.14.*"
@@ -698,6 +698,16 @@ groups = ["default"]
 files = [
     {file = "packaging-26.0-py3-none-any.whl", hash = "sha256:b36f1fef9334a5588b4166f8bcd26a14e521f2b55e6b9de3aaa80d3ff7a37529"},
     {file = "packaging-26.0.tar.gz", hash = "sha256:00243ae351a257117b6a241061796684b084ed1c516a08c48a3f7e147a9d80b4"},
+]
+
+[[package]]
+name = "pathlib"
+version = "1.0.1"
+summary = "Object-oriented filesystem paths"
+groups = ["default"]
+files = [
+    {file = "pathlib-1.0.1-py3-none-any.whl", hash = "sha256:f35f95ab8b0f59e6d354090350b44a80a80635d22efdedfa84c7ad1cf0a74147"},
+    {file = "pathlib-1.0.1.tar.gz", hash = "sha256:6940718dfc3eff4258203ad5021090933e5c04707d5ca8cc9e73c94a7894ea9f"},
 ]
 
 [[package]]
