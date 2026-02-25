@@ -36,7 +36,7 @@ jobs:
           key: hf-models-paraphrase-multilingual
 
       - name: Install dependencies
-        run: pdm install --no-self
+        run: pdm install
 
       - name: Run aggregation
         run: pdm run aggregate-rss
