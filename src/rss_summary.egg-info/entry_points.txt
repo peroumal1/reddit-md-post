@@ -1,0 +1,2 @@
+[console_scripts]
+aggregate-rss = rss_summary.aggregate:main
