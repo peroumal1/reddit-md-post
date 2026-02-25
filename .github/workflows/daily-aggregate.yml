@@ -1,0 +1,55 @@
+name: Daily RSS Aggregation
+
+on:
+  schedule:
+    # 18:30 UTC = 19:30 Paris (CET winter). In summer (CEST) this runs at 20:30 Paris.
+    - cron: "30 18 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install PDM
+        run: pip install pdm
+
+      - name: Cache PDM dependencies
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: pdm-${{ hashFiles('pdm.lock') }}
+
+      - name: Cache Hugging Face models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-models-paraphrase-multilingual
+
+      - name: Install dependencies
+        run: pdm install --no-self
+
+      - name: Run aggregation
+        run: pdm run aggregate-rss
+
+      - name: Copy feed to dated file
+        run: |
+          DATE=$(date +%Y-%m-%d)
+          cp data/feed.md "data/feed-${DATE}.md"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          DATE=$(date +%d/%m/%Y)
+          git add .last-run data/
+          git diff --cached --quiet || (git commit -m "chore(run): run for ${DATE}" && git push)
