@@ -10,6 +10,20 @@ requires-python = "==3.14.*"
 readme = "README.md"
 license = {text = "MIT"}
 
+[project.scripts]
+aggregate-rss = "rss_summary.aggregate:main"
 
 [tool.pdm]
-distribution = false
+distribution = true
+
+[tool.pdm.build]
+package-dir = "src"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]

@@ -1,2 +1,5 @@
 .env
 .last-run.bak
+__pycache__/
+*.pyc
+.pytest_cache/
