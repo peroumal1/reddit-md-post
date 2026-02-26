@@ -45,7 +45,7 @@ def run(playwright: Playwright) -> None:
     page.get_by_role("radio", name="News").click()
     page.get_by_role("button", name="Ajouter", exact=True).click()
     page.get_by_role("paragraph").click()
-    page.get_by_role("button", name="Plus d’options").click()
+    page.get_by_role("button", name="Plus d'options").click()
     page.locator(
         "rpl-menu-item:nth-child(2) > #item > rpl-item > .text-container"
     ).first.click()
