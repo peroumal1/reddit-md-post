@@ -16,37 +16,57 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check if already ran today
+        id: check_last_run
+        run: |
+          TODAY=$(date +%d-%b-%Y)
+          LAST_RUN=$(cat .last-run 2>/dev/null | cut -d' ' -f1 || echo "")
+          if [ "$LAST_RUN" = "$TODAY" ]; then
+            echo "already_ran=true" >> $GITHUB_OUTPUT
+            echo "Already ran today ($TODAY), skipping."
+          else
+            echo "already_ran=false" >> $GITHUB_OUTPUT
+          fi
+
       - uses: actions/setup-python@v5
+        if: steps.check_last_run.outputs.already_ran != 'true'
         with:
           python-version: "3.14"
 
       - name: Install PDM
+        if: steps.check_last_run.outputs.already_ran != 'true'
         run: pip install pdm
 
       - name: Cache PDM dependencies
+        if: steps.check_last_run.outputs.already_ran != 'true'
         uses: actions/cache@v4
         with:
           path: .venv
           key: pdm-${{ hashFiles('pdm.lock') }}
 
       - name: Cache Hugging Face models
+        if: steps.check_last_run.outputs.already_ran != 'true'
         uses: actions/cache@v4
         with:
           path: ~/.cache/huggingface
           key: hf-models-paraphrase-multilingual
 
       - name: Install dependencies
+        if: steps.check_last_run.outputs.already_ran != 'true'
         run: pdm install
 
       - name: Run aggregation
+        if: steps.check_last_run.outputs.already_ran != 'true'
         run: pdm run aggregate-rss
 
       - name: Copy feed to dated file
+        if: steps.check_last_run.outputs.already_ran != 'true'
         run: |
           DATE=$(date +%Y-%m-%d)
           cp data/feed.md "data/feed-${DATE}.md"
 
       - name: Commit and push
+        if: steps.check_last_run.outputs.already_ran != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
