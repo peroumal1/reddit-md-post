@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime
 from pathlib import Path
 from time import mktime
@@ -21,12 +22,16 @@ from rss_summary.similarity import encode_text, is_duplicate, title_is_duplicate
 @click.option("--restore", is_flag=True, help="Restore .last-run from backup and exit")
 @click.option("--until", default=None, help="Upper date bound for articles (ISO format: YYYY-MM-DD HH:MM:SS)")
 def main(rss_links, feed_output, with_images, dry_run, restore, until):
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     if restore:
         restore_last_run_date()
         return
 
     date_midnight = get_last_run_date()
-    date_until = datetime.fromisoformat(until) if until else None
+    try:
+        date_until = datetime.fromisoformat(until) if until else None
+    except ValueError:
+        raise click.ClickException(f"Invalid --until value '{until}'. Expected ISO format: YYYY-MM-DD or YYYY-MM-DD HH:MM:SS")
 
     feed_list = []
     seen_titles = []
@@ -34,10 +39,16 @@ def main(rss_links, feed_output, with_images, dry_run, restore, until):
 
     model = SentenceTransformer("BAAI/bge-m3")
 
-    with open(rss_links) as rss_list:
+    try:
+        rss_list_file = open(rss_links)
+    except FileNotFoundError:
+        raise click.ClickException(f"RSS links file not found: {rss_links}")
+    with rss_list_file as rss_list:
         for line in rss_list:
             feed = feedparser.parse(line)
             for entry in feed.entries:
+                if not entry.get("published_parsed"):
+                    continue
                 feed_date = datetime.fromtimestamp(mktime(entry.published_parsed))
                 if feed_date <= date_midnight:
                     continue
@@ -46,7 +57,8 @@ def main(rss_links, feed_output, with_images, dry_run, restore, until):
                 title = entry.title
                 if title_is_duplicate(title, seen_titles):
                     continue
-                summary_text = entry.summary_detail.value
+                summary_detail = getattr(entry, "summary_detail", None)
+                summary_text = summary_detail.value if summary_detail else ""
                 embedding = encode_text(model, summary_text)
                 if not is_duplicate(model, embedding, seen_embeddings):
                     seen_titles.append(title)
@@ -67,14 +79,17 @@ def main(rss_links, feed_output, with_images, dry_run, restore, until):
     rows = format_feed_entries(sorted_list, with_images)
 
     if not rows:
-        print("No new entries!")
+        logging.info("No new entries.")
     else:
         markdown = (
             markdown_table(rows)
             .set_params(row_sep="markdown", quote=False)
             .get_markdown()
         )
-        Path(feed_output).write_text(markdown)
+        try:
+            Path(feed_output).write_text(markdown)
+        except OSError as e:
+            raise click.ClickException(f"Could not write feed to '{feed_output}': {e}") from e
 
     if not dry_run:
         set_last_run_date()

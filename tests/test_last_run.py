@@ -66,7 +66,7 @@ class TestBackupAndRestore:
             restore_last_run_date()
         assert last_run_file.read_text() == original_content
 
-    def test_restore_without_backup(self, tmp_path, capsys):
+    def test_restore_without_backup(self, tmp_path, caplog):
         last_run_file = tmp_path / ".last-run"
         backup_file = tmp_path / ".last-run.bak"
         last_run_file.write_text("25-Feb-2026 (19:00:00.000000)")
@@ -74,4 +74,4 @@ class TestBackupAndRestore:
              patch("rss_summary.last_run.LAST_RUN_BACKUP", backup_file):
             restore_last_run_date()
         assert last_run_file.read_text() == "25-Feb-2026 (19:00:00.000000)"
-        assert "No backup found" in capsys.readouterr().out
+        assert "No backup found" in caplog.text
