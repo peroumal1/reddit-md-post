@@ -1,3 +1,4 @@
+import logging
 import shutil
 from datetime import datetime
 from pathlib import Path
@@ -17,9 +18,9 @@ def restore_last_run_date():
     """Restore .last-run from .last-run.bak."""
     if LAST_RUN_BACKUP.exists():
         shutil.copy2(LAST_RUN_BACKUP, LAST_RUN_FILE)
-        print(f"Restored .last-run to: {LAST_RUN_FILE.read_text()}")
+        logging.info("Restored .last-run to: %s", LAST_RUN_FILE.read_text())
     else:
-        print("No backup found (.last-run.bak does not exist).")
+        logging.warning("No backup found (.last-run.bak does not exist).")
 
 
 def get_last_run_date():

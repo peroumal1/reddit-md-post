@@ -1,6 +1,7 @@
 import difflib
+import logging
 
-from bs4 import BeautifulSoup
+from rss_summary.parsing import strip_html
 
 SIMILARITY_THRESHOLD = 0.75
 TITLE_SIMILARITY_THRESHOLD = 0.85
@@ -8,8 +9,7 @@ TITLE_SIMILARITY_THRESHOLD = 0.85
 
 def encode_text(model, text):
     """Strip HTML from text and encode it to a single embedding vector."""
-    plain = BeautifulSoup(text, features="html.parser").get_text()
-    return model.encode([plain])[0]
+    return model.encode([strip_html(text)])[0]
 
 
 def is_duplicate(model, embedding, existing_embeddings, threshold=SIMILARITY_THRESHOLD):
@@ -19,7 +19,7 @@ def is_duplicate(model, embedding, existing_embeddings, threshold=SIMILARITY_THR
     similarities = model.similarity([embedding], existing_embeddings)
     max_score = similarities[0].max().item()
     if max_score > threshold:
-        print(f"Similarity detected (score: {max_score:.4f}), skipping duplicate.")
+        logging.debug("Similarity detected (score: %.4f), skipping duplicate.", max_score)
     return max_score > threshold
 
 
@@ -31,6 +31,6 @@ def title_is_duplicate(title, existing_titles, threshold=TITLE_SIMILARITY_THRESH
     for existing in existing_titles:
         ratio = difflib.SequenceMatcher(None, normalized, existing.strip().lower()).ratio()
         if ratio > threshold:
-            print(f"Fuzzy title match (ratio: {ratio:.4f}), skipping duplicate.")
+            logging.debug("Fuzzy title match (ratio: %.4f), skipping duplicate.", ratio)
             return True
     return False

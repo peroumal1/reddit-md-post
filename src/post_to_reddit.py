@@ -3,11 +3,14 @@ from datetime import datetime
 
 import pyotp
 from dotenv import load_dotenv
-from playwright.sync_api import Playwright, expect, sync_playwright
+from playwright.sync_api import Playwright, sync_playwright
 
 
 def _get_auth_params():
     load_dotenv()
+    missing = [v for v in ("REDDIT_OTP_SECRET", "REDDIT_LOGIN", "REDDIT_PASSWORD") if not os.getenv(v)]
+    if missing:
+        raise EnvironmentError(f"Missing required environment variables: {', '.join(missing)}")
     reddit_otp_secret = os.getenv("REDDIT_OTP_SECRET")
     totp = pyotp.TOTP(reddit_otp_secret)
     code = totp.now()
