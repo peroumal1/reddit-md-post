@@ -8,9 +8,15 @@ from playwright.sync_api import Playwright, sync_playwright
 
 def _get_auth_params():
     load_dotenv()
-    missing = [v for v in ("REDDIT_OTP_SECRET", "REDDIT_LOGIN", "REDDIT_PASSWORD") if not os.getenv(v)]
+    missing = [
+        v
+        for v in ("REDDIT_OTP_SECRET", "REDDIT_LOGIN", "REDDIT_PASSWORD")
+        if not os.getenv(v)
+    ]
     if missing:
-        raise EnvironmentError(f"Missing required environment variables: {', '.join(missing)}")
+        raise EnvironmentError(
+            f"Missing required environment variables: {', '.join(missing)}"
+        )
     reddit_otp_secret = os.getenv("REDDIT_OTP_SECRET")
     totp = pyotp.TOTP(reddit_otp_secret)
     code = totp.now()
@@ -48,10 +54,9 @@ def run(playwright: Playwright) -> None:
     page.get_by_role("radio", name="News").click()
     page.get_by_role("button", name="Ajouter", exact=True).click()
     page.get_by_role("paragraph").click()
-    page.get_by_role("button", name="Plus d'options").click()
-    page.locator(
-        "rpl-menu-item:nth-child(2) > #item > rpl-item > .text-container"
-    ).first.click()
+    page.get_by_role("button", name="Plus d\u2019options").click()
+
+    page.get_by_role("menuitem", name="Passer à Markdown").click()
     page.get_by_role("textbox", name="Champ de texte du corps de la").fill(
         "Bel bonswa le sub! "
     )
