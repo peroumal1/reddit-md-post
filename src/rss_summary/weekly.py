@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from py_markdown_table.markdown_table import markdown_table as _markdown_table
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import classify_article, encode_themes, load_taxonomy
+from rss_summary.classification import classify_article_scored, encode_themes, load_taxonomy
 from rss_summary.similarity import encode_text
 
 MOIS = {
@@ -196,6 +196,81 @@ def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names
     return "\n".join(lines)
 
 
+def render_suggestions(week_num, scored, threshold=0.35, low_confidence_margin=0.10, ambiguity_margin=0.05):
+    """Build a taxonomy review report from scored clusters."""
+    UNCLASSIFIED = "Autres"
+    unclassified, low_confidence, ambiguous = [], [], []
+
+    for cluster in scored:
+        rep = cluster["articles"][0]
+        title = f"[{rep['title']}]({rep['url']})"
+        top = cluster["top_score"]
+        runner = cluster["runner_up"]
+        runner_score = cluster["runner_up_score"]
+
+        if cluster["theme"] == UNCLASSIFIED:
+            unclassified.append((title, runner, top))  # runner is best theme even if below threshold
+        elif top < threshold + low_confidence_margin:
+            low_confidence.append((title, cluster["theme"], top, runner, runner_score))
+        elif runner_score is not None and (top - runner_score) < ambiguity_margin:
+            ambiguous.append((title, cluster["theme"], top, runner, runner_score))
+
+    lines = [
+        f"# Revue taxonomique — Semaine W{week_num:02d}",
+        "",
+        "> Ce fichier est généré automatiquement par `weekly-digest --suggest`.",
+        "> Il liste les classements problématiques pour aider à affiner `data/taxonomy.toml`.",
+    ]
+
+    lines += [
+        "",
+        f"## Articles non classifiés ({len(unclassified)})",
+        "Aucun thème n'a atteint le seuil de confiance (0.35). "
+        "Envisager un nouveau thème ou élargir les descriptions existantes.",
+        "",
+    ]
+    if unclassified:
+        lines.append("| Titre | Thème le plus proche | Score |")
+        lines.append("|---|---|---|")
+        for title, best_theme, score in unclassified:
+            lines.append(f"| {title} | {best_theme or '—'} | {score:.2f} |")
+    else:
+        lines.append("_Aucun article non classifié._")
+
+    lines += [
+        "",
+        f"## Classements à faible confiance ({len(low_confidence)})",
+        f"Classifiés mais avec un score entre {threshold:.2f} et {threshold + low_confidence_margin:.2f}. "
+        "Renforcer la description du thème gagnant pourrait améliorer la précision.",
+        "",
+    ]
+    if low_confidence:
+        lines.append("| Titre | Thème retenu | Score | Thème concurrent | Score concurrent |")
+        lines.append("|---|---|---|---|---|")
+        for title, theme, score, runner, runner_score in low_confidence:
+            rs = f"{runner_score:.2f}" if runner_score is not None else "—"
+            lines.append(f"| {title} | {theme} | {score:.2f} | {runner or '—'} | {rs} |")
+    else:
+        lines.append("_Aucun classement à faible confiance._")
+
+    lines += [
+        "",
+        f"## Classements ambigus ({len(ambiguous)})",
+        f"Écart < {ambiguity_margin:.2f} entre les deux premiers thèmes. "
+        "Différencier les descriptions de ces thèmes réduirait l'ambiguïté.",
+        "",
+    ]
+    if ambiguous:
+        lines.append("| Titre | Thème 1 | Score 1 | Thème 2 | Score 2 |")
+        lines.append("|---|---|---|---|---|")
+        for title, theme, score, runner, runner_score in ambiguous:
+            lines.append(f"| {title} | {theme} | {score:.2f} | {runner} | {runner_score:.2f} |")
+    else:
+        lines.append("_Aucun classement ambigu._")
+
+    return "\n".join(lines)
+
+
 @click.command()
 @click.option("--data-dir", default="data", show_default=True, help="Directory containing daily feed files")
 @click.option("--output-dir", default="data", show_default=True, help="Directory to write the weekly digest")
@@ -203,7 +278,8 @@ def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names
 @click.option("--year", default=None, type=int, help="Year for --week (default: current year)")
 @click.option("--taxonomy", default="data/taxonomy.toml", show_default=True, help="Path to taxonomy TOML config")
 @click.option("--top-per-theme", default=2, show_default=True, help="Max clusters to show per theme section")
-def main(data_dir, output_dir, week, year, taxonomy, top_per_theme):
+@click.option("--suggest", is_flag=True, help="Write a taxonomy review report alongside the digest")
+def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
     today = datetime.now()
@@ -255,7 +331,7 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme):
     for raw_cluster in raw_clusters:
         score = score_cluster(raw_cluster, most_read_paths)
         centroid = representative_embedding(raw_cluster)
-        theme = classify_article(model, centroid, theme_embeddings, theme_names)
+        classification = classify_article_scored(model, centroid, theme_embeddings, theme_names)
 
         most_read_tags = []
         for item in raw_cluster:
@@ -268,7 +344,10 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme):
         scored.append({
             "raw": raw_cluster,
             "score": score,
-            "theme": theme,
+            "theme": classification["theme"],
+            "top_score": classification["top_score"],
+            "runner_up": classification["runner_up"],
+            "runner_up_score": classification["runner_up_score"],
             "most_read_tags": most_read_tags,
             "articles": sorted(
                 [item["article"] for item in raw_cluster],
@@ -291,6 +370,15 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme):
         raise click.ClickException(f"Could not write weekly digest to '{output_file}': {e}") from e
 
     logging.info("Weekly digest written to %s", output_file)
+
+    if suggest:
+        review = render_suggestions(week_num, scored)
+        review_file = Path(output_dir) / f"weekly-w{week_num:02d}-review.md"
+        try:
+            review_file.write_text(review)
+        except OSError as e:
+            raise click.ClickException(f"Could not write review to '{review_file}': {e}") from e
+        logging.info("Taxonomy review written to %s", review_file)
 
 
 if __name__ == "__main__":
