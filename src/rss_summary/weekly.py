@@ -279,7 +279,8 @@ def render_suggestions(week_num, scored, threshold=0.35, low_confidence_margin=0
 @click.option("--taxonomy", default="data/taxonomy.toml", show_default=True, help="Path to taxonomy TOML config")
 @click.option("--top-per-theme", default=2, show_default=True, help="Max clusters to show per theme section")
 @click.option("--suggest", is_flag=True, help="Write a taxonomy review report alongside the digest")
-def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest):
+@click.option("--min-days", default=7, show_default=True, help="Minimum number of daily feed files required before generating")
+def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min_days):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
     today = datetime.now()
@@ -293,13 +294,22 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest):
     # Collect daily feed files for the week
     data_path = Path(data_dir)
     articles = []
+    days_found = 0
     for day_offset in range(7):
         day = week_start + timedelta(days=day_offset)
         feed_file = data_path / f"feed-{day.strftime('%Y-%m-%d')}.md"
         if feed_file.exists():
+            days_found += 1
             day_articles = parse_feed_file(feed_file)
             logging.info("Loaded %d articles from %s", len(day_articles), feed_file.name)
             articles.extend(day_articles)
+
+    if days_found < min_days:
+        logging.info(
+            "Only %d/%d daily files found for W%02d — need %d before generating. Skipping.",
+            days_found, 7, week_num, min_days,
+        )
+        return
 
     if not articles:
         logging.info("No articles found for week W%02d.", week_num)
