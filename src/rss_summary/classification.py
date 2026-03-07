@@ -21,7 +21,7 @@ def encode_themes(model, themes):
 
 def classify_article(model, embedding, theme_embeddings, theme_names, threshold=0.35):
     """Return the theme name with highest cosine similarity, or UNCLASSIFIED."""
-    if not theme_embeddings:
+    if theme_embeddings is None or len(theme_embeddings) == 0:
         return UNCLASSIFIED
     sims = model.similarity([embedding], theme_embeddings)[0]
     best_idx = int(sims.argmax())
