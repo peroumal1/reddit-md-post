@@ -145,16 +145,22 @@ def representative_embedding(cluster):
     return np.mean(vecs, axis=0)
 
 
-def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names):
+def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names, top_per_theme=2):
     start_str = f"{week_start.day} {MOIS[week_start.month]}"
     end_str = f"{week_end.day} {MOIS[week_end.month]} {week_end.year}"
     lines = [f"# Semaine W{week_num:02d} — {start_str} au {end_str}", "", "## Sujets marquants"]
 
     ordered_themes = list(theme_names) + ["Autres"]
     for theme in ordered_themes:
-        theme_clusters = clusters_by_theme.get(theme, [])
-        if not theme_clusters:
+        all_theme_clusters = clusters_by_theme.get(theme, [])
+        if not all_theme_clusters:
             continue
+        # Most-read first, then by score descending, then cap
+        theme_clusters = sorted(
+            all_theme_clusters,
+            key=lambda c: (bool(c["most_read_tags"]), c["score"]),
+            reverse=True,
+        )[:top_per_theme]
         lines.append(f"\n## {theme}")
         for cluster in theme_clusters:
             rep = cluster["articles"][0]
@@ -196,7 +202,8 @@ def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names
 @click.option("--week", default=None, type=int, help="ISO week number (default: current week)")
 @click.option("--year", default=None, type=int, help="Year for --week (default: current year)")
 @click.option("--taxonomy", default="data/taxonomy.toml", show_default=True, help="Path to taxonomy TOML config")
-def main(data_dir, output_dir, week, year, taxonomy):
+@click.option("--top-per-theme", default=2, show_default=True, help="Max clusters to show per theme section")
+def main(data_dir, output_dir, week, year, taxonomy, top_per_theme):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
     today = datetime.now()
@@ -276,7 +283,7 @@ def main(data_dir, output_dir, week, year, taxonomy):
         clusters_by_theme.setdefault(cluster["theme"], []).append(cluster)
 
     # Render and write
-    markdown = render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names)
+    markdown = render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names, top_per_theme)
     output_file = Path(output_dir) / f"weekly-w{week_num:02d}.md"
     try:
         output_file.write_text(markdown)
