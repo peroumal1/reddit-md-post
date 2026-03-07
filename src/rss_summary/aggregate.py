@@ -8,7 +8,8 @@ import feedparser
 from py_markdown_table.markdown_table import markdown_table
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.formatting import format_feed_entries
+from rss_summary.classification import classify_article, encode_themes, load_taxonomy
+from rss_summary.formatting import format_feed_entries, format_feed_entries_classified
 from rss_summary.last_run import get_last_run_date, restore_last_run_date, set_last_run_date
 from rss_summary.parsing import extract_first_paragraph, get_default_image_link
 from rss_summary.similarity import encode_text, is_duplicate, title_is_duplicate
@@ -21,7 +22,9 @@ from rss_summary.similarity import encode_text, is_duplicate, title_is_duplicate
 @click.option("--dry-run", is_flag=True, help="Run without updating .last-run")
 @click.option("--restore", is_flag=True, help="Restore .last-run from backup and exit")
 @click.option("--until", default=None, help="Upper date bound for articles (ISO format: YYYY-MM-DD HH:MM:SS)")
-def main(rss_links, feed_output, with_images, dry_run, restore, until):
+@click.option("--classify", is_flag=True, help="Group output by thematic taxonomy")
+@click.option("--taxonomy", default="data/taxonomy.toml", show_default=True, help="Path to taxonomy TOML config")
+def main(rss_links, feed_output, with_images, dry_run, restore, until, classify, taxonomy):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     if restore:
         restore_last_run_date()
@@ -72,20 +75,32 @@ def main(rss_links, feed_output, with_images, dry_run, restore, until):
                             "media_content": get_default_image_link(
                                 entry, entry.link
                             ),
+                            "embedding": embedding,
                         }
                     )
 
     sorted_list = sorted(feed_list, key=lambda item: item["published_date"], reverse=True)
-    rows = format_feed_entries(sorted_list, with_images)
 
-    if not rows:
+    if not sorted_list:
         logging.info("No new entries.")
     else:
-        markdown = (
-            markdown_table(rows)
-            .set_params(row_sep="markdown", quote=False)
-            .get_markdown()
-        )
+        if classify:
+            try:
+                themes = load_taxonomy(taxonomy)
+            except FileNotFoundError:
+                raise click.ClickException(f"Taxonomy file not found: {taxonomy}")
+            theme_names = [t["name"] for t in themes]
+            theme_embeddings = encode_themes(model, themes)
+            for item in sorted_list:
+                item["theme"] = classify_article(model, item["embedding"], theme_embeddings, theme_names)
+            markdown = format_feed_entries_classified(sorted_list, theme_names, with_images)
+        else:
+            rows = format_feed_entries(sorted_list, with_images)
+            markdown = (
+                markdown_table(rows)
+                .set_params(row_sep="markdown", quote=False)
+                .get_markdown()
+            )
         try:
             Path(feed_output).write_text(markdown)
         except OSError as e:

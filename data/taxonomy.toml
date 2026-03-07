@@ -1,0 +1,35 @@
+[[themes]]
+name = "Faits divers"
+description = "vol, meurtre, agression, accident de la route, incendie, gendarmerie, violence, criminalité, blessés, collision, cambriolage"
+
+[[themes]]
+name = "Eau & environnement"
+description = "coupures d'eau, pollution, déchets, SMGEAG, décharge, rivière, nature, mangrove, tours d'eau, assainissement"
+
+[[themes]]
+name = "Politique & municipales"
+description = "élections municipales, mairie, conseil, candidats, gouvernement, préfet, assemblée, politique, liste électorale, campagne"
+
+[[themes]]
+name = "Culture & société"
+description = "musique, festival, patrimoine, art, exposition, tradition, identité créole, concert, spectacle, artiste"
+
+[[themes]]
+name = "Sport"
+description = "compétition, match, athlète, club, championnat, football, rugby, natation, handisport, médaille, victoire"
+
+[[themes]]
+name = "Santé"
+description = "épidémie, hôpital, médecin, soins, grippe, Covid, santé publique, pharmacie, bronchiolite, vaccination"
+
+[[themes]]
+name = "Économie & social"
+description = "emploi, grève, syndicat, prix, cherté de la vie, travail, salaire, commerce, trop-perçus, aide sociale"
+
+[[themes]]
+name = "Éducation"
+description = "école, lycée, université, élèves, enseignement, formation, baccalauréat, rentrée, spécialités"
+
+[[themes]]
+name = "Outre-mer & international"
+description = "Martinique, Guyane, Haïti, DOM-TOM, Caraïbes, international, France hexagonale, outre-mer"
