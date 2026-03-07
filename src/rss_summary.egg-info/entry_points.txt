@@ -1,2 +1,3 @@
 [console_scripts]
 aggregate-rss = rss_summary.aggregate:main
+weekly-digest = rss_summary.weekly:main

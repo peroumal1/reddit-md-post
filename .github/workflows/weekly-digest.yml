@@ -1,0 +1,66 @@
+name: Weekly Digest
+
+on:
+  schedule:
+    # Sunday 19:00 UTC = 20:00 Paris (CET winter). In summer (CEST) this runs at 21:00 Paris.
+    # By Sunday evening the full week (Mon–Sun) of daily feeds should be committed.
+    - cron: "0 19 * * 0"
+  workflow_dispatch:
+    inputs:
+      week:
+        description: "ISO week number (default: current week)"
+        required: false
+      year:
+        description: "Year for the week (default: current year)"
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  weekly:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install PDM
+        run: pip install pdm
+
+      - name: Cache PDM dependencies
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: pdm-${{ hashFiles('pdm.lock') }}
+
+      - name: Cache Hugging Face models
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: hf-models-bge-m3
+
+      - name: Install dependencies
+        run: pdm install
+
+      - name: Run weekly digest
+        run: |
+          WEEK_ARGS=""
+          if [ -n "${{ github.event.inputs.week }}" ]; then
+            WEEK_ARGS="--week ${{ github.event.inputs.week }}"
+          fi
+          if [ -n "${{ github.event.inputs.year }}" ]; then
+            WEEK_ARGS="$WEEK_ARGS --year ${{ github.event.inputs.year }}"
+          fi
+          pdm run weekly-digest --suggest $WEEK_ARGS
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          WEEK=$(date +%V)
+          git add data/weekly-w*.md
+          git diff --cached --quiet || (git commit -m "chore(weekly): digest for W${WEEK}" && git push)

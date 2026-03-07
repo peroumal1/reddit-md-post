@@ -4,6 +4,16 @@
 
 ## Faits divers
 
+### Guadeloupe. Ary Chalus poursuivi devant le tribunal correctionnel de Paris avec sa fille et sa compagne
+**1 jour · 2 sources · 🔥 plus lu (RCI)**
+
+|                                                                                                                      Titre                                                                                                                      | Date|  Source |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|[Guadeloupe. Ary Chalus poursuivi devant le tribunal correctionnel de Paris avec sa fille et sa compagne](https://www.karibinfo.com/news/guadeloupe-ary-chalus-poursuivi-devant-le-tribunal-correctionnel-de-paris-avec-sa-fille-et-sa-compagne/)|02/03|Karibinfo|
+|       [Suspicions de détournement de fonds publics : Ary Chalus convoqué devant le parquet national financier](https://rci.fm/guadeloupe/infos/Justice/Suspicions-de-detournement-de-fonds-publics-Ary-Chalus-convoque-devant-le-parquet)       |02/03|   RCI   |
+
+---
+
 ### Mare-Gaillard : un garçon de 14 ans grièvement blessé lors d'un accident à vélo
 **1 jour · 2 sources · 🔥 plus lu (RCI)**
 
@@ -11,16 +21,6 @@
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
 |[Mare-Gaillard : un garçon de 14 ans grièvement blessé lors d'un accident à vélo](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/gosier/mare-gaillard-un-garcon-de-14-ans-grievement-blesse-lors-d-un-accident-a-velo-1678161.html)|05/03|La 1ère|
 |                                    [Un adolescent de 14 ans grièvement blessé à Mare-Gaillard](https://rci.fm/guadeloupe/infos/Faits-divers/Un-adolescent-de-14-ans-grievement-blesse-Mare-Gaillard)                                    |05/03|  RCI  |
-
----
-
-### À Trinidad, la présidente déclare l'état d'urgence face à des risques d'attaque sur les forces de l'ordre
-**2 jours · 2 sources**
-
-|                                                                                                                  Titre                                                                                                                  | Date| Source|
-|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
-|   [À Trinidad, la présidente déclare l'état d'urgence face à des risques d'attaque sur les forces de l'ordre](https://rci.fm/deuxiles/infos/Caraibes/Trinidad-la-presidente-declare-letat-durgence-face-des-risques-dattaque-sur-les)   |05/03|  RCI  |
-|[Trinité-et-Tobago : nouvel état d’urgence face à la flambée des violences liées aux gangs](https://la1ere.franceinfo.fr/guadeloupe/trinite-et-tobago-nouvel-etat-d-urgence-face-a-la-flambee-des-violences-liees-aux-gangs-1677708.html)|04/03|La 1ère|
 
 ---
 
@@ -49,16 +49,6 @@
 
 ## Politique & municipales
 
-### Guadeloupe. Ary Chalus poursuivi devant le tribunal correctionnel de Paris avec sa fille et sa compagne
-**1 jour · 2 sources · 🔥 plus lu (RCI)**
-
-|                                                                                                                      Titre                                                                                                                      | Date|  Source |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|[Guadeloupe. Ary Chalus poursuivi devant le tribunal correctionnel de Paris avec sa fille et sa compagne](https://www.karibinfo.com/news/guadeloupe-ary-chalus-poursuivi-devant-le-tribunal-correctionnel-de-paris-avec-sa-fille-et-sa-compagne/)|02/03|Karibinfo|
-|       [Suspicions de détournement de fonds publics : Ary Chalus convoqué devant le parquet national financier](https://rci.fm/guadeloupe/infos/Justice/Suspicions-de-detournement-de-fonds-publics-Ary-Chalus-convoque-devant-le-parquet)       |02/03|   RCI   |
-
----
-
 ### Municipales 2026 : les enjeux de la campagne à Terre-de-Haut
 **3 jours · 2 sources**
 
@@ -68,6 +58,16 @@
 |                                                                          [Municipales 2026 : les enjeux de la campagne à Basse-Terre](https://rci.fm/guadeloupe/infos/Politique/Municipales-2026-les-enjeux-de-la-campagne-Basse-Terre)                                                                         |05/03|  RCI  |
 |                                                                        [Municipales 2026 : les enjeux de la campagne à Terre-de-Haut](https://rci.fm/guadeloupe/infos/Politique/Municipales-2026-les-enjeux-de-la-campagne-Terre-de-Haut)                                                                       |06/03|  RCI  |
 |[CARTE. Municipales et communautaires 2026 en Guadeloupe : zoom sur les communes de l'archipel, leurs habitants et leurs enjeux](https://la1ere.franceinfo.fr/guadeloupe/carte-municipales-et-communautaires-2026-en-guadeloupe-zoom-sur-les-communes-de-l-archipel-leurs-habitants-et-leurs-enjeux-1677813.html)|05/03|La 1ère|
+
+---
+
+### Guadeloupe. Politique : la mise sous pli des bulletins est commencé
+**2 jours · 2 sources**
+
+|                                                                                                                Titre                                                                                                                | Date|  Source |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|[Municipales 2026 : à Basse-Terre, une armée de volontaires pour mettre les bulletins de vote sous pli](https://rci.fm/guadeloupe/infos/Politique/Municipales-2026-Basse-Terre-une-armee-de-volontaires-pour-mettre-les-bulletins-de)|03/03|   RCI   |
+|                               [Guadeloupe. Politique : la mise sous pli des bulletins est commencé](https://www.karibinfo.com/news/guadeloupe-politique-la-mise-sous-pli-des-bulletins-est-commence/)                               |04/03|Karibinfo|
 
 ---
 
@@ -93,21 +93,23 @@
 
 ## Sport
 
-### Gyane. Recherche d’un jeune homme disparu à la plage de Montabo lors d’une baignade
-**1 jour · 1 source**
+### Le démarrage de la campagne sucrière 2026 pourrait s'effectuer ce jeudi 5 mars
+**2 jours · 2 sources**
 
-|                                                                                                 Titre                                                                                                 | Date|  Source |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|[Gyane. Recherche d’un jeune homme disparu à la plage de Montabo lors d’une baignade](https://www.karibinfo.com/news/gyane-recherche-dun-jeune-homme-disparu-a-la-plage-de-montabo-lors-dune-baignade/)|02/03|Karibinfo|
+|                                                                                                     Titre                                                                                                    | Date| Source|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
+|   [Le démarrage de la campagne sucrière 2026 pourrait s'effectuer ce jeudi 5 mars](https://rci.fm/guadeloupe/infos/Economie/Le-demarrage-de-la-campagne-sucriere-2026-pourrait-seffectuer-ce-jeudi-5-mars)   |03/03|  RCI  |
+|[La campagne sucrière 2026 lancée jeudi en Guadeloupe continentale](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/moule/la-campagne-sucriere-2026-lancee-jeudi-en-guadeloupe-continentale-1677036.html)|02/03|La 1ère|
 
 ---
 
-### REPORTAGE. Le simulateur de chute libre : et si on s’y mettait ?
-**1 jour · 1 source**
+### Guadeloupe. Canne : le démarrage de la campagne reporté à une date ultérieure
+**1 jour · 2 sources**
 
-|                                                                                                      Titre                                                                                                     | Date| Source|
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
-|[REPORTAGE. Le simulateur de chute libre : et si on s’y mettait ?](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/saint-francois/reportage-le-simulateur-de-chute-libre-et-si-on-s-y-mettait-1676121.html)|02/03|La 1ère|
+|                                                                                                         Titre                                                                                                        | Date|  Source |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|              [Guadeloupe. Canne : le démarrage de la campagne reporté à une date ultérieure](https://www.karibinfo.com/news/guadeloupe-canne-le-demarrage-de-la-campagne-reporte-a-une-date-ulterieure/)             |04/03|Karibinfo|
+|[Campagne sucrière 2026 en Guadeloupe : le lancement de nouveau reporté](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/moule/campagne-sucriere-2026-en-guadeloupe-le-lancement-de-nouveau-reporte-1677711.html)|04/03| La 1ère |
 
 ---
 
@@ -196,20 +198,20 @@
 
 ## Autres
 
-### Saint-Barthélemy. 5 arrêtés du président Lédée
-**1 jour · 1 source**
-
-|                                                             Titre                                                             | Date|  Source |
-|-------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|[Saint-Barthélemy. 5 arrêtés du président Lédée](https://www.karibinfo.com/news/saint-barthelemy-5-arretes-du-president-ledee/)|02/03|Karibinfo|
-
----
-
 ### 100 ans de vie pour Aubine Bello William, une mère, grand-mère et arrière-grand-mère "résiliente et courageuse"
 **1 jour · 1 source**
 
 |                                                                                                                                                 Titre                                                                                                                                                 | Date| Source|
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
 |[100 ans de vie pour Aubine Bello William, une mère, grand-mère et arrière-grand-mère "résiliente et courageuse"](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/gosier/100-ans-de-vie-pour-aubine-bello-william-une-mere-grand-mere-et-arriere-grand-mere-resiliente-et-courageuse-1676655.html)|01/03|La 1ère|
+
+---
+
+### Cuba: pas de kérosène dans les aéroports jusqu'à avril
+**1 jour · 1 source**
+
+|                                                                        Titre                                                                        | Date|Source|
+|-----------------------------------------------------------------------------------------------------------------------------------------------------|-----|------|
+|[Cuba: pas de kérosène dans les aéroports jusqu'à avril](https://rci.fm/deuxiles/infos/Caraibes/Cuba-pas-de-kerosene-dans-les-aeroports-jusqua-avril)|04/03|  RCI |
 
 ---
