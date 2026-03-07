@@ -12,6 +12,7 @@ license = {text = "MIT"}
 
 [project.scripts]
 aggregate-rss = "rss_summary.aggregate:main"
+weekly-digest = "rss_summary.weekly:main"
 
 [tool.pdm]
 distribution = true
