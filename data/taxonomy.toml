@@ -1,6 +1,6 @@
 [[themes]]
 name = "Faits divers"
-description = "vol, meurtre, agression, accident de la route, incendie, gendarmerie, violence, criminalité, blessés, collision, cambriolage"
+description = "vol, meurtre, agression, accident de la route, incendie, gendarmerie, violence, criminalité, blessés, collision, cambriolage, disparition, noyade, recherche en mer, secours, garde à vue, mise en examen, condamnation"
 
 [[themes]]
 name = "Eau & environnement"
@@ -16,7 +16,7 @@ description = "musique, festival, patrimoine, art, exposition, tradition, identi
 
 [[themes]]
 name = "Sport"
-description = "compétition, match, athlète, club, championnat, football, rugby, natation, handisport, médaille, victoire"
+description = "compétition sportive, match, athlète, club, championnat, fédération, football, rugby, tournoi, podium, médaille, entraîneur, saison sportive, handisport"
 
 [[themes]]
 name = "Santé"
