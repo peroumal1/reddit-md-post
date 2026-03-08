@@ -103,17 +103,27 @@
 
 ---
 
-### Guadeloupe. Canne : le démarrage de la campagne reporté à une date ultérieure
-**1 jour · 2 sources**
+### « Kouri Pou Dwa A Fanm » : une marche solidaire pour l’égalité à Petit-Bourg
+**2 jours · 2 sources**
 
-|                                                                                                         Titre                                                                                                        | Date|  Source |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|              [Guadeloupe. Canne : le démarrage de la campagne reporté à une date ultérieure](https://www.karibinfo.com/news/guadeloupe-canne-le-demarrage-de-la-campagne-reporte-a-une-date-ulterieure/)             |04/03|Karibinfo|
-|[Campagne sucrière 2026 en Guadeloupe : le lancement de nouveau reporté](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/moule/campagne-sucriere-2026-en-guadeloupe-le-lancement-de-nouveau-reporte-1677711.html)|04/03| La 1ère |
+|                                                                                          Titre                                                                                         | Date|  Source |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|                                           [Guadeloupe. Kouri pou Dwa A Fanm](https://www.karibinfo.com/news/guadeloupe-kouri-pou-dwa-a-fanm/)                                          |03/03|Karibinfo|
+|[« Kouri Pou Dwa A Fanm » : une marche solidaire pour l’égalité à Petit-Bourg](https://rci.fm/guadeloupe/infos/Social/Kouri-Pou-Dwa-Fanm-une-marche-solidaire-pour-legalite-Petit-Bourg)|08/03|   RCI   |
 
 ---
 
 ## Santé
+
+### Guadeloupe. André Atallah rend hommage à Susie Zozio
+**2 jours · 1 source**
+
+|                                                                   Titre                                                                   | Date|  Source |
+|-------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|              [Guadeloupe. In memoriam Dr Susie Zozio](https://www.karibinfo.com/news/guadeloupe-in-memoriam-dr-susie-zozio/)              |06/03|Karibinfo|
+|[Guadeloupe. André Atallah rend hommage à Susie Zozio](https://www.karibinfo.com/news/guadeloupe-andre-atallah-rend-hommage-a-susie-zozio/)|08/03|Karibinfo|
+
+---
 
 ### La dépression : quelle réalité en Guadeloupe ?
 **1 jour · 1 source**
@@ -121,15 +131,6 @@
 |                                                                      Titre                                                                      | Date| Source|
 |-------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
 |[La dépression : quelle réalité en Guadeloupe ?](https://la1ere.franceinfo.fr/guadeloupe/la-depression-quelle-realite-en-guadeloupe-1676703.html)|02/03|La 1ère|
-
----
-
-### Ozempic : vers une plainte collective de victimes du médicament amaigrissant
-**1 jour · 1 source**
-
-|                                                                                                     Titre                                                                                                     | Date| Source|
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
-|[Ozempic : vers une plainte collective de victimes du médicament amaigrissant](https://la1ere.franceinfo.fr/guadeloupe/ozempic-vers-une-plainte-collective-de-victimes-du-medicament-amaigrissant-1677024.html)|03/03|La 1ère|
 
 ---
 
@@ -176,6 +177,16 @@
 
 ## Outre-mer & international
 
+### 8 mars 2026 en Guadeloupe : des avancées pour les femmes, mais des inégalités persistantes
+**2 jours · 2 sources**
+
+|                                                                                                                   Titre                                                                                                                  | Date|  Source |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|                          [Guadeloupe. La Journée internationale des droits des femmes à l’Université](https://www.karibinfo.com/news/guadeloupe-la-journee-internationale-des-droits-des-femmes-a-luniversite/)                          |04/03|Karibinfo|
+|[8 mars 2026 en Guadeloupe : des avancées pour les femmes, mais des inégalités persistantes](https://la1ere.franceinfo.fr/guadeloupe/8-mars-2026-en-guadeloupe-des-avancees-pour-les-femmes-mais-des-inegalites-persistantes-1677363.html)|08/03| La 1ère |
+
+---
+
 ### Naïma Moutchou, ministre des Outre-mer, dans les Iles du Nord à partir de dimanche
 **2 jours · 2 sources**
 
@@ -183,16 +194,6 @@
 |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
 |           [Naïma Moutchou bientôt en visite à Saint-Martin et Saint-Barthélémy](https://rci.fm/deuxiles/infos/Politique/Naima-Moutchou-bientot-en-visite-Saint-Martin-et-Saint-Barthelemy)           |04/03|   RCI   |
 |[Naïma Moutchou, ministre des Outre-mer, dans les Iles du Nord à partir de dimanche](https://www.karibinfo.com/news/naima-moutchou-ministre-des-outre-mer-dans-les-iles-du-nord-a-partir-de-dimanche/)|06/03|Karibinfo|
-
----
-
-### Opinion. La guerre en Iran est une épée de Damoclès pour les agriculteurs de la Guadeloupe
-**2 jours · 2 sources**
-
-|                                                                                                           Titre                                                                                                           | Date|  Source |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|[Guerre au Moyen-Orient : pourquoi la Guadeloupe pourrait subir un choc économique ?](https://la1ere.franceinfo.fr/guadeloupe/guerre-au-moyen-orient-pourquoi-la-guadeloupe-pourrait-subir-un-choc-economique-1677663.html)|04/03| La 1ère |
-|  [Opinion. La guerre en Iran est une épée de Damoclès pour les agriculteurs de la Guadeloupe](https://www.karibinfo.com/news/opinion-la-guerre-en-iran-est-une-epee-de-damocles-pour-les-agriculteurs-de-la-guadeloupe/)  |07/03|Karibinfo|
 
 ---
 
