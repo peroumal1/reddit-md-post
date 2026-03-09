@@ -1,3 +1,4 @@
 [console_scripts]
 aggregate-rss = rss_summary.aggregate:main
+post-to-reddit = rss_summary.post_to_reddit:main
 weekly-digest = rss_summary.weekly:main

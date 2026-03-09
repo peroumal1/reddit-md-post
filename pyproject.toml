@@ -13,6 +13,7 @@ license = {text = "MIT"}
 [project.scripts]
 aggregate-rss = "rss_summary.aggregate:main"
 weekly-digest = "rss_summary.weekly:main"
+post-to-reddit = "rss_summary.post_to_reddit:main"
 
 [tool.pdm]
 distribution = true
