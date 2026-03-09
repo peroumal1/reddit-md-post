@@ -73,21 +73,21 @@
 
 ## Culture & société
 
+### 100 ans de vie pour Aubine Bello William, une mère, grand-mère et arrière-grand-mère "résiliente et courageuse"
+**1 jour · 1 source**
+
+|                                                                                                                                                 Titre                                                                                                                                                 | Date| Source|
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
+|[100 ans de vie pour Aubine Bello William, une mère, grand-mère et arrière-grand-mère "résiliente et courageuse"](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/gosier/100-ans-de-vie-pour-aubine-bello-william-une-mere-grand-mere-et-arriere-grand-mere-resiliente-et-courageuse-1676655.html)|01/03|La 1ère|
+
+---
+
 ### Ces musiques nées de l’esclavage dans C pas si loin
 **1 jour · 1 source**
 
 |                                                                  Titre                                                                  | Date|  Source |
 |-----------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
 |[Ces musiques nées de l’esclavage dans C pas si loin](https://www.karibinfo.com/news/ces-musiques-nees-de-lesclavage-dans-c-pas-si-loin/)|03/03|Karibinfo|
-
----
-
-### Martinique. Programmation culturelle de la CTM du 4 au 13 mars
-**1 jour · 1 source**
-
-|                                                                             Titre                                                                             | Date|  Source |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|[Martinique. Programmation culturelle de la CTM du 4 au 13 mars](https://www.karibinfo.com/news/martinique-programmation-culturelle-de-la-ctm-du-4-au-13-mars/)|04/03|Karibinfo|
 
 ---
 
@@ -125,12 +125,12 @@
 
 ---
 
-### La dépression : quelle réalité en Guadeloupe ?
+### Ozempic : vers une plainte collective de victimes du médicament amaigrissant
 **1 jour · 1 source**
 
-|                                                                      Titre                                                                      | Date| Source|
-|-------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
-|[La dépression : quelle réalité en Guadeloupe ?](https://la1ere.franceinfo.fr/guadeloupe/la-depression-quelle-realite-en-guadeloupe-1676703.html)|02/03|La 1ère|
+|                                                                                                     Titre                                                                                                     | Date| Source|
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
+|[Ozempic : vers une plainte collective de victimes du médicament amaigrissant](https://la1ere.franceinfo.fr/guadeloupe/ozempic-vers-une-plainte-collective-de-victimes-du-medicament-amaigrissant-1677024.html)|03/03|La 1ère|
 
 ---
 
@@ -194,25 +194,5 @@
 |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
 |           [Naïma Moutchou bientôt en visite à Saint-Martin et Saint-Barthélémy](https://rci.fm/deuxiles/infos/Politique/Naima-Moutchou-bientot-en-visite-Saint-Martin-et-Saint-Barthelemy)           |04/03|   RCI   |
 |[Naïma Moutchou, ministre des Outre-mer, dans les Iles du Nord à partir de dimanche](https://www.karibinfo.com/news/naima-moutchou-ministre-des-outre-mer-dans-les-iles-du-nord-a-partir-de-dimanche/)|06/03|Karibinfo|
-
----
-
-## Autres
-
-### 100 ans de vie pour Aubine Bello William, une mère, grand-mère et arrière-grand-mère "résiliente et courageuse"
-**1 jour · 1 source**
-
-|                                                                                                                                                 Titre                                                                                                                                                 | Date| Source|
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
-|[100 ans de vie pour Aubine Bello William, une mère, grand-mère et arrière-grand-mère "résiliente et courageuse"](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/gosier/100-ans-de-vie-pour-aubine-bello-william-une-mere-grand-mere-et-arriere-grand-mere-resiliente-et-courageuse-1676655.html)|01/03|La 1ère|
-
----
-
-### Cuba: pas de kérosène dans les aéroports jusqu'à avril
-**1 jour · 1 source**
-
-|                                                                        Titre                                                                        | Date|Source|
-|-----------------------------------------------------------------------------------------------------------------------------------------------------|-----|------|
-|[Cuba: pas de kérosène dans les aéroports jusqu'à avril](https://rci.fm/deuxiles/infos/Caraibes/Cuba-pas-de-kerosene-dans-les-aeroports-jusqua-avril)|04/03|  RCI |
 
 ---

@@ -1,6 +1,6 @@
 [[themes]]
 name = "Faits divers"
-description = "vol, meurtre, agression, accident de la route, incendie, gendarmerie, violence, criminalité, blessés, collision, cambriolage, disparition, noyade, recherche en mer, secours, garde à vue, mise en examen, condamnation"
+description = "vol, meurtre, agression, accident de la route, incendie, gendarmerie, violence, criminalité, blessés, collision, cambriolage, disparition, noyade, recherche en mer, secours, garde à vue, mise en examen, condamnation, destruction"
 
 [[themes]]
 name = "Eau & environnement"
@@ -12,7 +12,7 @@ description = "élections municipales, mairie, conseil, candidats, gouvernement,
 
 [[themes]]
 name = "Culture & société"
-description = "musique, festival, patrimoine, art, exposition, tradition, identité créole, concert, spectacle, artiste"
+description = "musique, festival, patrimoine, art, exposition, tradition, identité créole, concert, spectacle, artiste, centenaire, religion, baptême"
 
 [[themes]]
 name = "Sport"
@@ -20,11 +20,11 @@ description = "compétition sportive, match, athlète, club, championnat, fédé
 
 [[themes]]
 name = "Santé"
-description = "épidémie, hôpital, médecin, soins, grippe, Covid, santé publique, pharmacie, bronchiolite, vaccination"
+description = "épidémie, hôpital, médecin, soins, grippe, Covid, santé publique, pharmacie, bronchiolite, vaccination, cancer"
 
 [[themes]]
 name = "Économie & social"
-description = "emploi, grève, syndicat, prix, cherté de la vie, travail, salaire, commerce, trop-perçus, aide sociale"
+description = "emploi, grève, syndicat, prix, cherté de la vie, travail, salaire, commerce, trop-perçus, aide sociale, salarié, inégalité"
 
 [[themes]]
 name = "Éducation"
@@ -32,4 +32,4 @@ description = "école, lycée, université, élèves, enseignement, formation, b
 
 [[themes]]
 name = "Outre-mer & international"
-description = "Martinique, Guyane, Haïti, DOM-TOM, Caraïbes, international, France hexagonale, outre-mer"
+description = "Martinique, Guyane, Haïti, DOM-TOM, Caraïbes, international, France hexagonale, outre-mer, Cuba, Saint-Barthélémy, Moyen-Orient"
