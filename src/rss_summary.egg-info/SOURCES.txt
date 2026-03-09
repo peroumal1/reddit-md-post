@@ -1,12 +1,12 @@
 README.md
 pyproject.toml
-src/post_to_reddit.py
 src/rss_summary/__init__.py
 src/rss_summary/aggregate.py
 src/rss_summary/classification.py
 src/rss_summary/formatting.py
 src/rss_summary/last_run.py
 src/rss_summary/parsing.py
+src/rss_summary/post_to_reddit.py
 src/rss_summary/similarity.py
 src/rss_summary/weekly.py
 src/rss_summary.egg-info/PKG-INFO
