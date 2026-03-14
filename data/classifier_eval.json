@@ -1,0 +1,71 @@
+{
+  "timestamp": "2026-03-14T14:26:06.612268",
+  "backbone": "BAAI/bge-m3",
+  "num_classes": 10,
+  "num_examples": 121,
+  "cv_folds": 5,
+  "accuracy": 0.8016528925619835,
+  "macro_f1": 0.80255386159734,
+  "per_class": {
+    "Culture & société": {
+      "f1": 0.8181818181818182,
+      "precision": 0.9,
+      "recall": 0.75,
+      "support": 12.0
+    },
+    "Eau & environnement": {
+      "f1": 0.8888888888888888,
+      "precision": 0.8571428571428571,
+      "recall": 0.9230769230769231,
+      "support": 13.0
+    },
+    "Économie & social": {
+      "f1": 0.6666666666666666,
+      "precision": 0.7272727272727273,
+      "recall": 0.6153846153846154,
+      "support": 13.0
+    },
+    "Éducation": {
+      "f1": 0.8695652173913043,
+      "precision": 0.7692307692307693,
+      "recall": 1.0,
+      "support": 10.0
+    },
+    "Faits divers": {
+      "f1": 0.7857142857142857,
+      "precision": 0.7857142857142857,
+      "recall": 0.7857142857142857,
+      "support": 14.0
+    },
+    "International": {
+      "f1": 0.8,
+      "precision": 0.7692307692307693,
+      "recall": 0.8333333333333334,
+      "support": 12.0
+    },
+    "Outre-mer & Caraïbes": {
+      "f1": 0.72,
+      "precision": 0.6923076923076923,
+      "recall": 0.75,
+      "support": 12.0
+    },
+    "Politique": {
+      "f1": 0.9565217391304348,
+      "precision": 1.0,
+      "recall": 0.9166666666666666,
+      "support": 12.0
+    },
+    "Santé": {
+      "f1": 0.72,
+      "precision": 0.6923076923076923,
+      "recall": 0.75,
+      "support": 12.0
+    },
+    "Sport": {
+      "f1": 0.8,
+      "precision": 0.8888888888888888,
+      "recall": 0.7272727272727273,
+      "support": 11.0
+    }
+  }
+}
