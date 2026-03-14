@@ -1,0 +1,193 @@
+[
+  {
+    "theme": "Faits divers",
+    "label": "faits_divers",
+    "description": "vol, meurtre, agression, accident de la route, incendie, gendarmerie, police, violence, criminalité, blessés, collision, cambriolage, disparition, noyade, recherche en mer, secours, sapeurs-pompiers, garde à vue, mise en examen, condamnation, trafic de stupéfiants, drogue, arrestation, tribunal, procès, homicide, coups et blessures, arme, braquage, viol, agression sexuelle, fugitif",
+    "examples": [
+      "Bilan de la délinquance 2025 en Guadeloupe : homicides en hausse mais ralentissement global confirmé | Le préfet de Guadeloupe a présenté le bilan de la délinquance pour l'année 2025. Les homicides sont en hausse mais une tendance au ralentissement global est confirmée.",
+      "Un Abymien condamné à un an de prison ferme pour avoir bravé une interdiction d'approcher son ex-compagne | Condamné à un an de prison ferme, un homme des Abymes a été reconnu coupable d'avoir violé une ordonnance de protection.",
+      "Arnaque à la carte grise : au moins quatre sociétés victimes en Guadeloupe et 1 million d'euros de préjudice | En Guadeloupe, des professionnels du secteur automobile ont été victimes d'une arnaque à la carte grise pour un préjudice total d'un million d'euros.",
+      "Les frères Hector condamnés à 18 et 10 ans de réclusion criminelle pour l'assassinat de Gary Dick | La cour d'assises de Basse-Terre a condamné les frères Hector à 18 et 10 ans de réclusion pour l'assassinat de Gary Dick à Port-Louis.",
+      "18 mois de prison dont 10 avec sursis pour le motard ayant renversé un gendarme à Baillif | Le tribunal judiciaire de Basse-Terre a condamné un motard à 18 mois dont 10 avec sursis pour avoir renversé un gendarme.",
+      "Agression sexuelle en Guadeloupe : le médecin Youri Socrier condamné à deux ans de prison avec sursis | Poursuivi pour agression sexuelle sur plusieurs patientes, le médecin Youri Socrier a été condamné à deux ans de prison avec sursis.",
+      "Bruno Pierrepont, DGS de Cap Excellence, condamné pour détournement de bien public | Le tribunal correctionnel a reconnu Bruno Pierrepont coupable de détournement de fonds publics.",
+      "Cambriolage de La Poste à Terre-de-Bas : un suspect placé en garde à vue | Cambriolage du bureau de Poste de Terre-de-Bas dans la nuit de vendredi à samedi, un suspect a été interpellé et placé en garde à vue.",
+      "Agression de l'assistant parlementaire de Christian Baptiste à coups de sabre : l'auteur condamné à 30 mois ferme | L'assistant parlementaire de Christian Baptiste a été agressé à coups de sabre. L'auteur a été condamné à 30 mois de prison ferme.",
+      "Le GIGN et le FBI interpellent ensemble un cybercriminel américain à Saint-Martin | Le GIGN et le FBI ont délogé un cybercriminel américain à Saint-Martin, soupçonné d'un vol massif de cryptomonnaies.",
+      "Pascal Reimonenq jugé aux assises pour avoir tiré au visage de son voisin à Capesterre-Belle-Eau | Le procès de Pascal Reimonenq s'est ouvert pour tentative de meurtre après qu'il a tiré au visage de son voisin.",
+      "Aurélien Christophe écope de 20 ans pour meurtre | Aurélien Christophe a été reconnu coupable de meurtre et condamné à 20 ans de réclusion criminelle par la cour d'assises.",
+      "Deux hommes décédés dans des accidents de la route à Baie-Mahault et aux Abymes | Deux hommes ont perdu la vie dans la nuit de samedi à dimanche dans deux accidents de la circulation distincts.",
+      "Procès de Jean-Manuel Nédra pour trafic de cocaïne : le footballeur martiniquais évoque une grosse connerie | Le procès du footballeur martiniquais Jean-Manuel Nédra s'est ouvert, interpellé avec plus de 100 kg de cocaïne à l'aéroport de Roissy."
+    ]
+  },
+  {
+    "theme": "Eau & environnement",
+    "label": "eau_environnement",
+    "description": "coupures d'eau, eau potable, eau du robinet, bromates, chlore, qualité de l'eau, réseau d'eau, tours d'eau, assainissement, traitement des eaux, Syndicat mixte de gestion de l'eau et de l'assainissement de Guadeloupe, pollution, déchets, décharge, rivière, mangrove, littoral, récif corallien, biodiversité, faune, flore, forêt, sécheresse, ressource naturelle",
+    "examples": [
+      "Casse sur le réseau d'eau : des perturbations en cours à Trois-Rivières | Une casse sur le réseau d'eau potable perturbe actuellement la distribution dans plusieurs quartiers de Trois-Rivières.",
+      "Guadeloupe. Pas d'eau aux Abymes et à Pointe-à-Pitre | Le Syndicat Mixte de Gestion de l'Eau et de l'Assainissement de Guadeloupe informe ses usagers de coupures d'eau dans plusieurs secteurs des Abymes et de Pointe-à-Pitre.",
+      "Guadeloupe. Interdiction de boire l'eau du robinet à Gourbeyre | Le Syndicat Mixte de Gestion de l'Eau et de l'Assainissement de Guadeloupe informe les usagers d'une interdiction temporaire de consommer l'eau du robinet à Gourbeyre.",
+      "Alerte sanitaire : l'eau du robinet interdite à la consommation à Anse-Bertrand et Port-Louis | Le Syndicat mixte de gestion de l'eau et de l'assainissement a émis une interdiction de consommer l'eau du robinet suite à une anomalie détectée.",
+      "L'eau du robinet interdite à la consommation à Baie-Mahault et Petit-Bourg | Le SMGEAG annonce une interdiction temporaire suite à la détection d'un taux de bromates supérieur à la limite dans un échantillon prélevé à Baie-Mahault.",
+      "Les Abymes : les habitants des hauteurs de Petit-Pérou vivent sans une seule goutte d'eau depuis 9 mois ! | Depuis juin 2025, plus aucune goutte d'eau ne coule dans les quartiers des hauteurs de Petit-Pérou aux Abymes.",
+      "Assainissement en Guadeloupe : des eaux usées rejetées sans traitement, une bombe écologique pour les milieux aquatiques | Des eaux usées sont rejetées sans traitement dans les milieux aquatiques guadeloupéens, une situation qualifiée de bombe écologique à retardement.",
+      "Crise de l'eau : l'Union régionale des consommateurs met en demeure les différents décideurs | L'Union régionale des consommateurs engage une action de mise en demeure contre les décideurs responsables de la gestion de l'eau en Guadeloupe.",
+      "Pollution : les autorités neutralisent une décharge illégale à Petit-Bourg | Une opération de la gendarmerie et de la DEAL a mis au jour un dépôt illégal de déchets à Petit-Bourg qui a été neutralisé.",
+      "EN IMAGES. Des bénévoles constatent une grave pollution de la Rivière Salée lors d'une opération de nettoyage | De l'électroménager et du matériel professionnel ont été retrouvés lors d'une opération de nettoyage de la Rivière Salée.",
+      "Eau potable en Guadeloupe : restriction de consommation à Baillif après une contamination à l'aluminium | Une non-conformité de l'eau potable a été détectée à Baillif, entraînant des restrictions de consommation pour les habitants.",
+      "Un feu de mangrove sous surveillance à la section Gaschet de Petit-Canal | Un incendie s'est déclaré dans une zone de mangrove à Petit-Canal. Les sapeurs-pompiers ont déployé un drone pour coordonner l'intervention.",
+      "Épaves automobiles en Guadeloupe : Terre-de-Haut montre la voie contre la pollution | En Guadeloupe, près de 15 % des véhicules finissent leur parcours dans la nature, posant un grave problème de pollution des terres et des littoraux."
+    ]
+  },
+  {
+    "theme": "Politique",
+    "label": "politique",
+    "description": "élection, vote, scrutin, premier tour, second tour, candidats, liste électorale, campagne électorale, coalition, programme politique, débat, mairie, conseil municipal, conseil régional, conseil départemental, collectivité territoriale, préfecture, préfet, assemblée nationale, sénat, député, sénateur, gouvernement, réforme, loi, politique publique",
+    "examples": [
+      "Municipales 2026 : les enjeux de la campagne à Anse-Bertrand | Les élections municipales se tiendront les 15 et 22 mars 2026. La rédaction fait le tour des enjeux et des candidats dans la commune d'Anse-Bertrand.",
+      "Municipales 2026 : 138 listes enregistrées par la préfecture de Guadeloupe | Les candidats aux élections municipales sont dans les starting-blocks. La préfecture a validé 138 listes pour l'ensemble des communes.",
+      "Municipales 2026 en Guadeloupe : découvrez les 136 listes validées par la préfecture | À 17 jours du premier tour, la préfecture de Guadeloupe publie la liste des candidatures validées pour les élections municipales.",
+      "Municipales 2026 : ce qu'il faut savoir sur la campagne officielle | La campagne officielle des élections municipales est lancée. Voici tout ce qu'il faut savoir sur les règles, les dates et les enjeux du scrutin.",
+      "Municipales 2026 en Guadeloupe : le débat des candidats à la mairie de Trois-Rivières | Ils seront trois dans la bataille de Trois-Rivières. Les candidats débattent de leur vision pour la commune.",
+      "La sécurité, un enjeu majeur de la campagne municipale 2026 en Guadeloupe | Hausse des homicides, multiplication des vols à main armée : la sécurité s'est imposée comme thème central de la campagne municipale.",
+      "Guadeloupe. Le PS accuse le préfet Devimeux de s'immiscer dans la campagne des municipales | Le préfet a programmé des visites de chantiers dans plusieurs communes pendant la campagne, ce que le Parti Socialiste dénonce comme une ingérence.",
+      "Municipales 2026 : vote blanc, vote nul : quelle différence et quel impact ? | À trois jours du premier tour des élections municipales, les électeurs s'interrogent sur les différences et l'impact du vote blanc et du vote nul.",
+      "Municipales 2026 : les réseaux sociaux font-ils gagner l'élection ? | À l'approche du scrutin, les candidats multiplient les contenus sur Internet pour séduire les électeurs. La popularité numérique garantit-elle la victoire ?",
+      "Candidate Marie-Christine Myre agressée lors d'un meeting à Capesterre Belle-Eau | Marie-Christine Myre, tête de liste aux élections municipales, a été agressée lors d'un meeting de campagne à Capesterre Belle-Eau.",
+      "Guadeloupe. Les socialistes, leurs candidats et leurs soutiens aux municipales | Le Conseil fédéral du Parti socialiste présente ses candidats et soutiens pour les élections municipales en Guadeloupe.",
+      "Naïma Moutchou bientôt en visite à Saint-Martin et Saint-Barthélemy | La ministre des Outre-mer se rend dans les Îles du Nord pour rencontrer les élus locaux et les habitants."
+    ]
+  },
+  {
+    "theme": "Culture & société",
+    "label": "culture_societe",
+    "description": "musique, festival, carnaval, mi-carême, gwoka, zouk, biguine, mas, défilé, patrimoine, art, exposition, tradition, identité créole, concert, spectacle, artiste, cinéma, théâtre, danse, littérature, gastronomie, mémoire, esclavage, commémoration, religion, association, société civile, droits des femmes, diversité",
+    "examples": [
+      "Guadeloupe. Carnaval : Waka Chiré Band, Maestro 2026 à la Giga parade de Basse-Terre | Après le verdict du jury de la parade du Dimanche Gras, Waka Chiré Band est sacré Maestro du carnaval 2026 à Basse-Terre.",
+      "Mi-Carême 2026 : le rouge et le noir seront de sortie ce jeudi à Basse-Terre ! | Ce jeudi, les rues de Basse-Terre s'enflamment pour la traditionnelle parade de la Mi-Carême. Onze groupes sont attendus pour un défilé de 4 kilomètres.",
+      "La célébration de la mi-carême, une spécificité guadeloupéenne | En plein carême, le carnaval reprend ses droits le temps d'une journée. Une pratique qui ne subsiste qu'en Guadeloupe dans cette dimension.",
+      "Fondation pour la mémoire de l'esclavage : appel à candidatures pour le Prix de thèse 2026 | La Fondation pour la mémoire de l'esclavage lance un appel à candidatures pour son Prix de thèse 2026, récompensant les recherches sur l'esclavage et ses héritages.",
+      "Hommage à Thierry Benoît : la Guadeloupe a salué une dernière fois son artiste habité par la musique | Des centaines de personnes se sont réunies pour rendre un dernier hommage à l'artiste guadeloupéen Thierry Benoît.",
+      "Le FEMI fête sa 30e édition : la Guadeloupe au cœur du cinéma | Du 21 au 28 février, la Guadeloupe vit au rythme du cinéma avec la 30e édition du Festival de Films de l'Environnement, du Monde et de l'Image.",
+      "Musique. Claude Vamur : « Je transmets aux jeunes ce que la Guadeloupe m'a donné ! » | Avec son association Guadeloupe Percussion Art, le batteur Claude Vamur transmet les musiques traditionnelles de la Guadeloupe aux jeunes générations.",
+      "Les Antilles brillent au Carnaval des deux-rives à Bordeaux | À Bordeaux, le traditionnel Carnaval des deux-rives mêle influences antillaises, brésiliennes et africaines dans un défilé haut en couleurs.",
+      "Ces musiques nées de l'esclavage dans C pas si loin | Au sommaire du magazine, les musiques identitaires portées par l'esclavage : le gwoka, le bèlè, la biguine, témoins vivants d'une histoire douloureuse.",
+      "Musique. Vibes a péyi-la : l'album jazz aux sonorités de la Guadeloupe de Jocelyn Ménard | Présenté en avant-première à Paris, l'album de Jocelyn Ménard mêle jazz contemporain et sonorités créoles guadeloupéennes.",
+      "8 mars 2026 en Guadeloupe : des avancées pour les femmes, mais des inégalités persistantes | À l'occasion de la Journée internationale des droits des femmes, un bilan des avancées et des inégalités persistantes en Guadeloupe.",
+      "Festival Femmes d'ici et cinéma : clôture en musique à Cinéstar | Conçu pour célébrer les femmes inspirantes, le festival Femmes d'ici & cinéma de Cinéstar s'achève avec une soirée musicale."
+    ]
+  },
+  {
+    "theme": "Sport",
+    "label": "sport",
+    "description": "compétition sportive, match, athlète, club, championnat, fédération, football, rugby, natation, cyclisme, athlétisme, basketball, volleyball, tennis, voile, surf, judo, boxe, karaté, tournoi, podium, médaille, entraîneur, saison sportive, sélection nationale, handisport, performance sportive",
+    "examples": [
+      "Football R1 championnat de Guadeloupe : la 18e journée relance la course au titre et le combat pour le maintien | Le championnat R1 VITO de football de Guadeloupe connaît un regain d'intensité à l'approche de la fin de saison.",
+      "Tennis : les jeunes Guadeloupéens de retour de Sainte-Lucie les bras chargés de récompenses | Pour une première à Sainte-Lucie, les jeunes joueurs de tennis guadeloupéens ont décroché plusieurs titres lors d'un tournoi régional.",
+      "NBA : Rudy Gobert suspendu un match après une nouvelle faute flagrante | Le pivot guadeloupéen Rudy Gobert a été suspendu un match par la NBA après une faute qualifiée de flagrante lors d'un match de saison régulière.",
+      "À 16 ans, Vaïna Picot veut devenir la première femme à faire le tour complet de la Guadeloupe en wing foil | La Guadeloupéenne Vaïna Picot s'apprête à tenter une première mondiale en wing foil autour de l'archipel.",
+      "Vaïna Picot frôle l'exploit et boucle son tour de la Guadeloupe en wing foil en beauté | Partie tôt ce lundi pour tenter le tour complet de la Guadeloupe en wing foil, Vaïna Picot a réussi cet exploit sportif.",
+      "Football : Thomas Lemar brille de nouveau en Liga | Régulièrement blessé ces dernières années, l'international français d'origine guadeloupéenne Thomas Lemar retrouve son meilleur niveau en championnat espagnol.",
+      "Les Ligues de football de Martinique et de Guadeloupe dans le rouge, la FFF prend des mesures | Le Comité exécutif de la FFF découvre de grandes difficultés financières dans les ligues de football de Guadeloupe et de Martinique.",
+      "Handisport : le Guadeloupéen Alex Adelaïde sacré vice-champion d'Europe de para développé couché | L'athlète guadeloupéen Alex Adelaïde a décroché la médaille d'argent aux championnats d'Europe de para powerlifting.",
+      "Portrait. La Guadeloupéenne Manon Dupé, 16 ans, performe en wingfoil | À seulement 16 ans, Manon Dupé s'impose comme l'un des visages prometteurs du wingfoil guadeloupéen sur la scène internationale.",
+      "Football : la Ligue guadeloupéenne au bord de la liquidation judiciaire | La situation financière de la Ligue guadeloupéenne de football est jugée très préoccupante, une liquidation judiciaire est envisagée.",
+      "Voile : le coup d'envoi de la 17e édition de la RORC Caribbean 600 à Antigua | La 17e édition de la RORC Caribbean 600 débute à Antigua, avec des équipages venus du monde entier pour cette course hauturière de référence."
+    ]
+  },
+  {
+    "theme": "Santé",
+    "label": "sante",
+    "description": "épidémie, hôpital, centre hospitalier universitaire, médecin, soins, urgences, maternité, chirurgie, infirmier, aide-soignant, grippe, dengue, leptospirose, chlordécone, bronchiolite, vaccination, cancer, dépistage, prévention, santé publique, pharmacie, médicament, agence régionale de santé, désert médical",
+    "examples": [
+      "Chlordécone : décision reportée au 22 juin sur l'appel du non-lieu | La cour d'appel de Paris dira le 22 juin, et non le 23 mars comme prévu, si elle confirme ou infirme le non-lieu dans l'affaire du chlordécone aux Antilles.",
+      "Saucisses et chair à saucisse contaminées à l'E coli : plusieurs produits rappelés en Guadeloupe | Un lot de viande de porc hachée commercialisé en Guadeloupe a été rappelé suite à une contamination à la bactérie E. coli.",
+      "Pied diabétique : vers une meilleure prévention et prise en charge en Guadeloupe | Selon une étude, les inégalités sociales face au diabète sont particulièrement marquées en Guadeloupe, plaidant pour une meilleure prévention.",
+      "VIH/sida : attendu de longue date, un traitement préventif arrive en France | Après deux ans de tergiversations, un traitement préventif contre le VIH est enfin accessible en France, une avancée majeure pour la santé publique.",
+      "Mars Bleu : détecté de manière précoce, le cancer colorectal peut être guéri dans 9 cas sur 10 | À l'occasion du mois de mars dédié au cancer colorectal, un appel au dépistage précoce : le cancer colorectal se guérit dans 9 cas sur 10 s'il est détecté tôt.",
+      "Autisme : les recommandations de prise en charge actualisées par la Haute Autorité de la Santé | La Haute Autorité de Santé publie de nouvelles recommandations pour la prise en charge des personnes autistes en France.",
+      "La dépression : quelle réalité en Guadeloupe ? | Grande cause nationale en 2025, la santé mentale reste un enjeu majeur en Guadeloupe. Des professionnels font le point sur la réalité de la dépression dans l'archipel.",
+      "Journée mondiale de lutte contre l'obésité : plus d'un Guadeloupéen sur deux en surpoids | Cette journée est l'occasion de rappeler que plus de la moitié de la population guadeloupéenne est en surpoids ou obèse.",
+      "Point épidémiologique : grippe et bronchiolite en recul, le Covid-19 sous surveillance en Guadeloupe | Malgré une légère remontée du Covid-19, la grippe et la bronchiolite sont en recul selon le dernier bulletin épidémiologique.",
+      "Santé mentale en Guadeloupe, rien ne va plus selon un rapport accablant de la Chambre régionale des comptes | La Chambre régionale des comptes dresse un rapport sévère sur l'état de la santé mentale en Guadeloupe.",
+      "Manque d'ambulanciers privés en Guadeloupe : les professionnels alertent sur un risque pour les patients | En Guadeloupe, le manque d'ambulanciers privés met en danger les patients qui ont besoin de transports sanitaires urgents.",
+      "Dengue. Le virus s'est installé dans le Sud de la Martinique | Le bulletin épidémiologique de Santé publique France indique que le virus de la dengue circule activement dans le sud de la Martinique."
+    ]
+  },
+  {
+    "theme": "Économie & social",
+    "label": "economie_social",
+    "description": "emploi, chômage, grève, syndicat, salaire, cherté de la vie, inflation, logement, commerce, grande distribution, tourisme, hôtellerie, banane, canne à sucre, agriculture, pêche, entreprise, artisan, aide sociale, précarité, inégalité, budget, fiscalité, investissement, consommation",
+    "examples": [
+      "Usine Gardel : le démarrage de la campagne sucrière 2026 sous haute tension malgré le soutien de l'État | L'usine de Gardel fixe son démarrage de la campagne sucrière dans un contexte de vives tensions entre les acteurs de la filière.",
+      "Campagne sucrière 2026 en Guadeloupe : le lancement de nouveau reporté | L'Iguacanne, constatant que trop peu d'opérateurs sont prêts, reporte le démarrage de la campagne sucrière pour la deuxième fois.",
+      "Campagne sucrière 2026 : après des tensions et deux reports, i pati ! | C'est un grand jour pour les acteurs de la filière canne de Basse-Terre. La campagne sucrière est officiellement lancée après deux reports.",
+      "Carburants : les prix en hausse au 1er mars 2026 en Guadeloupe | À compter du 1er mars 2026, les prix maximums des carburants augmentent en Guadeloupe, une nouvelle charge pour les ménages.",
+      "Mouvement de grève à la station-service Esso de la Jaille : les salariés dénoncent le non-respect d'accords | Les salariés de la station-service Esso de la Jaille ont déclenché un mouvement de grève pour dénoncer le non-respect d'accords depuis l'arrivée d'une nouvelle gérance.",
+      "Guadeloupe. Canne : les ouvriers de la filière en grève | Les salariés de la filière canne, affiliés à l'UGTG Agriculture, ont lancé un mouvement de grève avant le démarrage de la campagne sucrière.",
+      "Air Antilles : qui est Pierre Sainte-Luce, le potentiel repreneur de la compagnie aérienne ? | Alors que la compagnie aérienne cherche un repreneur, Pierre Sainte-Luce s'impose comme le seul candidat à la reprise d'Air Antilles.",
+      "Des agents France Travail ciblés pour des trop-perçus, les syndicats annoncent une grève | Visés sur les réseaux sociaux après l'envoi de courriers de remboursement, des agents France Travail voient leurs syndicats annoncer une grève.",
+      "Témoignage d'un patron d'entreprise en redressement judiciaire : Les 5 salariés ont leurs espoirs qui reposent sur moi | Un chef d'entreprise guadeloupéen témoigne des difficultés du redressement judiciaire et de sa responsabilité envers ses employés.",
+      "Taxe sur les petits colis : un forfait de deux euros par article importé entre en vigueur | À compter du 1er mars 2026, une taxe de deux euros par article importé entre en vigueur, impactant les achats en ligne depuis l'étranger.",
+      "Surendettement : forte hausse des dossiers déposés en Guadeloupe en 2025 | Le nombre de dossiers de surendettement déposés en Guadeloupe a fortement progressé en 2025, révélant une fragilité financière croissante des ménages.",
+      "Le député Jiovanny William chargé d'une mission nationale sur le prix des billets d'avion | Le député a été chargé par le Premier ministre d'une mission sur le coût des billets d'avion vers les Outre-mer.",
+      "Choc pétrolier : Air France et KLM augmentent leurs tarifs vers et depuis les Outre-mer | Air France et KLM ont augmenté leurs tarifs sur les trajets long-courriers face au choc pétrolier provoqué par la guerre en Iran."
+    ]
+  },
+  {
+    "theme": "Éducation",
+    "label": "education",
+    "description": "école maternelle, école primaire, collège, lycée, université, élèves, enseignant, professeur, enseignement, formation professionnelle, apprentissage, alternance, baccalauréat, rentrée scolaire, résultats scolaires, orientation, programme scolaire, grève scolaire, numérique éducatif",
+    "examples": [
+      "Établissements privés en Outre-mer : d'importantes disparités de financement par les collectivités territoriales | La Fédération nationale des organismes gestionnaires d'établissements privés alerte sur les importantes disparités de financement des établissements scolaires privés en Outre-mer.",
+      "Guadeloupe. Plus de 200 élèves au Camp Dugommier pour le Rallye citoyen | Collégiens et lycéens, inscrits en classe Défense, ont participé au Rallye citoyen organisé au Camp Dugommier.",
+      "Olympiades Régionales de Chimie au lycée Charles Coeffin : 16 élèves en lice pour une place à Paris | Seize lycéens de Guadeloupe se sont affrontés lors des Olympiades Régionales de Chimie pour décrocher une place aux finales nationales à Paris.",
+      "Animation 3D, jeux vidéo, cinéma d'animation : une possibilité de se former dans les Antilles-Guyane | La filière création visuelle (3D, IA, jeux vidéo, cinéma d'animation) ouvre de nouvelles formations dans les Antilles-Guyane.",
+      "Guadeloupe. Le Conseil départemental a remis des ordinateurs à des étudiants de l'Université des Antilles | Le Conseil départemental a distribué des ordinateurs à des étudiants de l'Université des Antilles pour soutenir leur cursus numérique.",
+      "Guadeloupe. Education : le lycée Gerville-Réache accueille le Forum des spécialités et options | À Basse-Terre, le lycée Gerville-Réache organise son Forum des spécialités et options pour aider les lycéens à choisir leur parcours.",
+      "L'Université des Antilles accueille des étudiants de Howard et de Caroline du Sud | Dans le cadre d'un programme de coopération, des étudiants américains de Howard University et de l'université de Caroline du Sud séjournent à l'Université des Antilles.",
+      "Guadeloupe. Les étudiants de l'UFR STAPS inquiets pour leur avenir ont été reçus au rectorat | La réforme du CAPEPS inquiète les étudiants en Sciences et Techniques des Activités Physiques et Sportives, qui ont été reçus par le rectorat.",
+      "Guadeloupe. Le rectorat lance le projet SEREIN | Le rectorat de la Guadeloupe a officialisé le lancement du projet SEREIN, une plateforme de solutions numériques pour améliorer la réussite scolaire.",
+      "Guyane. Une nouvelle classe prépa scientifique au lycée Gontran Damas en septembre | Une nouvelle classe préparatoire scientifique BCPST ouvre au lycée Gontran Damas en Guyane à la rentrée de septembre."
+    ]
+  },
+  {
+    "theme": "Outre-mer & Caraïbes",
+    "label": "outremer_caraibes",
+    "description": "Martinique, Guyane, La Réunion, Mayotte, Saint-Martin, Saint-Barthélemy, Saint-Pierre-et-Miquelon, Wallis-et-Futuna, Polynésie française, Nouvelle-Calédonie, territoires français d'outre-mer, Haïti, Cuba, Jamaïque, Barbade, Trinidad, République dominicaine, Caraïbes, Antilles, archipel caribéen",
+    "examples": [
+      "Haïti : la plupart des gangs sont impliqués dans la traite d'enfants, selon l'ONU | La plupart des gangs armés d'Haïti sont impliqués dans la traite d'enfants, selon un rapport de l'ONU qui documente les violences dans ce pays.",
+      "Haïti. Les guerres qu'on croit gagner | Ce que Rio, Kingston et Ciudad Juárez nous disent sur la situation en Haïti après les opérations antigangs : la fragilité des victoires militaires face aux racines sociales de la violence.",
+      "Martinique. La Pelée se calme doucement | L'activité volcanique de la Montagne Pelée est faible cette semaine avec 4 séismes d'origine volcanique observés entre le 13 et le 19 février.",
+      "Haïti. Les 15 premières années d'inflation, 7 années consécutives de contraction économique | Kesner Pharel dresse un bilan accablant de la faillite de l'État haïtien au fil des quinze dernières années.",
+      "Haïti. De retour de la CARICOM, le Premier ministre réaffirme la sécurité comme priorité absolue | Le Premier ministre Alix Didier Fils-Aimé fait le bilan de son déplacement au sommet de la CARICOM.",
+      "Haïti. Pacte national pour la stabilité… Alix Didier Fils-Aimé obtient son accord politique | La cérémonie de signature du Pacte national pour la stabilité et l'organisation des élections réunit de nombreuses parties prenantes haïtiennes.",
+      "Trinité-et-Tobago : nouvel état d'urgence face à la flambée des violences liées aux gangs | Trinité-et-Tobago décrète pour la quatrième fois depuis décembre un état d'urgence face à la multiplication des violences de gangs.",
+      "Un an après le cyclone Garance, toujours la débrouille pour des habitants sinistrés à La Réunion | Dans certains quartiers de l'île de La Réunion, les habitants touchés par le cyclone Garance vivent encore dans des conditions précaires.",
+      "Dominique. Le Conseil Kalinago propose un système de permis d'entrée sur le territoire | Le Conseil Kalinago de l'île de la Dominique travaille à la mise en place d'un nouveau système de permis d'entrée pour protéger son territoire.",
+      "Caraïbe. Personne ne viendra nous sauver : nous devons prendre notre destin en main | Dans son allocution officielle, le Dr Didacus Jules appelle les États caribéens à l'autonomie et à la solidarité régionale.",
+      "Haïti. Des dizaines d'habitants tués par les drones utilisés dans la lutte contre les gangs | Selon Human Rights Watch, l'usage de drones armés par les autorités haïtiennes dans la lutte contre les gangs a causé des victimes civiles.",
+      "Martinique. Surendettement : l'IEDOM a traité 675 dossiers en 2025 | L'Institut d'Émission des Départements d'Outre-mer confirme son rôle d'observatoire du surendettement en Martinique avec 675 dossiers traités en 2025."
+    ]
+  },
+  {
+    "theme": "International",
+    "label": "international",
+    "description": "France hexagonale, Paris, Europe, Union européenne, Nations Unies, États-Unis, Moyen-Orient, Iran, Russie, Ukraine, Afrique, Asie, Amérique latine, guerre, conflit armé, diplomatie, accord international, traité, relations internationales",
+    "examples": [
+      "Venezuela libère 80 prisonniers politiques dans le cadre d'une amnistie | Quatre-vingt prisonniers politiques ont été libérés au Venezuela dans le cadre d'un accord d'amnistie négocié sous pression internationale.",
+      "Le chef de la diplomatie vénézuélienne demande devant l'ONU la libération immédiate de Nicolas Maduro | Le ministre vénézuélien des Affaires étrangères a plaidé devant le Conseil de sécurité des Nations Unies pour la libération de Nicolas Maduro.",
+      "Géopolitique : comment les États-Unis influencent-ils la zone Caraïbe ? | Blocus de Cuba et frappes contre les narcotrafics en mer des Caraïbes... Une analyse de l'influence croissante de Washington dans la région.",
+      "Donald Trump affirme envisager une prise de contrôle pacifique de Cuba | Des personnalités influentes à Cuba seraient en train de court-circuiter Raúl Castro, selon des informations relayées par l'entourage de Trump.",
+      "Guerre au Moyen-Orient : pourquoi la Guadeloupe pourrait subir un choc économique ? | La guerre en Iran va-t-elle affecter l'économie guadeloupéenne ? Analyse des conséquences potentielles du conflit sur les prix et les approvisionnements.",
+      "La France a consacré 45 millions d'euros à la coopération avec Haïti en 2025 | La France a mobilisé 45 millions d'euros en 2025 pour soutenir Haïti dans les domaines de la sécurité, de l'humanitaire et du développement.",
+      "Cuba : pas de kérosène dans les aéroports jusqu'à avril | Sans approvisionnement en pétrole depuis le 9 janvier, l'économie cubaine continue de se contracter, les aéroports manquent de carburant jusqu'en avril.",
+      "Bombardements au Moyen-Orient : la situation est extrêmement bien gérée, assure une Guadeloupéenne depuis Dubaï | En déplacement à Dubaï, Kelly Massol témoigne d'une situation sous contrôle malgré les bombardements en Iran.",
+      "Donald Trump lance une coalition pour éradiquer les cartels en Amérique latine | En pleine guerre en Iran, Donald Trump officialise une coalition internationale pour lutter contre les cartels de la drogue en Amérique latine.",
+      "Opinion. La guerre en Iran est une épée de Damoclès pour les agriculteurs de la Guadeloupe | La guerre qui s'installe durablement au Moyen-Orient fait peser une menace sur les coûts d'approvisionnement des producteurs guadeloupéens.",
+      "Cuba : l'ONU dialogue avec Washington sur l'importation de carburant pour sa mission humanitaire | L'ONU dialogue avec les États-Unis afin d'importer à Cuba du carburant pour mener à bien sa mission humanitaire sur l'île.",
+      "Tuerie de la famille Flactif dans le Grand-Bornand : David Hotyat demande sa libération conditionnelle | David Hotyat, condamné pour la tuerie de la famille Flactif en France, demande une libération conditionnelle après plusieurs années de détention."
+    ]
+  }
+]

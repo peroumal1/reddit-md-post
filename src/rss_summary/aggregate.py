@@ -8,7 +8,7 @@ import feedparser
 from py_markdown_table.markdown_table import markdown_table
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import classify_article, encode_themes, load_taxonomy
+from rss_summary.classification import classify_article, encode_themes, load_classifier_head, load_taxonomy
 from rss_summary.formatting import format_feed_entries, format_feed_entries_classified
 from rss_summary.last_run import get_last_run_date, restore_last_run_date, set_last_run_date
 from rss_summary.parsing import extract_first_paragraph, get_default_image_link
@@ -91,8 +91,11 @@ def main(rss_links, feed_output, with_images, dry_run, restore, until, classify,
                 raise click.ClickException(f"Taxonomy file not found: {taxonomy}")
             theme_names = [t["name"] for t in themes]
             theme_embeddings = encode_themes(model, themes)
+            head = load_classifier_head()
+            if head:
+                logging.info("Using trained classifier head for classification.")
             for item in sorted_list:
-                item["theme"] = classify_article(model, item["embedding"], theme_embeddings, theme_names)
+                item["theme"] = classify_article(model, item["embedding"], theme_embeddings, theme_names, head=head)
             markdown = format_feed_entries_classified(sorted_list, theme_names, with_images)
         else:
             rows = format_feed_entries(sorted_list, with_images)
