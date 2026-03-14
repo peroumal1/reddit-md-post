@@ -47,13 +47,16 @@ jobs:
         run: pdm install
 
       - name: Run weekly digest
+        env:
+          INPUT_WEEK: ${{ github.event.inputs.week }}
+          INPUT_YEAR: ${{ github.event.inputs.year }}
         run: |
           WEEK_ARGS=""
-          if [ -n "${{ github.event.inputs.week }}" ]; then
-            WEEK_ARGS="--week ${{ github.event.inputs.week }}"
+          if [ -n "$INPUT_WEEK" ]; then
+            WEEK_ARGS="--week $INPUT_WEEK"
           fi
-          if [ -n "${{ github.event.inputs.year }}" ]; then
-            WEEK_ARGS="$WEEK_ARGS --year ${{ github.event.inputs.year }}"
+          if [ -n "$INPUT_YEAR" ]; then
+            WEEK_ARGS="$WEEK_ARGS --year $INPUT_YEAR"
           fi
           pdm run weekly-digest --suggest $WEEK_ARGS
 

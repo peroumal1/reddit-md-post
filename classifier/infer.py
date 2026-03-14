@@ -9,38 +9,19 @@ Prints a classified summary grouped by theme, useful for evaluating model qualit
 on real articles before enabling --classify in the main pipeline.
 """
 import argparse
-import re
 import time
 from collections import defaultdict
-from pathlib import Path
 
 import joblib
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
+from rss_summary.parsing import parse_daily_feed_md
+
 
 def parse_feed_md(path: str) -> list[dict]:
     """Extract articles from a daily feed markdown table."""
-    articles = []
-    content = Path(path).read_text()
-    for line in content.splitlines():
-        if not line.startswith("|") or line.startswith("|--") or "Titre" in line:
-            continue
-        cols = [c.strip() for c in line.split("|")[1:-1]]
-        if len(cols) < 2:
-            continue
-        title_match = re.search(r"\[([^\]]+)\]", cols[0])
-        title = title_match.group(1) if title_match else cols[0]
-        summary = ""
-        for col in cols[1:]:
-            if col.startswith("![") or re.match(r"\d{4}-\d{2}-\d{2}", col):
-                continue
-            if len(col) > 20:
-                summary = col
-                break
-        if title and not title.startswith("!["):
-            articles.append({"title": title, "summary": summary})
-    return articles
+    return [{"title": a["title"], "summary": a["summary"]} for a in parse_daily_feed_md(path)]
 
 
 def load_head(path: str) -> dict:
