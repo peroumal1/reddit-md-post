@@ -1,5 +1,4 @@
 import logging
-import re
 from datetime import datetime, timedelta
 from pathlib import Path
 from urllib.parse import urlparse
@@ -10,7 +9,8 @@ from bs4 import BeautifulSoup
 from py_markdown_table.markdown_table import markdown_table as _markdown_table
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import classify_article_scored, encode_themes, load_taxonomy
+from rss_summary.classification import classify_article_scored, encode_themes, load_classifier_head, load_taxonomy
+from rss_summary.parsing import parse_daily_feed_md
 from rss_summary.similarity import encode_text
 
 MOIS = {
@@ -39,32 +39,9 @@ def extract_source(url):
 
 def parse_feed_file(path):
     """Parse a daily feed markdown table into a list of article dicts."""
-    articles = []
-    lines = Path(path).read_text().splitlines()
-    for line in lines:
-        line = line.strip()
-        # Skip header and separator rows
-        if not line.startswith("|") or re.match(r"^\|[-| ]+\|$", line):
-            continue
-        cols = [c.strip() for c in line.strip("|").split("|")]
-        if len(cols) < 3:
-            continue
-        m = re.match(r"\[(.+?)\]\((.+?)\)", cols[0])
-        if not m:
-            continue
-        title, url = m.group(1), m.group(2)
-        summary = cols[1]
-        try:
-            date = datetime.fromisoformat(cols[2])
-        except ValueError:
-            continue
-        articles.append({
-            "title": title,
-            "url": url,
-            "summary": summary,
-            "date": date,
-            "source": extract_source(url),
-        })
+    articles = parse_daily_feed_md(path)
+    for a in articles:
+        a["source"] = extract_source(a["url"])
     return articles
 
 
@@ -196,7 +173,7 @@ def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names
     return "\n".join(lines)
 
 
-def render_suggestions(week_num, scored, threshold=0.35, low_confidence_margin=0.10, ambiguity_margin=0.05):
+def render_suggestions(week_num, scored, threshold=0.15, low_confidence_margin=0.10, ambiguity_margin=0.05):
     """Build a taxonomy review report from scored clusters."""
     UNCLASSIFIED = "Autres"
     unclassified, low_confidence, ambiguous = [], [], []
@@ -225,7 +202,7 @@ def render_suggestions(week_num, scored, threshold=0.35, low_confidence_margin=0
     lines += [
         "",
         f"## Articles non classifiés ({len(unclassified)})",
-        "Aucun thème n'a atteint le seuil de confiance (0.35). "
+        f"Aucun thème n'a atteint le seuil de confiance ({threshold:.2f}). "
         "Envisager un nouveau thème ou élargir les descriptions existantes.",
         "",
     ]
@@ -322,7 +299,7 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
     most_read_paths = get_most_read_urls()
     logging.info("Found %d most-read paths.", len(most_read_paths))
 
-    # Load model and taxonomy
+    # Load model, taxonomy, and classifier head
     model = SentenceTransformer("BAAI/bge-m3")
     try:
         themes = load_taxonomy(taxonomy)
@@ -330,6 +307,9 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
         raise click.ClickException(f"Taxonomy file not found: {taxonomy}")
     theme_names = [t["name"] for t in themes]
     theme_embeddings = encode_themes(model, themes)
+    head = load_classifier_head()
+    if head:
+        logging.info("Using trained classifier head for classification.")
 
     # Cluster articles
     logging.info("Clustering articles…")
@@ -341,7 +321,7 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
     for raw_cluster in raw_clusters:
         score = score_cluster(raw_cluster, most_read_paths)
         centroid = representative_embedding(raw_cluster)
-        classification = classify_article_scored(model, centroid, theme_embeddings, theme_names)
+        classification = classify_article_scored(model, centroid, theme_embeddings, theme_names, head=head)
 
         most_read_tags = []
         for item in raw_cluster:
