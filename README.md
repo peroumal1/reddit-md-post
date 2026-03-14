@@ -19,14 +19,20 @@ src/rss_summary/          # main package
   weekly.py               # CLI: pdm run weekly-digest
   post_to_reddit.py       # CLI: pdm run post-to-reddit
   similarity.py           # semantic deduplication via sentence-transformers
-  classification.py       # zero-shot thematic classification via BAAI/bge-m3
+  classification.py       # thematic classification (trained head + zero-shot fallback)
   formatting.py           # markdown table generation
   parsing.py              # HTML parsing and image extraction
   last_run.py             # .last-run timestamp persistence
+classifier/
+  train.py                # offline: train LR head on data/themes.json
+  infer.py                # offline: batch classify a daily feed file for evaluation
 tests/
 data/
   rss_list.txt            # RSS feed URLs (one per line)
-  taxonomy.toml           # thematic taxonomy (9 themes)
+  taxonomy.toml           # thematic taxonomy (10 themes)
+  themes.json             # labeled training examples (one per theme)
+  classifier_head.joblib  # trained classifier head (committed, ~80KB)
+  classifier_eval.json    # last cross-validation evaluation results
   feed.md                 # latest daily digest
   feed-YYYY-MM-DD.md      # dated archive copies
   weekly-wXX.md           # weekly digest
@@ -61,6 +67,8 @@ Options:
 2. Semantic similarity via `BAAI/bge-m3` (threshold 0.75)
 
 The model is downloaded automatically on first run and cached in `~/.cache/huggingface`.
+
+**Classification** (enabled with `--classify`): uses a trained logistic regression head on top of frozen `BAAI/bge-m3` embeddings (80.2% accuracy, 10 themes). The head is stored in `data/classifier_head.joblib` and committed to the repository — no retraining needed on first clone. Falls back to zero-shot cosine similarity if the head file is absent.
 
 **Last-run tracking**: the date of last execution is stored in `.last-run`. Only entries published since the previous run are fetched.
 
@@ -109,6 +117,51 @@ REDDIT_LOGIN=your_username
 REDDIT_PASSWORD=your_password
 REDDIT_OTP_SECRET=your_totp_secret
 ```
+
+---
+
+## Retraining the classifier
+
+The trained head is committed and ready to use. Retrain only when you update `data/taxonomy.toml` or `data/themes.json`.
+
+**1. Edit the taxonomy** (`data/taxonomy.toml`) — add, remove, or rename themes.
+
+**2. Update training examples** (`data/themes.json`) — add labeled examples for any new or changed theme. Format:
+
+```json
+[
+  {
+    "theme": "Theme display name",
+    "label": "theme_slug",
+    "description": "...",
+    "examples": ["Article title | Summary excerpt", ...]
+  }
+]
+```
+
+**3. Train:**
+
+```zsh
+pdm run python classifier/train.py
+# outputs: data/classifier_head.joblib, data/classifier_eval.json
+```
+
+**4. Evaluate on a real feed file:**
+
+```zsh
+pdm run python classifier/infer.py data/feed-YYYY-MM-DD.md
+```
+
+**5. Commit the updated head:**
+
+```zsh
+git add data/classifier_head.joblib data/classifier_eval.json data/themes.json data/taxonomy.toml
+git commit -m "feat(classifier): retrain with updated taxonomy"
+```
+
+The head is tiny (~80KB) and safe to commit. The `BAAI/bge-m3` backbone is not retrained — it is used as a frozen encoder (already cached in CI for deduplication).
+
+---
 
 ## Tests
 
