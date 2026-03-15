@@ -11,6 +11,7 @@ on real articles before enabling --classify in the main pipeline.
 import argparse
 import time
 from collections import defaultdict
+from pathlib import Path
 
 import joblib
 import numpy as np
