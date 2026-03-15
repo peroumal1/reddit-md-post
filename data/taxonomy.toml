@@ -1,6 +1,6 @@
 [[themes]]
 name = "Faits divers"
-description = "vol, meurtre, agression, accident de la route, incendie, gendarmerie, police, violence, criminalité, blessés, collision, cambriolage, disparition, noyade, recherche en mer, secours, sapeurs-pompiers, garde à vue, mise en examen, condamnation, trafic de stupéfiants, drogue, arrestation, tribunal, procès, homicide, coups et blessures, arme, braquage, viol, agression sexuelle, fugitif"
+description = "vol, meurtre, agression, accident de la route, accident mortel, conducteur tué, motard décédé, cycliste renversé, collision mortelle, victime de la route, incendie, gendarmerie, police, violence, criminalité, blessés, noyade, recherche en mer, secours, sapeurs-pompiers, garde à vue, mise en examen, condamnation, autopsie, trafic de stupéfiants, drogue, arrestation, tribunal, procès, homicide, coups et blessures, arme, braquage, viol, agression sexuelle, fugitif"
 
 [[themes]]
 name = "Eau & environnement"
@@ -16,7 +16,7 @@ description = "musique, festival, carnaval, mi-carême, gwoka, zouk, biguine, ma
 
 [[themes]]
 name = "Sport"
-description = "compétition sportive, match, athlète, club, championnat, fédération, football, rugby, natation, cyclisme, athlétisme, basketball, volleyball, tennis, voile, surf, judo, boxe, karaté, tournoi, podium, médaille, entraîneur, saison sportive, sélection nationale, handisport, performance sportive"
+description = "compétition sportive, match, athlète, club, championnat, fédération, football, rugby, natation, course cycliste, compétition de cyclisme, athlétisme, basketball, volleyball, tennis, voile, surf, judo, boxe, karaté, tournoi, podium, médaille, entraîneur, saison sportive, sélection nationale, handisport, performance sportive"
 
 [[themes]]
 name = "Santé"
