@@ -146,6 +146,18 @@
 
 ## Économie & social
 
+### Guadeloupe. « J’ai décidé de refuser les repas qui me sont donnés et les soins qui me sont prodigués », dit Alex Lollia depuis le CHU
+**2 jours · 3 sources**
+
+|                                                                                                                                                                Titre                                                                                                                                                                | Date|  Source |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|                                                [Guadeloupe. Alex Lollia au CHU depuis 12 jours : « Qu’ils aillent faire leurs expériences ailleurs ! »](https://www.karibinfo.com/news/guadeloupe-alex-lollia-au-chu-depuis-12-jours-quils-aillent-faire-leurs-experiences-ailleurs/)                                               |12/03|Karibinfo|
+|               [Guadeloupe. « J’ai décidé de refuser les repas qui me sont donnés et les soins qui me sont prodigués », dit Alex Lollia depuis le CHU](https://www.karibinfo.com/news/guadeloupe-jai-decide-de-refuser-les-repas-qui-me-sont-donnes-et-les-soins-qui-me-sont-prodigues-dit-alex-lollia-depuis-le-chu/)               |12/03|Karibinfo|
+|[Au CHU de Guadeloupe, un syndicaliste hospitalisé pour des examens, met fin à une grève de la faim après des échanges avec la direction](https://la1ere.franceinfo.fr/guadeloupe/au-chu-de-guadeloupe-un-syndicaliste-hospitalise-pour-des-examens-met-fin-a-une-greve-de-la-faim-apres-des-echanges-avec-la-direction-1680777.html)|13/03| La 1ère |
+|                                                [Refus de soins et de nourriture : Alex Lollia dénonce des dysfonctionnements au CHU de la GUadeloupe](https://rci.fm/guadeloupe/infos/Sante/Refus-de-soins-et-de-nourriture-Alex-Lollia-denonce-des-dysfonctionnements-au-CHU-de-la)                                                |13/03|   RCI   |
+
+---
+
 ### Guadeloupe. Toujours plus de surrendettés
 **2 jours · 2 sources**
 
@@ -153,16 +165,6 @@
 |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
 |                                         [Guadeloupe. Toujours plus de surrendettés](https://www.karibinfo.com/news/guadeloupe-toujours-plus-de-surrendettes/)                                         |09/03|Karibinfo|
 |[Surendettement : forte hausse des dossiers déposés en Guadeloupe en 2025](https://la1ere.franceinfo.fr/guadeloupe/surendettement-forte-hausse-des-dossiers-deposes-en-guadeloupe-en-2025-1679136.html)|10/03| La 1ère |
-
----
-
-### Consommation. La mangue fait son retour sur les étals à 4 €/kg
-**2 jours · 1 source**
-
-|                                                            Titre                                                            | Date|  Source |
-|-----------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|[Consommation. La mangue fait son retour sur les étals à 4 €/kg](https://www.karibinfo.com/news/consommation-ananas-citrons/)|11/03|Karibinfo|
-|           [Consommation. Le chou en baisse se vend à 0,70 €/kg](https://www.karibinfo.com/news/consommation-chou/)          |14/03|Karibinfo|
 
 ---
 
@@ -231,26 +233,21 @@
 
 ## Autres
 
-### Guadeloupe. « J’ai décidé de refuser les repas qui me sont donnés et les soins qui me sont prodigués », dit Alex Lollia depuis le CHU
-**2 jours · 3 sources**
+### Saint-Martin. Un week-end tout chocolat au salon ChocoCarib’
+**2 jours · 1 source**
 
-|                                                                                                                                                                Titre                                                                                                                                                                | Date|  Source |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|                                                [Guadeloupe. Alex Lollia au CHU depuis 12 jours : « Qu’ils aillent faire leurs expériences ailleurs ! »](https://www.karibinfo.com/news/guadeloupe-alex-lollia-au-chu-depuis-12-jours-quils-aillent-faire-leurs-experiences-ailleurs/)                                               |12/03|Karibinfo|
-|               [Guadeloupe. « J’ai décidé de refuser les repas qui me sont donnés et les soins qui me sont prodigués », dit Alex Lollia depuis le CHU](https://www.karibinfo.com/news/guadeloupe-jai-decide-de-refuser-les-repas-qui-me-sont-donnes-et-les-soins-qui-me-sont-prodigues-dit-alex-lollia-depuis-le-chu/)               |12/03|Karibinfo|
-|[Au CHU de Guadeloupe, un syndicaliste hospitalisé pour des examens, met fin à une grève de la faim après des échanges avec la direction](https://la1ere.franceinfo.fr/guadeloupe/au-chu-de-guadeloupe-un-syndicaliste-hospitalise-pour-des-examens-met-fin-a-une-greve-de-la-faim-apres-des-echanges-avec-la-direction-1680777.html)|13/03| La 1ère |
-|                                                [Refus de soins et de nourriture : Alex Lollia dénonce des dysfonctionnements au CHU de la GUadeloupe](https://rci.fm/guadeloupe/infos/Sante/Refus-de-soins-et-de-nourriture-Alex-Lollia-denonce-des-dysfonctionnements-au-CHU-de-la)                                                |13/03|   RCI   |
+|                                                                               Titre                                                                              | Date|  Source |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|    [Saint-Martin. Un week-end tout chocolat au salon ChocoCarib’](https://www.karibinfo.com/news/saint-martin-un-week-end-tout-chocolat-au-salon-chococarib/)    |14/03|Karibinfo|
+|[Saint-Martin. La chocolatière Naomi Martino au salon ChocoCarib’](https://www.karibinfo.com/news/saint-martin-la-chocolatiere-naomi-martino-au-salon-chococarib/)|15/03|Karibinfo|
 
 ---
 
-### Guadeloupe. Guy Losbar : « Marcelle Chammougon était guidée par un sens aigu de l’intérêt général »
-**1 jour · 2 sources**
+### Jamaïque. Une nouvelle victoire judiciaire pour Vybz Kartel
+**1 jour · 1 source**
 
-|                                                                                                               Titre                                                                                                              | Date|  Source |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|                                    [Guadeloupe. Michel Mado compatit à la douleur des Chammougon](https://www.karibinfo.com/news/guadeloupe-michel-mado-compatit-a-la-douleur-des-chammougon/)                                   |12/03|Karibinfo|
-|                                  [Guadeloupe. Décès de Marcelle Chammougon : l’hommage de Max Mathiasin](https://www.karibinfo.com/news/guadeloupe-deces-de-marcelle-lhommage-de-max-mathiasin/)                                 |12/03|Karibinfo|
-|                         [Décès de Marcelle Chammougon, ancienne maire de Baie-Mahault](https://la1ere.franceinfo.fr/guadeloupe/deces-de-marcelle-chammougon-ancienne-maire-de-baie-mahault-1680354.html)                         |12/03| La 1ère |
-|[Guadeloupe. Guy Losbar : « Marcelle Chammougon était guidée par un sens aigu de l’intérêt général »](https://www.karibinfo.com/news/guadeloupe-guy-losbar-marcelle-chammougon-etait-guidee-par-un-sens-aigu-de-linteret-general/)|12/03|Karibinfo|
+|                                                                          Titre                                                                          | Date|  Source |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|[Jamaïque. Une nouvelle victoire judiciaire pour Vybz Kartel](https://www.karibinfo.com/news/jamaique-une-nouvelle-victoire-judiciaire-pour-vybz-kartel/)|09/03|Karibinfo|
 
 ---
