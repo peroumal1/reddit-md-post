@@ -15,7 +15,7 @@
 
 ---
 
-### Un jeune pilote de scooter des mers tué dans une collision avec un plaisancier, à Petit-Canal
+### Accident nautique à Petit-Canal : un conducteur de jet-ski décédé
 **1 jour · 2 sources · 🔥 plus lu (RCI)**
 
 |                                                                                                                                   Titre                                                                                                                                   | Date| Source|
@@ -27,7 +27,7 @@
 
 ## Eau & environnement
 
-### Taux de chlorate faible : des restrictions partielles dans la consommation de l'eau au Moule et à Petit Canal
+### Le Moule et Petit-Canal : les personnes sensibles ne doivent pas consommer l’eau du robinet
 **1 jour · 2 sources**
 
 |                                                                                                                           Titre                                                                                                                          | Date| Source|
@@ -37,7 +37,7 @@
 
 ---
 
-### L’eau du robinet interdite à la consommation à Baie-Mahault et Petit-Bourg
+### Pollution aux bromates : levée de l’interdiction de consommation de l’eau à Baie-Mahault et Petit-Bourg
 **2 jours · 1 source**
 
 |                                                                                                                                Titre                                                                                                                                | Date| Source|
@@ -80,16 +80,6 @@
 
 ## Culture & société
 
-### Mi-carême en Guadeloupe : les deux-roues motorisés interdits sur les parcours des défilés carnavalesques
-**2 jours · 2 sources**
-
-|                                                                                                                                              Titre                                                                                                                                              | Date|  Source |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|                                                                    [Guadeloupe. Mi-carême : les deux-roues resteront à la maison](https://www.karibinfo.com/news/guadeloupe-mi-careme-les-deux-roues-resteront-a-la-maison/)                                                                    |11/03|Karibinfo|
-|[Mi-carême en Guadeloupe : les deux-roues motorisés interdits sur les parcours des défilés carnavalesques](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/pointe-pitre/mi-careme-en-guadeloupe-les-deux-roues-motorises-interdits-sur-les-parcours-des-defiles-carnavalesques-1679706.html)|12/03| La 1ère |
-
----
-
 ### Mi-Carême 2026 : le rouge et le noir seront de sortie ce jeudi à Basse-Terre !
 **2 jours · 1 source**
 
@@ -100,9 +90,18 @@
 
 ---
 
+### Guadeloupe. Ophély Mézino au festival Femmes d’ici & cinéma de Cinéstar
+**1 jour · 1 source**
+
+|                                                                                     Titre                                                                                    | Date|  Source |
+|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|[Guadeloupe. Ophély Mézino au festival Femmes d’ici & cinéma de Cinéstar](https://www.karibinfo.com/news/guadeloupe-ophely-mezino-au-festival-femmes-dici-cinema-de-cinestar/)|09/03|Karibinfo|
+
+---
+
 ## Sport
 
-### Les finances de la ligue de football de Guadeloupe au plus bas, une liquidation judiciaire envisagée
+### Football : Quel avenir pour la ligue de Guadeloupe ?
 **2 jours · 1 source**
 
 |                                                                                                            Titre                                                                                                           | Date|Source|
@@ -112,12 +111,12 @@
 
 ---
 
-### Un sport de glisse et de pagaie... Et si on se mettait à la pirogue en Guadeloupe ?
+### REPORTAGE. Et si on se mettait au kitesurf ?
 **1 jour · 1 source**
 
-|                                                                                                           Titre                                                                                                          | Date| Source|
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
-|[Un sport de glisse et de pagaie... Et si on se mettait à la pirogue en Guadeloupe ?](https://la1ere.franceinfo.fr/guadeloupe/un-sport-de-glisse-et-de-pagaie-et-si-on-se-mettait-a-la-pirogue-en-guadeloupe-1680792.html)|14/03|La 1ère|
+|                                                                     Titre                                                                    | Date| Source|
+|----------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
+|[REPORTAGE. Et si on se mettait au kitesurf ?](https://la1ere.franceinfo.fr/guadeloupe/reportage-et-si-on-se-mettait-au-kitesurf-1678134.html)|08/03|La 1ère|
 
 ---
 
@@ -134,7 +133,7 @@
 
 ---
 
-### Agissons contre le cancer colorectal : "détecté de manière précoce, il peut être guéri dans 9 cas sur 10"
+### Guadeloupe. Se faire dépister tôt permet de mieux soigner et de limiter les séquelles
 **2 jours · 2 sources**
 
 |                                                                                                                                 Titre                                                                                                                                | Date|  Source |
@@ -158,7 +157,7 @@
 
 ---
 
-### Guadeloupe. Toujours plus de surrendettés
+### Surendettement : forte hausse des dossiers déposés en Guadeloupe en 2025
 **2 jours · 2 sources**
 
 |                                                                                                 Titre                                                                                                 | Date|  Source |
@@ -180,18 +179,29 @@
 
 ---
 
-### L’Université des Antilles accueille des étudiants de Howard et de Caroline du Sud
+### Barbade. Petit déjeuner pour tous les enfants
 **1 jour · 1 source**
 
-|                                                                                                     Titre                                                                                                     | Date|Source|
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|------|
-|[L’Université des Antilles accueille des étudiants de Howard et de Caroline du Sud](https://rci.fm/guadeloupe/infos/Education/LUniversite-des-Antilles-accueille-des-etudiants-de-Howard-et-de-Caroline-du-Sud)|10/03|  RCI |
+|                                                            Titre                                                            | Date|  Source |
+|-----------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|[Barbade. Petit déjeuner pour tous les enfants](https://www.karibinfo.com/news/barbade-petit-dejeuner-pour-tous-les-enfants/)|10/03|Karibinfo|
 
 ---
 
 ## Outre-mer & Caraïbes
 
-### Des dizaines d'habitants tués par les drones utilisés par Haïti dans sa lutte contre les gangs
+### Haïti. Le procès sur l’assassinat du président Jovenel Moïse marqué par des révélations
+**3 jours · 2 sources**
+
+|                                                                                                                       Titre                                                                                                                       | Date|  Source |
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|[Assassinat de Jovenel Moïse : ouverture de la sélection du jury pour quatre accusés en Floride](https://la1ere.franceinfo.fr/guadeloupe/assassinat-de-jovenel-moise-ouverture-de-la-selection-du-jury-pour-quatre-accuses-en-floride-1679178.html)|10/03| La 1ère |
+|                  [Haïti. Le procès sur l’assassinat du président Jovenel Moïse marqué par des révélations](https://www.karibinfo.com/news/haiti-le-proces-sur-lassassinat-du-president-jovenel-moise-marque-par-des-revelations/)                 |11/03|Karibinfo|
+|        [Haïti. Martine Moïse témoigne au procès sur l’assassinat de son époux, le président Jovenel Moïse](https://www.karibinfo.com/news/haiti-martine-moise-temoigne-au-proces-sur-lassassinat-de-son-epoux-le-president-jovenel-moise/)        |12/03|Karibinfo|
+
+---
+
+### Des dizaines d'habitants tués par les drones utilisés par Haïti dans sa lutte contre les gangs (HRW)
 **2 jours · 2 sources**
 
 |                                                                                                                        Titre                                                                                                                        | Date| Source|
@@ -201,18 +211,9 @@
 
 ---
 
-### Haïti. La Quinzaine de la Francophonie 2026 lancée sur le thème de l’engagement des jeunes
-**1 jour · 1 source**
-
-|                                                                                                         Titre                                                                                                        | Date|  Source |
-|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|[Haïti. La Quinzaine de la Francophonie 2026 lancée sur le thème de l’engagement des jeunes](https://www.karibinfo.com/news/haiti-la-quinzaine-de-la-francophonie-2026-lancee-sur-le-theme-de-lengagement-des-jeunes/)|09/03|Karibinfo|
-
----
-
 ## International
 
-### Cuba : l'ONU dialogue avec Washington sur l'importation de carburant pour sa mission humanitaire
+### Cuba confirme des pourparlers avec les Etats-Unis
 **2 jours · 1 source**
 
 |                                                                                                                         Titre                                                                                                                         | Date| Source|
@@ -222,32 +223,32 @@
 
 ---
 
-### Donald Trump lance une coalition pour "éradiquer" les cartels en Amérique latine
-**1 jour · 1 source**
-
-|                                                                                                          Titre                                                                                                         | Date| Source|
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
-|[Donald Trump lance une coalition pour "éradiquer" les cartels en Amérique latine](https://la1ere.franceinfo.fr/guadeloupe/donald-trrump-lance-une-coalition-pour-eradiquer-les-cartels-en-amerique-latine-1679148.html)|09/03|La 1ère|
-
----
-
-## Autres
-
-### Saint-Martin. Un week-end tout chocolat au salon ChocoCarib’
-**2 jours · 1 source**
-
-|                                                                               Titre                                                                              | Date|  Source |
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|    [Saint-Martin. Un week-end tout chocolat au salon ChocoCarib’](https://www.karibinfo.com/news/saint-martin-un-week-end-tout-chocolat-au-salon-chococarib/)    |14/03|Karibinfo|
-|[Saint-Martin. La chocolatière Naomi Martino au salon ChocoCarib’](https://www.karibinfo.com/news/saint-martin-la-chocolatiere-naomi-martino-au-salon-chococarib/)|15/03|Karibinfo|
-
----
-
 ### Jamaïque. Une nouvelle victoire judiciaire pour Vybz Kartel
 **1 jour · 1 source**
 
 |                                                                          Titre                                                                          | Date|  Source |
 |---------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
 |[Jamaïque. Une nouvelle victoire judiciaire pour Vybz Kartel](https://www.karibinfo.com/news/jamaique-une-nouvelle-victoire-judiciaire-pour-vybz-kartel/)|09/03|Karibinfo|
+
+---
+
+## Autres
+
+### Guadeloupe. Mi-carême : les deux-roues resteront à la maison
+**2 jours · 2 sources**
+
+|                                                                                                                                              Titre                                                                                                                                              | Date|  Source |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|                                                                    [Guadeloupe. Mi-carême : les deux-roues resteront à la maison](https://www.karibinfo.com/news/guadeloupe-mi-careme-les-deux-roues-resteront-a-la-maison/)                                                                    |11/03|Karibinfo|
+|[Mi-carême en Guadeloupe : les deux-roues motorisés interdits sur les parcours des défilés carnavalesques](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/pointe-pitre/mi-careme-en-guadeloupe-les-deux-roues-motorises-interdits-sur-les-parcours-des-defiles-carnavalesques-1679706.html)|12/03| La 1ère |
+
+---
+
+### Guyane. Recherche d’une personne disparue sur le fleuve du Maroni
+**1 jour · 1 source**
+
+|                                                                                Titre                                                                               | Date|  Source |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|[Guyane. Recherche d’une personne disparue sur le fleuve du Maroni](https://www.karibinfo.com/news/guyane-recherche-dune-personne-disparue-sur-le-fleuve-du-maroni/)|09/03|Karibinfo|
 
 ---
