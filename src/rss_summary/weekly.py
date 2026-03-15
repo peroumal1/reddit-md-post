@@ -123,6 +123,27 @@ def representative_embedding(cluster):
     return np.mean(vecs, axis=0)
 
 
+def pick_representative_article(raw_cluster, centroid):
+    """Return the article whose embedding is closest to the cluster centroid.
+
+    This tends to be the most generic/encompassing article rather than a
+    specific local variant, making it a better section heading.
+    """
+    import numpy as np
+    norm = np.linalg.norm(centroid)
+    c = centroid / norm if norm > 0 else centroid
+    best, best_sim = raw_cluster[0]["article"], -1.0
+    for item in raw_cluster:
+        e = item["embedding"]
+        n = np.linalg.norm(e)
+        e_norm = e / n if n > 0 else e
+        sim = float(np.dot(c, e_norm))
+        if sim > best_sim:
+            best_sim = sim
+            best = item["article"]
+    return best
+
+
 def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names, top_per_theme=2):
     start_str = f"{week_start.day} {MOIS[week_start.month]}"
     end_str = f"{week_end.day} {MOIS[week_end.month]} {week_end.year}"
@@ -141,7 +162,7 @@ def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names
         )[:top_per_theme]
         lines.append(f"\n## {theme}")
         for cluster in theme_clusters:
-            rep = cluster["articles"][0]
+            rep = pick_representative_article(cluster["raw"], cluster["centroid"])
             score = cluster["score"]
             sources = {item["article"]["source"] for item in cluster["raw"]}
             days = len({item["article"]["date"].date() for item in cluster["raw"]})
@@ -334,6 +355,7 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
 
         scored.append({
             "raw": raw_cluster,
+            "centroid": centroid,
             "score": score,
             "theme": classification["theme"],
             "top_score": classification["top_score"],
