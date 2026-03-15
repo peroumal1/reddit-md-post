@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from py_markdown_table.markdown_table import markdown_table as _markdown_table
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import classify_article_scored, encode_themes, load_classifier_head, load_taxonomy
+from rss_summary.classification import classify_article_scored, load_classifier_head, load_taxonomy
 from rss_summary.parsing import parse_daily_feed_md
 from rss_summary.similarity import encode_text
 
@@ -225,7 +225,7 @@ def render_suggestions(week_num, scored, threshold=0.15, low_confidence_margin=0
         "",
         f"## Articles non classifiés ({len(unclassified)})",
         f"Aucun thème n'a atteint le seuil de confiance ({threshold:.2f}). "
-        "Envisager un nouveau thème ou élargir les descriptions existantes.",
+        "Envisager un nouveau thème ou ajouter des exemples dans `data/themes.json`.",
         "",
     ]
     if unclassified:
@@ -324,14 +324,10 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
     # Load model, taxonomy, and classifier head
     model = SentenceTransformer("BAAI/bge-m3")
     try:
-        themes = load_taxonomy(taxonomy)
-    except FileNotFoundError:
-        raise click.ClickException(f"Taxonomy file not found: {taxonomy}")
-    theme_names = [t["name"] for t in themes]
-    theme_embeddings = encode_themes(model, themes)
-    head = load_classifier_head()
-    if head:
-        logging.info("Using trained classifier head for classification.")
+        theme_names = load_taxonomy(taxonomy)
+        head = load_classifier_head()
+    except FileNotFoundError as e:
+        raise click.ClickException(str(e))
 
     # Cluster articles
     logging.info("Clustering articles…")
@@ -343,7 +339,7 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
     for raw_cluster in raw_clusters:
         score = score_cluster(raw_cluster, most_read_paths)
         centroid = representative_embedding(raw_cluster)
-        classification = classify_article_scored(model, centroid, theme_embeddings, theme_names, head=head)
+        classification = classify_article_scored(centroid, head)
 
         most_read_tags = []
         for item in raw_cluster:

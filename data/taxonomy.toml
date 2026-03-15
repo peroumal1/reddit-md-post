@@ -1,39 +1,12 @@
-[[themes]]
-name = "Faits divers"
-description = "vol, meurtre, agression, accident de la route, accident mortel, conducteur tué, motard décédé, cycliste renversé, collision mortelle, victime de la route, incendie, gendarmerie, police, violence, criminalité, blessés, noyade, recherche en mer, secours, sapeurs-pompiers, garde à vue, mise en examen, condamnation, autopsie, trafic de stupéfiants, drogue, arrestation, tribunal, procès, homicide, coups et blessures, arme, braquage, viol, agression sexuelle, fugitif, coups de feu, tirs, fusillade, meurtre lors d'un événement public"
-
-[[themes]]
-name = "Eau & environnement"
-description = "coupures d'eau, eau potable, eau du robinet, bromates, chlore, qualité de l'eau, réseau d'eau, tours d'eau, assainissement, traitement des eaux, Syndicat mixte de gestion de l'eau et de l'assainissement de Guadeloupe, pollution, déchets, décharge, rivière, mangrove, littoral, récif corallien, biodiversité, faune, flore, forêt, sécheresse, ressource naturelle"
-
-[[themes]]
-name = "Politique"
-description = "élection, vote, scrutin, premier tour, second tour, candidats, liste électorale, campagne électorale, coalition, programme politique, débat, mairie, conseil municipal, conseil régional, conseil départemental, collectivité territoriale, préfecture, préfet, assemblée nationale, sénat, député, sénateur, gouvernement, réforme, loi, politique publique, hommage politique, nécrologie, ancien élu, personnalité politique disparue, sens de l'intérêt général, intérêt général, figure publique, procès politique, affaire judiciaire impliquant un élu, corruption d'élu, détournement de fonds publics"
-
-[[themes]]
-name = "Culture & société"
-description = "musique, festival, carnaval, mi-carême, gwoka, zouk, biguine, mas, défilé, patrimoine, art, exposition, tradition, identité créole, concert, spectacle, artiste, cinéma, théâtre, danse, littérature, gastronomie, mémoire, esclavage, commémoration, religion, association, société civile, droits des femmes, diversité, artiste caribéen, reggae, dancehall, célébrité internationale"
-
-[[themes]]
-name = "Sport"
-description = "compétition sportive, match, athlète, club, championnat, fédération, football, rugby, natation, course cycliste, compétition de cyclisme, athlétisme, basketball, volleyball, tennis, voile, surf, judo, boxe, karaté, tournoi, podium, médaille, entraîneur, saison sportive, sélection nationale, handisport, performance sportive"
-
-[[themes]]
-name = "Santé"
-description = "épidémie, hôpital, centre hospitalier universitaire, médecin, soins, urgences, maternité, chirurgie, infirmier, aide-soignant, grippe, dengue, leptospirose, chlordécone, bronchiolite, vaccination, cancer, dépistage, prévention, santé publique, pharmacie, médicament, agence régionale de santé, désert médical"
-
-[[themes]]
-name = "Économie & social"
-description = "emploi, chômage, grève, grève de la faim, syndicat, syndicaliste, leader syndical, action revendicative, salaire, cherté de la vie, inflation, logement, commerce, grande distribution, tourisme, hôtellerie, banane, canne à sucre, agriculture, pêche, entreprise, artisan, aide sociale, précarité, inégalité, budget, fiscalité, investissement, consommation, économie mondiale, marché international, commerce mondial"
-
-[[themes]]
-name = "Éducation"
-description = "école maternelle, école primaire, collège, lycée, université, élèves, enseignant, professeur, enseignement, formation professionnelle, apprentissage, alternance, baccalauréat, rentrée scolaire, résultats scolaires, orientation, programme scolaire, grève scolaire, numérique éducatif"
-
-[[themes]]
-name = "Outre-mer & Caraïbes"
-description = "Martinique, Guyane, La Réunion, Mayotte, Saint-Martin, Saint-Barthélemy, Saint-Pierre-et-Miquelon, Wallis-et-Futuna, Polynésie française, Nouvelle-Calédonie, territoires français d'outre-mer, Haïti, Cuba, Jamaïque, Barbade, Trinidad, République dominicaine, Caraïbes, Antilles, archipel caribéen, actualité politique caribéenne, crise politique dans les îles, élections dans les îles caribéennes, coopération régionale caribéenne"
-
-[[themes]]
-name = "International"
-description = "France hexagonale, Paris, Europe, Union européenne, Nations Unies, États-Unis, Moyen-Orient, Iran, Russie, Ukraine, Afrique, Asie, Amérique latine, guerre, conflit armé, diplomatie, accord international, traité, relations internationales"
+themes = [
+  "Faits divers",
+  "Eau & environnement",
+  "Politique",
+  "Culture & société",
+  "Sport",
+  "Santé",
+  "Économie & social",
+  "Éducation",
+  "Outre-mer & Caraïbes",
+  "International",
+]
