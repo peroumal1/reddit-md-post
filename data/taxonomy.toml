@@ -8,7 +8,7 @@ description = "coupures d'eau, eau potable, eau du robinet, bromates, chlore, qu
 
 [[themes]]
 name = "Politique"
-description = "élection, vote, scrutin, premier tour, second tour, candidats, liste électorale, campagne électorale, coalition, programme politique, débat, mairie, conseil municipal, conseil régional, conseil départemental, collectivité territoriale, préfecture, préfet, assemblée nationale, sénat, député, sénateur, gouvernement, réforme, loi, politique publique"
+description = "élection, vote, scrutin, premier tour, second tour, candidats, liste électorale, campagne électorale, coalition, programme politique, débat, mairie, conseil municipal, conseil régional, conseil départemental, collectivité territoriale, préfecture, préfet, assemblée nationale, sénat, député, sénateur, gouvernement, réforme, loi, politique publique, hommage politique, nécrologie, ancien élu, personnalité politique disparue, sens de l'intérêt général, intérêt général, figure publique"
 
 [[themes]]
 name = "Culture & société"
@@ -24,7 +24,7 @@ description = "épidémie, hôpital, centre hospitalier universitaire, médecin,
 
 [[themes]]
 name = "Économie & social"
-description = "emploi, chômage, grève, syndicat, salaire, cherté de la vie, inflation, logement, commerce, grande distribution, tourisme, hôtellerie, banane, canne à sucre, agriculture, pêche, entreprise, artisan, aide sociale, précarité, inégalité, budget, fiscalité, investissement, consommation"
+description = "emploi, chômage, grève, grève de la faim, syndicat, syndicaliste, leader syndical, action revendicative, salaire, cherté de la vie, inflation, logement, commerce, grande distribution, tourisme, hôtellerie, banane, canne à sucre, agriculture, pêche, entreprise, artisan, aide sociale, précarité, inégalité, budget, fiscalité, investissement, consommation"
 
 [[themes]]
 name = "Éducation"
