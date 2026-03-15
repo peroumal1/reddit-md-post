@@ -4,23 +4,24 @@
 
 ## Faits divers
 
-### La dame atteinte d'Alzheimer a finalement été identifiée grâce à l'appel à témoins : Merci !
-**1 jour · 2 sources**
+### Guadeloupe. Meurtre à Sonis : une autopsie sera pratiquée lundi
+**2 jours · 3 sources · 🔥 plus lu (RCI)**
 
-|                                                                                                                            Titre                                                                                                                           | Date|  Source |
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|                                                                        [Guadeloupe. Qui reconnaît Antoinette ?](https://www.karibinfo.com/news/guadeloupe-qui-reconnait-antoinette/)                                                                       |10/03|Karibinfo|
-|[La dame atteinte d'Alzheimer a finalement été identifiée grâce à l'appel à témoins : Merci !](https://la1ere.franceinfo.fr/guadeloupe/basse-terre/baie-mahault/appel-a-temoins-pouvez-vous-aider-a-identifier-cette-dame-atteinte-d-alzheimer-1679697.html)|10/03| La 1ère |
+|                                                                                                                                                 Titre                                                                                                                                                 | Date|  Source |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|                                       [Une femme retrouvée morte à Sonis aux Abymes : ce que l'on sait du 8ème homicide de l'année](https://rci.fm/guadeloupe/infos/Faits-divers/Une-femme-retrouvee-morte-Sonis-aux-Abymes-ce-que-lon-sait-du-8eme-homicide-de)                                      |13/03|   RCI   |
+|                                                                    [Guadeloupe. Meurtre à Sonis : une autopsie sera pratiquée lundi](https://www.karibinfo.com/news/guadeloupe-meurtre-a-sonis-une-autopsie-sera-pratiquee-lundi/)                                                                    |14/03|Karibinfo|
+|[Fusillade aux Abymes en marge du déboulé de mi-carême : une enquête pour meurtre ouverte après la mort d’une jeune femme](https://la1ere.franceinfo.fr/guadeloupe/fusillade-aux-abymes-en-marge-du-deboule-de-mi-careme-une-enquete-pour-meurtre-ouverte-apres-la-mort-d-une-jeune-femme-1680885.html)|13/03| La 1ère |
 
 ---
 
-### Procès d’Ary Chalus : "Il n'y a aucune volonté d'échapper à quoi que ce soit", selon l'avocat du président de la Région Guadeloupe
-**1 jour · 2 sources**
+### Un jeune pilote de scooter des mers tué dans une collision avec un plaisancier, à Petit-Canal
+**1 jour · 2 sources · 🔥 plus lu (RCI)**
 
-|                                                                                                                                                          Titre                                                                                                                                                         | Date| Source|
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
-|[Procès d’Ary Chalus : "Il n'y a aucune volonté d'échapper à quoi que ce soit", selon l'avocat du président de la Région Guadeloupe](https://la1ere.franceinfo.fr/guadeloupe/proces-d-ary-chalus-il-n-y-a-aucune-volonte-d-echapper-a-quoi-que-ce-soit-selon-l-avocat-du-president-de-la-region-guadeloupe-1680009.html)|11/03|La 1ère|
-|                                                                                [Ary Chalus sera bien jugé à la fin du mois de juin 2026](https://rci.fm/guadeloupe/infos/Justice/Ary-Chalus-sera-bien-juge-la-fin-du-mois-de-juin-2026)                                                                                |11/03|  RCI  |
+|                                                                                                                                   Titre                                                                                                                                   | Date| Source|
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
+|[Un jeune pilote de scooter des mers tué dans une collision avec un plaisancier, à Petit-Canal](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/petit-canal/un-jeune-pilote-de-scooter-des-mers-tue-dans-une-collision-avec-un-plaisancier-a-petit-canal-1679070.html)|09/03|La 1ère|
+|                                              [Accident nautique à Petit-Canal : un conducteur de jet-ski décédé](https://rci.fm/guadeloupe/infos/Faits-divers/Accident-nautique-Petit-Canal-un-conducteur-de-jet-ski-decede)                                              |09/03|  RCI  |
 
 ---
 
@@ -36,7 +37,7 @@
 
 ---
 
-### Pollution aux bromates : levée de l’interdiction de consommation de l’eau à Baie-Mahault et Petit-Bourg
+### L’eau du robinet interdite à la consommation à Baie-Mahault et Petit-Bourg
 **2 jours · 1 source**
 
 |                                                                                                                                Titre                                                                                                                                | Date| Source|
@@ -48,7 +49,7 @@
 
 ## Politique
 
-### [⭕Direct🗳️] Municipales 2026 : les 424 bureaux de vote de Guadeloupe sont ouverts
+### Municipalités 2026 : les jeunes Guadeloupéens bouderont-ils les urnes les 15 et 22 mars prochains ?
 **5 jours · 2 sources**
 
 |                                                                                                                           Titre                                                                                                                           | Date| Source|
@@ -63,7 +64,7 @@
 
 ---
 
-### [Direct] Municipales 2026 : le débat des candidats des Abymes !
+### REPLAY. Municipales 2026 en Guadeloupe : revivez le débat des candidats à la mairie de Baie-Mahault
 **3 jours · 2 sources**
 
 |                                                                                                                                    Titre                                                                                                                                    | Date| Source|
@@ -89,7 +90,7 @@
 
 ---
 
-### [EN IMAGES] La Mi-Carême a fait vibrer les rues de Pointe-à-Pitre ce jeudi !
+### Mi-Carême 2026 : le rouge et le noir seront de sortie ce jeudi à Basse-Terre !
 **2 jours · 1 source**
 
 |                                                                                               Titre                                                                                              | Date|Source|
@@ -101,7 +102,7 @@
 
 ## Sport
 
-### Football : Quel avenir pour la ligue de Guadeloupe ?
+### Les finances de la ligue de football de Guadeloupe au plus bas, une liquidation judiciaire envisagée
 **2 jours · 1 source**
 
 |                                                                                                            Titre                                                                                                           | Date|Source|
@@ -111,18 +112,18 @@
 
 ---
 
-### Deux nouveaux morts sur les routes de Guadeloupe : un jeune cycliste de 14 ans et un motard de 25 ans sont décédés des suites de leurs blessures
+### Un sport de glisse et de pagaie... Et si on se mettait à la pirogue en Guadeloupe ?
 **1 jour · 1 source**
 
-|                                                                                                                                                                         Titre                                                                                                                                                                         | Date| Source|
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
-|[Deux nouveaux morts sur les routes de Guadeloupe : un jeune cycliste de 14 ans et un motard de 25 ans sont décédés des suites de leurs blessures](https://la1ere.franceinfo.fr/guadeloupe/deux-nouveaux-morts-sur-les-routes-de-guadeloupe-un-jeune-cycliste-de-14-ans-et-un-motard-de-25-ans-sont-decedes-des-suites-de-leurs-blessures-1679118.html)|09/03|La 1ère|
+|                                                                                                           Titre                                                                                                          | Date| Source|
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
+|[Un sport de glisse et de pagaie... Et si on se mettait à la pirogue en Guadeloupe ?](https://la1ere.franceinfo.fr/guadeloupe/un-sport-de-glisse-et-de-pagaie-et-si-on-se-mettait-a-la-pirogue-en-guadeloupe-1680792.html)|14/03|La 1ère|
 
 ---
 
 ## Santé
 
-### Martinique. Le Centre hospitalier Maurice Despinoy en net déficit financier
+### Guadeloupe. Santé mentale : peut mieux faire, a dit la Chambre régionale des comptes
 **3 jours · 2 sources**
 
 |                                                                                                                                                  Titre                                                                                                                                                  | Date|  Source |
@@ -133,7 +134,7 @@
 
 ---
 
-### Guadeloupe. Se faire dépister tôt permet de mieux soigner et de limiter les séquelles
+### Agissons contre le cancer colorectal : "détecté de manière précoce, il peut être guéri dans 9 cas sur 10"
 **2 jours · 2 sources**
 
 |                                                                                                                                 Titre                                                                                                                                | Date|  Source |
@@ -145,7 +146,7 @@
 
 ## Économie & social
 
-### Surendettement : forte hausse des dossiers déposés en Guadeloupe en 2025
+### Guadeloupe. Toujours plus de surrendettés
 **2 jours · 2 sources**
 
 |                                                                                                 Titre                                                                                                 | Date|  Source |
@@ -155,7 +156,7 @@
 
 ---
 
-### Consommation. Le chou en baisse se vend à 0,70 €/kg
+### Consommation. La mangue fait son retour sur les étals à 4 €/kg
 **2 jours · 1 source**
 
 |                                                            Titre                                                            | Date|  Source |
@@ -167,7 +168,7 @@
 
 ## Éducation
 
-### Les élèves Lycée Hôtelier du Gosier s'engagent pour un repas solidaire à la Maison Saint-Vincent de Paul
+### Un repas gastronomique et solidaire envers les bénéficiaires de la Maison Saint-Vincent
 **1 jour · 2 sources**
 
 |                                                                                                                  Titre                                                                                                                  | Date| Source|
@@ -188,18 +189,7 @@
 
 ## Outre-mer & Caraïbes
 
-### Haïti. Martine Moïse témoigne au procès sur l’assassinat de son époux, le président Jovenel Moïse
-**3 jours · 2 sources**
-
-|                                                                                                                       Titre                                                                                                                       | Date|  Source |
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|[Assassinat de Jovenel Moïse : ouverture de la sélection du jury pour quatre accusés en Floride](https://la1ere.franceinfo.fr/guadeloupe/assassinat-de-jovenel-moise-ouverture-de-la-selection-du-jury-pour-quatre-accuses-en-floride-1679178.html)|10/03| La 1ère |
-|                  [Haïti. Le procès sur l’assassinat du président Jovenel Moïse marqué par des révélations](https://www.karibinfo.com/news/haiti-le-proces-sur-lassassinat-du-president-jovenel-moise-marque-par-des-revelations/)                 |11/03|Karibinfo|
-|        [Haïti. Martine Moïse témoigne au procès sur l’assassinat de son époux, le président Jovenel Moïse](https://www.karibinfo.com/news/haiti-martine-moise-temoigne-au-proces-sur-lassassinat-de-son-epoux-le-president-jovenel-moise/)        |12/03|Karibinfo|
-
----
-
-### Des dizaines d'habitants tués par les drones utilisés par Haïti dans sa lutte contre les gangs (HRW)
+### Des dizaines d'habitants tués par les drones utilisés par Haïti dans sa lutte contre les gangs
 **2 jours · 2 sources**
 
 |                                                                                                                        Titre                                                                                                                        | Date| Source|
@@ -209,9 +199,18 @@
 
 ---
 
+### Haïti. La Quinzaine de la Francophonie 2026 lancée sur le thème de l’engagement des jeunes
+**1 jour · 1 source**
+
+|                                                                                                         Titre                                                                                                        | Date|  Source |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|[Haïti. La Quinzaine de la Francophonie 2026 lancée sur le thème de l’engagement des jeunes](https://www.karibinfo.com/news/haiti-la-quinzaine-de-la-francophonie-2026-lancee-sur-le-theme-de-lengagement-des-jeunes/)|09/03|Karibinfo|
+
+---
+
 ## International
 
-### Cuba confirme des pourparlers avec les Etats-Unis
+### Cuba : l'ONU dialogue avec Washington sur l'importation de carburant pour sa mission humanitaire
 **2 jours · 1 source**
 
 |                                                                                                                         Titre                                                                                                                         | Date| Source|
@@ -232,23 +231,26 @@
 
 ## Autres
 
-### Guadeloupe. Meurtre à Sonis : une autopsie sera pratiquée lundi
-**2 jours · 3 sources · 🔥 plus lu (RCI)**
+### Guadeloupe. « J’ai décidé de refuser les repas qui me sont donnés et les soins qui me sont prodigués », dit Alex Lollia depuis le CHU
+**2 jours · 3 sources**
 
-|                                                                                                                                                 Titre                                                                                                                                                 | Date|  Source |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|                                       [Une femme retrouvée morte à Sonis aux Abymes : ce que l'on sait du 8ème homicide de l'année](https://rci.fm/guadeloupe/infos/Faits-divers/Une-femme-retrouvee-morte-Sonis-aux-Abymes-ce-que-lon-sait-du-8eme-homicide-de)                                      |13/03|   RCI   |
-|                                                                    [Guadeloupe. Meurtre à Sonis : une autopsie sera pratiquée lundi](https://www.karibinfo.com/news/guadeloupe-meurtre-a-sonis-une-autopsie-sera-pratiquee-lundi/)                                                                    |14/03|Karibinfo|
-|[Fusillade aux Abymes en marge du déboulé de mi-carême : une enquête pour meurtre ouverte après la mort d’une jeune femme](https://la1ere.franceinfo.fr/guadeloupe/fusillade-aux-abymes-en-marge-du-deboule-de-mi-careme-une-enquete-pour-meurtre-ouverte-apres-la-mort-d-une-jeune-femme-1680885.html)|13/03| La 1ère |
+|                                                                                                                                                                Titre                                                                                                                                                                | Date|  Source |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|                                                [Guadeloupe. Alex Lollia au CHU depuis 12 jours : « Qu’ils aillent faire leurs expériences ailleurs ! »](https://www.karibinfo.com/news/guadeloupe-alex-lollia-au-chu-depuis-12-jours-quils-aillent-faire-leurs-experiences-ailleurs/)                                               |12/03|Karibinfo|
+|               [Guadeloupe. « J’ai décidé de refuser les repas qui me sont donnés et les soins qui me sont prodigués », dit Alex Lollia depuis le CHU](https://www.karibinfo.com/news/guadeloupe-jai-decide-de-refuser-les-repas-qui-me-sont-donnes-et-les-soins-qui-me-sont-prodigues-dit-alex-lollia-depuis-le-chu/)               |12/03|Karibinfo|
+|[Au CHU de Guadeloupe, un syndicaliste hospitalisé pour des examens, met fin à une grève de la faim après des échanges avec la direction](https://la1ere.franceinfo.fr/guadeloupe/au-chu-de-guadeloupe-un-syndicaliste-hospitalise-pour-des-examens-met-fin-a-une-greve-de-la-faim-apres-des-echanges-avec-la-direction-1680777.html)|13/03| La 1ère |
+|                                                [Refus de soins et de nourriture : Alex Lollia dénonce des dysfonctionnements au CHU de la GUadeloupe](https://rci.fm/guadeloupe/infos/Sante/Refus-de-soins-et-de-nourriture-Alex-Lollia-denonce-des-dysfonctionnements-au-CHU-de-la)                                                |13/03|   RCI   |
 
 ---
 
-### Un jeune pilote de scooter des mers tué dans une collision avec un plaisancier, à Petit-Canal
-**1 jour · 2 sources · 🔥 plus lu (RCI)**
+### Guadeloupe. Guy Losbar : « Marcelle Chammougon était guidée par un sens aigu de l’intérêt général »
+**1 jour · 2 sources**
 
-|                                                                                                                                   Titre                                                                                                                                   | Date| Source|
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
-|[Un jeune pilote de scooter des mers tué dans une collision avec un plaisancier, à Petit-Canal](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/petit-canal/un-jeune-pilote-de-scooter-des-mers-tue-dans-une-collision-avec-un-plaisancier-a-petit-canal-1679070.html)|09/03|La 1ère|
-|                                              [Accident nautique à Petit-Canal : un conducteur de jet-ski décédé](https://rci.fm/guadeloupe/infos/Faits-divers/Accident-nautique-Petit-Canal-un-conducteur-de-jet-ski-decede)                                              |09/03|  RCI  |
+|                                                                                                               Titre                                                                                                              | Date|  Source |
+|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|                                    [Guadeloupe. Michel Mado compatit à la douleur des Chammougon](https://www.karibinfo.com/news/guadeloupe-michel-mado-compatit-a-la-douleur-des-chammougon/)                                   |12/03|Karibinfo|
+|                                  [Guadeloupe. Décès de Marcelle Chammougon : l’hommage de Max Mathiasin](https://www.karibinfo.com/news/guadeloupe-deces-de-marcelle-lhommage-de-max-mathiasin/)                                 |12/03|Karibinfo|
+|                         [Décès de Marcelle Chammougon, ancienne maire de Baie-Mahault](https://la1ere.franceinfo.fr/guadeloupe/deces-de-marcelle-chammougon-ancienne-maire-de-baie-mahault-1680354.html)                         |12/03| La 1ère |
+|[Guadeloupe. Guy Losbar : « Marcelle Chammougon était guidée par un sens aigu de l’intérêt général »](https://www.karibinfo.com/news/guadeloupe-guy-losbar-marcelle-chammougon-etait-guidee-par-un-sens-aigu-de-linteret-general/)|12/03|Karibinfo|
 
 ---
