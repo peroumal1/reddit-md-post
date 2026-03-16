@@ -30,17 +30,22 @@ def load_head(path: str) -> dict:
 
 
 def classify_batch(
-    model: SentenceTransformer,
+    model_bge: SentenceTransformer,
+    model_e5: SentenceTransformer,
     articles: list[dict],
     head: dict,
     threshold: float = 0.5,
 ) -> list[dict]:
-    texts = [f"{a['title']} | {a['summary']}" for a in articles]
-    embeddings = model.encode(texts, show_progress_bar=False, normalize_embeddings=True)
+    from rss_summary.classification import encode_for_classification
 
     clf = head["clf"]
     le = head["label_encoder"]
     label_to_theme = head["label_to_theme"]
+
+    embeddings = np.array([
+        encode_for_classification(f"{a['title']}. {a['summary']}", model_bge, model_e5)
+        for a in articles
+    ])
 
     proba = clf.predict_proba(embeddings)
     results = []
@@ -69,13 +74,15 @@ def main() -> None:
     articles = parse_feed_md(args.feed)
     print(f"Found {len(articles)} articles")
 
-    print("Loading model and head...")
-    model = SentenceTransformer("BAAI/bge-m3")
+    print("Loading models and head...")
+    from rss_summary.classification import load_e5_model
+    model_bge = SentenceTransformer("BAAI/bge-m3")
+    model_e5 = load_e5_model()
     head = load_head(args.head)
 
     print("Classifying...")
     t0 = time.time()
-    results = classify_batch(model, articles, head, args.threshold)
+    results = classify_batch(model_bge, model_e5, articles, head, args.threshold)
     elapsed = time.time() - t0
     print(f"Done in {elapsed:.1f}s\n")
 

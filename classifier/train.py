@@ -1,12 +1,13 @@
 """
-Train a LinearSVC classifier on top of frozen BAAI/bge-m3 embeddings.
+Train a LinearSVC classifier on concatenated BAAI/bge-m3 + e5-instruct embeddings.
 
 Usage:
     pdm run python classifier/train.py
     pdm run python classifier/train.py --themes data/themes.json --output data/classifier_head.joblib
 
-The trained head is tiny (~KB) and is loaded by classification.py at inference time.
-bge-m3 is used as a frozen encoder — the same model already loaded for deduplication.
+The trained head is ~1MB and is loaded by classification.py at inference time.
+Both bge-m3 (already loaded for deduplication) and e5-instruct are used as frozen encoders.
+Their 1024-dim embeddings are concatenated into a 2048-dim vector before classification.
 """
 import argparse
 import json
@@ -22,6 +23,10 @@ from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedKFold, cross_val_predict
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import LinearSVC
+
+BGE_MODEL_ID = "BAAI/bge-m3"
+E5_MODEL_ID = "intfloat/multilingual-e5-large-instruct"
+E5_PROMPT = "Instruct: Classify the following French news headline into a thematic category.\nQuery: "
 
 
 def load_themes(path: str) -> list[dict]:
@@ -39,9 +44,22 @@ def build_dataset(themes: list[dict]) -> tuple[list[str], list[str]]:
     return texts, labels
 
 
-def encode_texts(model: SentenceTransformer, texts: list[str]) -> np.ndarray:
-    print(f"Encoding {len(texts)} examples...")
-    return model.encode(texts, show_progress_bar=True, normalize_embeddings=True)
+def encode_concat(texts: list[str]) -> np.ndarray:
+    """Encode texts with bge-m3 + e5-instruct, concatenate, and L2-normalize each row."""
+    print(f"\nLoading {BGE_MODEL_ID}...")
+    model_bge = SentenceTransformer(BGE_MODEL_ID)
+    print(f"Encoding {len(texts)} examples with bge-m3...")
+    X_bge = model_bge.encode(texts, show_progress_bar=True, normalize_embeddings=True)
+
+    print(f"\nLoading {E5_MODEL_ID}...")
+    model_e5 = SentenceTransformer(E5_MODEL_ID)
+    prefixed = [E5_PROMPT + t for t in texts]
+    print(f"Encoding {len(texts)} examples with e5-instruct...")
+    X_e5 = model_e5.encode(prefixed, show_progress_bar=True, normalize_embeddings=True)
+
+    X = np.concatenate([X_bge, X_e5], axis=1)
+    norms = np.linalg.norm(X, axis=1, keepdims=True)
+    return X / np.where(norms > 0, norms, 1)
 
 
 def train(themes_path: str, output_path: str, eval_path: str) -> None:
@@ -53,10 +71,7 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
         count = raw_labels.count(theme["label"])
         print(f"  {theme['theme']}: {count} examples")
 
-    # Encode
-    print("\nLoading BAAI/bge-m3...")
-    model = SentenceTransformer("BAAI/bge-m3")
-    X = encode_texts(model, texts)
+    X = encode_concat(texts)
 
     # Encode labels
     le = LabelEncoder()
@@ -109,7 +124,7 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
     # Save eval
     eval_data = {
         "timestamp": datetime.now().isoformat(),
-        "backbone": "BAAI/bge-m3",
+        "backbone": f"{BGE_MODEL_ID} + {E5_MODEL_ID} (concat 2048-dim)",
         "num_classes": len(themes),
         "num_examples": len(texts),
         "cv_folds": 5,
