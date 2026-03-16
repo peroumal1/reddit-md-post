@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 from py_markdown_table.markdown_table import markdown_table as _markdown_table
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import classify_article_scored, load_classifier_head, load_taxonomy
+from rss_summary.classification import classify_article_scored, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy
 from rss_summary.parsing import parse_daily_feed_md
 from rss_summary.similarity import encode_text
 
@@ -321,13 +321,14 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
     most_read_paths = get_most_read_urls()
     logging.info("Found %d most-read paths.", len(most_read_paths))
 
-    # Load model, taxonomy, and classifier head
+    # Load models, taxonomy, and classifier head
     model = SentenceTransformer("BAAI/bge-m3")
     try:
         theme_names = load_taxonomy(taxonomy)
         head = load_classifier_head()
     except FileNotFoundError as e:
         raise click.ClickException(str(e))
+    model_e5 = load_e5_model()
 
     # Cluster articles
     logging.info("Clustering articles…")
@@ -339,7 +340,10 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
     for raw_cluster in raw_clusters:
         score = score_cluster(raw_cluster, most_read_paths)
         centroid = representative_embedding(raw_cluster)
-        classification = classify_article_scored(centroid, head)
+        rep = pick_representative_article(raw_cluster, centroid)
+        rep_text = f"{rep['title']}. {rep['summary']}"
+        cls_embedding = encode_for_classification(rep_text, model, model_e5)
+        classification = classify_article_scored(cls_embedding, head)
 
         most_read_tags = []
         for item in raw_cluster:

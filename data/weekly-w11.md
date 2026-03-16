@@ -180,12 +180,12 @@
 
 ---
 
-### L’Université des Antilles accueille des étudiants de Howard et de Caroline du Sud
+### Barbade. Petit déjeuner pour tous les enfants
 **1 jour · 1 source**
 
-|                                                                                                     Titre                                                                                                     | Date|Source|
-|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|------|
-|[L’Université des Antilles accueille des étudiants de Howard et de Caroline du Sud](https://rci.fm/guadeloupe/infos/Education/LUniversite-des-Antilles-accueille-des-etudiants-de-Howard-et-de-Caroline-du-Sud)|10/03|  RCI |
+|                                                            Titre                                                            | Date|  Source |
+|-----------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|[Barbade. Petit déjeuner pour tous les enfants](https://www.karibinfo.com/news/barbade-petit-dejeuner-pour-tous-les-enfants/)|10/03|Karibinfo|
 
 ---
 
