@@ -50,7 +50,7 @@
 ## Politique
 
 ### Municipalités 2026 : les jeunes Guadeloupéens bouderont-ils les urnes les 15 et 22 mars prochains ?
-**5 jours · 2 sources**
+**5 jours · 2 sources · 🔥 plus lu (RCI)**
 
 |                                                                                                                           Titre                                                                                                                           | Date| Source|
 |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|-------|
@@ -80,6 +80,16 @@
 
 ## Culture & société
 
+### Guadeloupe. Mi-carême : les deux-roues resteront à la maison
+**2 jours · 2 sources**
+
+|                                                                                                                                              Titre                                                                                                                                              | Date|  Source |
+|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
+|                                                                    [Guadeloupe. Mi-carême : les deux-roues resteront à la maison](https://www.karibinfo.com/news/guadeloupe-mi-careme-les-deux-roues-resteront-a-la-maison/)                                                                    |11/03|Karibinfo|
+|[Mi-carême en Guadeloupe : les deux-roues motorisés interdits sur les parcours des défilés carnavalesques](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/pointe-pitre/mi-careme-en-guadeloupe-les-deux-roues-motorises-interdits-sur-les-parcours-des-defiles-carnavalesques-1679706.html)|12/03| La 1ère |
+
+---
+
 ### Mi-Carême 2026 : le rouge et le noir seront de sortie ce jeudi à Basse-Terre !
 **2 jours · 1 source**
 
@@ -87,15 +97,6 @@
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|------|
 |[Mi-Carême 2026 : le rouge et le noir seront de sortie ce jeudi à Basse-Terre !](https://rci.fm/guadeloupe/infos/Culture/Mi-Careme-2026-le-rouge-et-le-noir-seront-de-sortie-ce-jeudi-Basse-Terre)|12/03|  RCI |
 |   [[EN IMAGES] La Mi-Carême a fait vibrer les rues de Pointe-à-Pitre ce jeudi !](https://rci.fm/guadeloupe/infos/Culture/EN-IMAGES-La-Mi-Careme-fait-vibrer-les-rues-de-Pointe-Pitre-ce-jeudi)   |13/03|  RCI |
-
----
-
-### Guadeloupe. Ophély Mézino au festival Femmes d’ici & cinéma de Cinéstar
-**1 jour · 1 source**
-
-|                                                                                     Titre                                                                                    | Date|  Source |
-|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|[Guadeloupe. Ophély Mézino au festival Femmes d’ici & cinéma de Cinéstar](https://www.karibinfo.com/news/guadeloupe-ophely-mezino-au-festival-femmes-dici-cinema-de-cinestar/)|09/03|Karibinfo|
 
 ---
 
@@ -179,12 +180,12 @@
 
 ---
 
-### Barbade. Petit déjeuner pour tous les enfants
+### L’Université des Antilles accueille des étudiants de Howard et de Caroline du Sud
 **1 jour · 1 source**
 
-|                                                            Titre                                                            | Date|  Source |
-|-----------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|[Barbade. Petit déjeuner pour tous les enfants](https://www.karibinfo.com/news/barbade-petit-dejeuner-pour-tous-les-enfants/)|10/03|Karibinfo|
+|                                                                                                     Titre                                                                                                     | Date|Source|
+|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|------|
+|[L’Université des Antilles accueille des étudiants de Howard et de Caroline du Sud](https://rci.fm/guadeloupe/infos/Education/LUniversite-des-Antilles-accueille-des-etudiants-de-Howard-et-de-Caroline-du-Sud)|10/03|  RCI |
 
 ---
 
@@ -229,26 +230,5 @@
 |                                                                          Titre                                                                          | Date|  Source |
 |---------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
 |[Jamaïque. Une nouvelle victoire judiciaire pour Vybz Kartel](https://www.karibinfo.com/news/jamaique-une-nouvelle-victoire-judiciaire-pour-vybz-kartel/)|09/03|Karibinfo|
-
----
-
-## Autres
-
-### Guadeloupe. Mi-carême : les deux-roues resteront à la maison
-**2 jours · 2 sources**
-
-|                                                                                                                                              Titre                                                                                                                                              | Date|  Source |
-|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|                                                                    [Guadeloupe. Mi-carême : les deux-roues resteront à la maison](https://www.karibinfo.com/news/guadeloupe-mi-careme-les-deux-roues-resteront-a-la-maison/)                                                                    |11/03|Karibinfo|
-|[Mi-carême en Guadeloupe : les deux-roues motorisés interdits sur les parcours des défilés carnavalesques](https://la1ere.franceinfo.fr/guadeloupe/grande-terre/pointe-pitre/mi-careme-en-guadeloupe-les-deux-roues-motorises-interdits-sur-les-parcours-des-defiles-carnavalesques-1679706.html)|12/03| La 1ère |
-
----
-
-### Guyane. Recherche d’une personne disparue sur le fleuve du Maroni
-**1 jour · 1 source**
-
-|                                                                                Titre                                                                               | Date|  Source |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----|---------|
-|[Guyane. Recherche d’une personne disparue sur le fleuve du Maroni](https://www.karibinfo.com/news/guyane-recherche-dune-personne-disparue-sur-le-fleuve-du-maroni/)|09/03|Karibinfo|
 
 ---

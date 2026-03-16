@@ -11,33 +11,6 @@ content_hash = "sha256:2593e928b1142dede1c59ce41bd341e09534d95a53bc55e6c13993ce8
 requires_python = "==3.14.*"
 
 [[package]]
-name = "annotated-doc"
-version = "0.0.4"
-requires_python = ">=3.8"
-summary = "Document parameters, class attributes, return types, and variables inline, with Annotated."
-groups = ["default"]
-files = [
-    {file = "annotated_doc-0.0.4-py3-none-any.whl", hash = "sha256:571ac1dc6991c450b25a9c2d84a3705e2ae7a53467b5d111c24fa8baabbed320"},
-    {file = "annotated_doc-0.0.4.tar.gz", hash = "sha256:fbcda96e87e9c92ad167c2e53839e57503ecfda18804ea28102353485033faa4"},
-]
-
-[[package]]
-name = "anyio"
-version = "4.12.1"
-requires_python = ">=3.9"
-summary = "High-level concurrency and networking framework on top of asyncio or Trio"
-groups = ["default"]
-dependencies = [
-    "exceptiongroup>=1.0.2; python_version < \"3.11\"",
-    "idna>=2.8",
-    "typing-extensions>=4.5; python_version < \"3.13\"",
-]
-files = [
-    {file = "anyio-4.12.1-py3-none-any.whl", hash = "sha256:d405828884fc140aa80a3c667b8beed277f1dfedec42ba031bd6ac3db606ab6c"},
-    {file = "anyio-4.12.1.tar.gz", hash = "sha256:41cfcc3a4c85d3f05c932da7c26d0201ac36f72abd4435ba90d0464a3ffed703"},
-]
-
-[[package]]
 name = "beautifulsoup4"
 version = "4.14.3"
 requires_python = ">=3.7.0"
@@ -249,23 +222,12 @@ files = [
 ]
 
 [[package]]
-name = "h11"
-version = "0.16.0"
-requires_python = ">=3.8"
-summary = "A pure-Python, bring-your-own-I/O implementation of HTTP/1.1"
-groups = ["default"]
-files = [
-    {file = "h11-0.16.0-py3-none-any.whl", hash = "sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86"},
-    {file = "h11-0.16.0.tar.gz", hash = "sha256:4e35b956cf45792e4caa5885e69fba00bdbc6ffafbfa020300e549b208ee5ff1"},
-]
-
-[[package]]
 name = "hf-xet"
 version = "1.2.0"
 requires_python = ">=3.8"
 summary = "Fast transfer of large files with the Hugging Face Hub."
 groups = ["default"]
-marker = "platform_machine == \"x86_64\" or platform_machine == \"amd64\" or platform_machine == \"AMD64\" or platform_machine == \"arm64\" or platform_machine == \"aarch64\""
+marker = "platform_machine == \"x86_64\" or platform_machine == \"amd64\" or platform_machine == \"arm64\" or platform_machine == \"aarch64\""
 files = [
     {file = "hf_xet-1.2.0-cp314-cp314t-macosx_10_12_x86_64.whl", hash = "sha256:10bfab528b968c70e062607f663e21e34e2bba349e8038db546646875495179e"},
     {file = "hf_xet-1.2.0-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:2a212e842647b02eb6a911187dc878e79c4aa0aa397e88dd3b26761676e8c1f8"},
@@ -285,58 +247,24 @@ files = [
 ]
 
 [[package]]
-name = "httpcore"
-version = "1.0.9"
-requires_python = ">=3.8"
-summary = "A minimal low-level HTTP client."
-groups = ["default"]
-dependencies = [
-    "certifi",
-    "h11>=0.16",
-]
-files = [
-    {file = "httpcore-1.0.9-py3-none-any.whl", hash = "sha256:2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55"},
-    {file = "httpcore-1.0.9.tar.gz", hash = "sha256:6e34463af53fd2ab5d807f399a9b45ea31c3dfa2276f15a2c3f00afff6e176e8"},
-]
-
-[[package]]
-name = "httpx"
-version = "0.28.1"
-requires_python = ">=3.8"
-summary = "The next generation HTTP client."
-groups = ["default"]
-dependencies = [
-    "anyio",
-    "certifi",
-    "httpcore==1.*",
-    "idna",
-]
-files = [
-    {file = "httpx-0.28.1-py3-none-any.whl", hash = "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad"},
-    {file = "httpx-0.28.1.tar.gz", hash = "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc"},
-]
-
-[[package]]
 name = "huggingface-hub"
-version = "1.4.1"
-requires_python = ">=3.9.0"
+version = "0.36.2"
+requires_python = ">=3.8.0"
 summary = "Client library to download and publish models, datasets and other repos on the huggingface.co hub"
 groups = ["default"]
 dependencies = [
     "filelock",
     "fsspec>=2023.5.0",
-    "hf-xet<2.0.0,>=1.2.0; platform_machine == \"x86_64\" or platform_machine == \"amd64\" or platform_machine == \"AMD64\" or platform_machine == \"arm64\" or platform_machine == \"aarch64\"",
-    "httpx<1,>=0.23.0",
+    "hf-xet<2.0.0,>=1.1.3; platform_machine == \"x86_64\" or platform_machine == \"amd64\" or platform_machine == \"arm64\" or platform_machine == \"aarch64\"",
     "packaging>=20.9",
     "pyyaml>=5.1",
-    "shellingham",
+    "requests",
     "tqdm>=4.42.1",
-    "typer-slim",
-    "typing-extensions>=4.1.0",
+    "typing-extensions>=3.7.4.3",
 ]
 files = [
-    {file = "huggingface_hub-1.4.1-py3-none-any.whl", hash = "sha256:9931d075fb7a79af5abc487106414ec5fba2c0ae86104c0c62fd6cae38873d18"},
-    {file = "huggingface_hub-1.4.1.tar.gz", hash = "sha256:b41131ec35e631e7383ab26d6146b8d8972abc8b6309b963b306fbcca87f5ed5"},
+    {file = "huggingface_hub-0.36.2-py3-none-any.whl", hash = "sha256:48f0c8eac16145dfce371e9d2d7772854a4f591bcb56c9cf548accf531d54270"},
+    {file = "huggingface_hub-0.36.2.tar.gz", hash = "sha256:1934304d2fb224f8afa3b87007d58501acfda9215b334eed53072dd5e815ff7a"},
 ]
 
 [[package]]
@@ -387,20 +315,6 @@ files = [
 ]
 
 [[package]]
-name = "markdown-it-py"
-version = "4.0.0"
-requires_python = ">=3.10"
-summary = "Python port of markdown-it. Markdown parsing, done right!"
-groups = ["default"]
-dependencies = [
-    "mdurl~=0.1",
-]
-files = [
-    {file = "markdown_it_py-4.0.0-py3-none-any.whl", hash = "sha256:87327c59b172c5011896038353a81343b6754500a08cd7a4973bb48c6d578147"},
-    {file = "markdown_it_py-4.0.0.tar.gz", hash = "sha256:cb0a2b4aa34f932c007117b194e945bd74e0ec24133ceb5bac59009cda1cb9f3"},
-]
-
-[[package]]
 name = "markupsafe"
 version = "3.0.3"
 requires_python = ">=3.9"
@@ -430,17 +344,6 @@ files = [
     {file = "markupsafe-3.0.3-cp314-cp314t-win_amd64.whl", hash = "sha256:4faffd047e07c38848ce017e8725090413cd80cbc23d86e55c587bf979e579c9"},
     {file = "markupsafe-3.0.3-cp314-cp314t-win_arm64.whl", hash = "sha256:32001d6a8fc98c8cb5c947787c5d08b0a50663d139f1305bac5885d98d9b40fa"},
     {file = "markupsafe-3.0.3.tar.gz", hash = "sha256:722695808f4b6457b320fdc131280796bdceb04ab50fe1795cd540799ebe1698"},
-]
-
-[[package]]
-name = "mdurl"
-version = "0.1.2"
-requires_python = ">=3.7"
-summary = "Markdown URL utilities"
-groups = ["default"]
-files = [
-    {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
-    {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
 ]
 
 [[package]]
@@ -813,7 +716,7 @@ name = "pygments"
 version = "2.19.2"
 requires_python = ">=3.8"
 summary = "Pygments is a syntax highlighting package written in Python."
-groups = ["default", "dev"]
+groups = ["dev"]
 files = [
     {file = "pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b"},
     {file = "pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887"},
@@ -959,21 +862,6 @@ files = [
 ]
 
 [[package]]
-name = "rich"
-version = "14.3.3"
-requires_python = ">=3.8.0"
-summary = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
-groups = ["default"]
-dependencies = [
-    "markdown-it-py>=2.2.0",
-    "pygments<3.0.0,>=2.13.0",
-]
-files = [
-    {file = "rich-14.3.3-py3-none-any.whl", hash = "sha256:793431c1f8619afa7d3b52b2cdec859562b950ea0d4b6b505397612db8d5362d"},
-    {file = "rich-14.3.3.tar.gz", hash = "sha256:b8daa0b9e4eef54dd8cf7c86c03713f53241884e814f4e2f5fb342fe520f639b"},
-]
-
-[[package]]
 name = "safetensors"
 version = "0.7.0"
 requires_python = ">=3.9"
@@ -1101,17 +989,6 @@ files = [
 ]
 
 [[package]]
-name = "shellingham"
-version = "1.5.4"
-requires_python = ">=3.7"
-summary = "Tool to Detect Surrounding Shell"
-groups = ["default"]
-files = [
-    {file = "shellingham-1.5.4-py2.py3-none-any.whl", hash = "sha256:7ecfff8f2fd72616f7481040475a65b2bf8af90a56c89140852d1120324e8686"},
-    {file = "shellingham-1.5.4.tar.gz", hash = "sha256:8dbca0739d487e5bd35ab3ca4b36e11c4078f3a234bfce294b0a0291363404de"},
-]
-
-[[package]]
 name = "soupsieve"
 version = "2.8.3"
 requires_python = ">=3.9"
@@ -1235,24 +1112,25 @@ files = [
 
 [[package]]
 name = "transformers"
-version = "5.2.0"
-requires_python = ">=3.10.0"
-summary = "Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training."
+version = "4.57.3"
+requires_python = ">=3.9.0"
+summary = "State-of-the-art Machine Learning for JAX, PyTorch and TensorFlow"
 groups = ["default"]
 dependencies = [
-    "huggingface-hub<2.0,>=1.3.0",
+    "filelock",
+    "huggingface-hub<1.0,>=0.34.0",
     "numpy>=1.17",
     "packaging>=20.0",
     "pyyaml>=5.1",
     "regex!=2019.12.17",
+    "requests",
     "safetensors>=0.4.3",
     "tokenizers<=0.23.0,>=0.22.0",
     "tqdm>=4.27",
-    "typer-slim",
 ]
 files = [
-    {file = "transformers-5.2.0-py3-none-any.whl", hash = "sha256:9ecaf243dc45bee11a7d93f8caf03746accc0cb069181bbf4ad8566c53e854b4"},
-    {file = "transformers-5.2.0.tar.gz", hash = "sha256:0088b8b46ccc9eff1a1dca72b5d618a5ee3b1befc3e418c9512b35dea9f9a650"},
+    {file = "transformers-4.57.3-py3-none-any.whl", hash = "sha256:c77d353a4851b1880191603d36acb313411d3577f6e2897814f333841f7003f4"},
+    {file = "transformers-4.57.3.tar.gz", hash = "sha256:df4945029aaddd7c09eec5cad851f30662f8bd1746721b34cc031d70c65afebc"},
 ]
 
 [[package]]
@@ -1270,37 +1148,6 @@ files = [
     {file = "triton-3.6.0-cp314-cp314-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:a17a5d5985f0ac494ed8a8e54568f092f7057ef60e1b0fa09d3fd1512064e803"},
     {file = "triton-3.6.0-cp314-cp314t-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:0b3a97e8ed304dfa9bd23bb41ca04cdf6b2e617d5e782a8653d616037a5d537d"},
     {file = "triton-3.6.0-cp314-cp314t-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:46bd1c1af4b6704e554cad2eeb3b0a6513a980d470ccfa63189737340c7746a7"},
-]
-
-[[package]]
-name = "typer"
-version = "0.24.0"
-requires_python = ">=3.10"
-summary = "Typer, build great CLIs. Easy to code. Based on Python type hints."
-groups = ["default"]
-dependencies = [
-    "annotated-doc>=0.0.2",
-    "click>=8.2.1",
-    "rich>=12.3.0",
-    "shellingham>=1.3.0",
-]
-files = [
-    {file = "typer-0.24.0-py3-none-any.whl", hash = "sha256:5fc435a9c8356f6160ed6e85a6301fdd6e3d8b2851da502050d1f92c5e9eddc8"},
-    {file = "typer-0.24.0.tar.gz", hash = "sha256:f9373dc4eff901350694f519f783c29b6d7a110fc0dcc11b1d7e353b85ca6504"},
-]
-
-[[package]]
-name = "typer-slim"
-version = "0.24.0"
-requires_python = ">=3.10"
-summary = "Typer, build great CLIs. Easy to code. Based on Python type hints."
-groups = ["default"]
-dependencies = [
-    "typer>=0.24.0",
-]
-files = [
-    {file = "typer_slim-0.24.0-py3-none-any.whl", hash = "sha256:d5d7ee1ee2834d5020c7c616ed5e0d0f29b9a4b1dd283bdebae198ec09778d0e"},
-    {file = "typer_slim-0.24.0.tar.gz", hash = "sha256:f0ed36127183f52ae6ced2ecb2521789995992c521a46083bfcdbb652d22ad34"},
 ]
 
 [[package]]

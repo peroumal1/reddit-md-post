@@ -1,5 +1,5 @@
 """
-Train a logistic regression classifier on top of frozen BAAI/bge-m3 embeddings.
+Train a LinearSVC classifier on top of frozen BAAI/bge-m3 embeddings.
 
 Usage:
     pdm run python classifier/train.py
@@ -17,10 +17,11 @@ from pathlib import Path
 import joblib
 import numpy as np
 from sentence_transformers import SentenceTransformer
-from sklearn.linear_model import LogisticRegression
+from sklearn.calibration import CalibratedClassifierCV
 from sklearn.metrics import classification_report
 from sklearn.model_selection import StratifiedKFold, cross_val_predict
 from sklearn.preprocessing import LabelEncoder
+from sklearn.svm import LinearSVC
 
 
 def load_themes(path: str) -> list[dict]:
@@ -63,7 +64,9 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
 
     # Cross-validation evaluation (more reliable than a single split given small data)
     print("\nRunning 5-fold stratified cross-validation...")
-    clf_cv = LogisticRegression(max_iter=1000, C=1.0, class_weight="balanced")
+    clf_cv = CalibratedClassifierCV(
+        LinearSVC(max_iter=2000, C=1.0, class_weight="balanced"), cv=5
+    )
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     y_pred_cv = cross_val_predict(clf_cv, X, y, cv=cv)
 
@@ -85,7 +88,9 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
     # Train final model on all data
     print("Training final model on all examples...")
     t0 = time.time()
-    clf = LogisticRegression(max_iter=1000, C=1.0, class_weight="balanced")
+    clf = CalibratedClassifierCV(
+        LinearSVC(max_iter=2000, C=1.0, class_weight="balanced"), cv=5
+    )
     clf.fit(X, y)
     elapsed = time.time() - t0
     print(f"Training done in {elapsed:.1f}s")

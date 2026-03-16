@@ -91,7 +91,8 @@ def main(rss_links, feed_output, with_images, dry_run, restore, until, classify,
             except FileNotFoundError as e:
                 raise click.ClickException(str(e))
             for item in sorted_list:
-                item["theme"] = classify_article(item["embedding"], head)
+                cls_embedding = encode_text(model, f"{item['title']}. {item['summary']}")
+                item["theme"] = classify_article(cls_embedding, head)
             markdown = format_feed_entries_classified(sorted_list, theme_names, with_images)
         else:
             rows = format_feed_entries(sorted_list, with_images)
