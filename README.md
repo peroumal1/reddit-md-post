@@ -68,7 +68,7 @@ Options:
 
 The model is downloaded automatically on first run and cached in `~/.cache/huggingface`.
 
-**Classification** (enabled with `--classify`): uses a trained logistic regression head on top of frozen `BAAI/bge-m3` embeddings (80.2% accuracy, 10 themes). The head is stored in `data/classifier_head.joblib` and committed to the repository — no retraining needed on first clone.
+**Classification** (enabled with `--classify`): uses a trained LinearSVC head on top of frozen `BAAI/bge-m3` embeddings (~80% accuracy, 10 themes). The head is stored in `data/classifier_head.joblib` and committed to the repository — no retraining needed on first clone.
 
 **Last-run tracking**: the date of last execution is stored in `.last-run`. Only entries published since the previous run are fetched.
 

@@ -20,3 +20,4 @@ tests/test_last_run.py
 tests/test_markdown_generation.py
 tests/test_parsing.py
 tests/test_similarity.py
+tests/test_weekly.py
