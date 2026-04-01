@@ -15,6 +15,8 @@ src/rss_summary.egg-info/dependency_links.txt
 src/rss_summary.egg-info/entry_points.txt
 src/rss_summary.egg-info/requires.txt
 src/rss_summary.egg-info/top_level.txt
+tests/test_aggregate.py
+tests/test_classification.py
 tests/test_formatting.py
 tests/test_last_run.py
 tests/test_markdown_generation.py

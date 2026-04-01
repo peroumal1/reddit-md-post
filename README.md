@@ -36,6 +36,7 @@ data/
   feed.md                 # latest daily digest
   feed-YYYY-MM-DD.md      # dated archive copies
   weekly-wXX.md           # weekly digest
+  weekly-wXX-prose.md     # LLM-generated prose digest (written with --prose)
   weekly-wXX-review.md    # taxonomy review report
 .last-run                 # last successful run timestamp (committed)
 ```
@@ -90,9 +91,14 @@ Options:
   --top-per-theme INT Max clusters per section     [default: 2]
   --min-days INT      Min daily files required     [default: 7]
   --suggest           Also write taxonomy review report
+  --narratives        Replace article tables with Mistral-generated prose per cluster
+  --prose             Also write a flat prose digest to weekly-wXX-prose.md
+  --stitch            With --prose: one flowing editorial text instead of per-cluster paragraphs
 ```
 
 Requires all 7 daily `feed-YYYY-MM-DD.md` files for the target week (controlled by `--min-days`). Outputs `data/weekly-wXX.md` and, with `--suggest`, `data/weekly-wXX-review.md`.
+
+`--narratives` and `--prose` require `MISTRAL_API_KEY` to be set (Mistral free tier, EU-accessible). The CI workflow passes it via the `MISTRAL_API_KEY` repository secret.
 
 ---
 
@@ -110,13 +116,7 @@ Options:
 
 `--feed-file` and `--feed-url` are mutually exclusive.
 
-Requires a `.env` file with:
-
-```
-REDDIT_LOGIN=your_username
-REDDIT_PASSWORD=your_password
-REDDIT_OTP_SECRET=your_totp_secret
-```
+Requires a `.env` file with Reddit credentials (see `.env.example`).
 
 ---
 

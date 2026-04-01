@@ -30,6 +30,8 @@ SOURCE_MAP = {
 }
 
 CLUSTER_THRESHOLD = 0.70
+MISTRAL_MODEL = "mistral-small-latest"
+_CLUSTER_SORT_KEY = lambda c: (bool(c["most_read_tags"]), c["score"])
 
 
 def extract_source(url):
@@ -152,6 +154,12 @@ def pick_representative_article(raw_cluster, centroid):
     return best
 
 
+def _format_week_range(week_start, week_end):
+    start_str = f"{week_start.day} {MOIS[week_start.month]}"
+    end_str = f"{week_end.day} {MOIS[week_end.month]} {week_end.year}"
+    return start_str, end_str
+
+
 def _cluster_sections(clusters):
     """Build numbered article sections shared by both narrative generators."""
     sections = []
@@ -188,7 +196,7 @@ def generate_all_narratives(clusters, client):
     )
 
     response = client.chat.complete(
-        model="mistral-small-latest",
+        model=MISTRAL_MODEL,
         messages=[{"role": "user", "content": prompt}],
     )
     text = response.choices[0].message.content.strip()
@@ -204,8 +212,7 @@ def generate_all_narratives(clusters, client):
 
 def generate_stitched_narrative(clusters, week_num, week_start, week_end, client):
     """Single Mistral call producing one flowing editorial text covering all clusters."""
-    start_str = f"{week_start.day} {MOIS[week_start.month]}"
-    end_str = f"{week_end.day} {MOIS[week_end.month]} {week_end.year}"
+    start_str, end_str = _format_week_range(week_start, week_end)
     sections = _cluster_sections(clusters)
     prompt = (
         f"Tu es journaliste et rédiges le résumé de l'actualité hebdomadaire en Guadeloupe "
@@ -221,15 +228,14 @@ def generate_stitched_narrative(clusters, week_num, week_start, week_end, client
         "- N'invente aucun fait absent des articles fournis."
     )
     response = client.chat.complete(
-        model="mistral-small-latest",
+        model=MISTRAL_MODEL,
         messages=[{"role": "user", "content": prompt}],
     )
     return response.choices[0].message.content.strip()
 
 
 def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names, top_per_theme=2):
-    start_str = f"{week_start.day} {MOIS[week_start.month]}"
-    end_str = f"{week_end.day} {MOIS[week_end.month]} {week_end.year}"
+    start_str, end_str = _format_week_range(week_start, week_end)
     lines = [f"# Semaine W{week_num:02d} — {start_str} au {end_str}", "", "## Sujets marquants"]
 
     ordered_themes = list(theme_names) + ["Autres"]
@@ -237,11 +243,7 @@ def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names
         all_theme_clusters = clusters_by_theme.get(theme, [])
         if not all_theme_clusters:
             continue
-        theme_clusters = sorted(
-            all_theme_clusters,
-            key=lambda c: (bool(c["most_read_tags"]), c["score"]),
-            reverse=True,
-        )[:top_per_theme]
+        theme_clusters = sorted(all_theme_clusters, key=_CLUSTER_SORT_KEY, reverse=True)[:top_per_theme]
         lines.append(f"\n## {theme}")
         for cluster in theme_clusters:
             rep = pick_representative_article(cluster["raw"], cluster["centroid"])
@@ -282,34 +284,14 @@ def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names
     return "\n".join(lines)
 
 
-def _strip_markdown(text):
-    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)  # [text](url) → text
-    text = re.sub(r'\*\*(.+?)\*\*', r'\1', text)
-    text = re.sub(r'\*(.+?)\*', r'\1', text)
-    text = re.sub(r'_(.+?)_', r'\1', text)
-    return text
-
 
 def render_prose_digest(week_num, week_start, week_end, clusters_to_render, stitched=None):
     """Flat plain-text digest ordered by importance score, no theme sections.
 
     If `stitched` is provided, it replaces the per-cluster paragraphs.
     """
-    start_str = f"{week_start.day} {MOIS[week_start.month]}"
-    end_str = f"{week_end.day} {MOIS[week_end.month]} {week_end.year}"
-
-    ordered = sorted(
-        clusters_to_render,
-        key=lambda c: (bool(c["most_read_tags"]), c["score"]),
-        reverse=True,
-    )
-
-    source_names = sorted({
-        item["article"]["source"]
-        for c in ordered
-        for item in c["raw"]
-    })
-
+    start_str, end_str = _format_week_range(week_start, week_end)
+    ordered = sorted(clusters_to_render, key=_CLUSTER_SORT_KEY, reverse=True)
     lines = [f"# Semaine W{week_num:02d} — {start_str} au {end_str}", ""]
     if stitched:
         lines.append(stitched)
@@ -522,11 +504,7 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
         ordered_themes = list(theme_names) + ["Autres"]
         clusters_to_render = []
         for theme in ordered_themes:
-            top = sorted(
-                clusters_by_theme.get(theme, []),
-                key=lambda c: (bool(c["most_read_tags"]), c["score"]),
-                reverse=True,
-            )[:top_per_theme]
+            top = sorted(clusters_by_theme.get(theme, []), key=_CLUSTER_SORT_KEY, reverse=True)[:top_per_theme]
             clusters_to_render.extend(top)
         logging.info("Generating narratives for %d clusters via Mistral…", len(clusters_to_render))
         generated = generate_all_narratives(clusters_to_render, mistral_client)
