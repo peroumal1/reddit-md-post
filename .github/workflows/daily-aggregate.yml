@@ -2,7 +2,9 @@ name: Daily RSS Aggregation
 
 on:
   schedule:
-    # 18:30 UTC = 19:30 Paris (CET winter). In summer (CEST) this runs at 20:30 Paris.
+    # 17:30 UTC = 19:30 CEST (summer, UTC+2). Guard skips duplicate if both fire same day.
+    - cron: "30 17 * * *"
+    # 18:30 UTC = 19:30 CET (winter, UTC+1). Guard skips duplicate in summer.
     - cron: "30 18 * * *"
   workflow_dispatch:
 

@@ -2,9 +2,10 @@ name: Weekly Digest
 
 on:
   schedule:
-    # Sunday 19:00 UTC = 20:00 Paris (CET winter). In summer (CEST) this runs at 21:00 Paris.
-    # By Sunday evening the full week (Mon–Sun) of daily feeds should be committed.
-    - cron: "0 19 * * 0"
+    # 18:30 UTC = 20:30 CEST (summer, UTC+2), 1h after daily (17:30 UTC). Guard skips duplicate.
+    - cron: "30 18 * * 0"
+    # 19:30 UTC = 20:30 CET (winter, UTC+1), 1h after daily (18:30 UTC). Guard skips duplicate.
+    - cron: "30 19 * * 0"
   workflow_dispatch:
     inputs:
       week:
@@ -24,29 +25,48 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check if already ran this week
+        id: check_weekly
+        run: |
+          WEEK=$(date +%V)
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
+            echo "already_ran=false" >> $GITHUB_OUTPUT
+          elif ls data/weekly-w${WEEK}.md 2>/dev/null; then
+            echo "already_ran=true" >> $GITHUB_OUTPUT
+            echo "Weekly digest for W${WEEK} already exists, skipping."
+          else
+            echo "already_ran=false" >> $GITHUB_OUTPUT
+          fi
+
       - uses: actions/setup-python@v5
+        if: steps.check_weekly.outputs.already_ran != 'true'
         with:
           python-version: "3.14"
 
       - name: Install PDM
+        if: steps.check_weekly.outputs.already_ran != 'true'
         run: pip install pdm
 
       - name: Cache PDM dependencies
+        if: steps.check_weekly.outputs.already_ran != 'true'
         uses: actions/cache@v4
         with:
           path: .venv
           key: pdm-${{ hashFiles('pdm.lock') }}
 
       - name: Cache Hugging Face models
+        if: steps.check_weekly.outputs.already_ran != 'true'
         uses: actions/cache@v4
         with:
           path: ~/.cache/huggingface
           key: hf-models-bge-m3
 
       - name: Install dependencies
+        if: steps.check_weekly.outputs.already_ran != 'true'
         run: pdm install
 
       - name: Run weekly digest
+        if: steps.check_weekly.outputs.already_ran != 'true'
         env:
           INPUT_WEEK: ${{ github.event.inputs.week }}
           INPUT_YEAR: ${{ github.event.inputs.year }}
@@ -61,6 +81,7 @@ jobs:
           pdm run weekly-digest --suggest $WEEK_ARGS
 
       - name: Commit and push
+        if: steps.check_weekly.outputs.already_ran != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
