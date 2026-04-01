@@ -1,4 +1,3 @@
-import calendar
 import logging
 from datetime import datetime
 from pathlib import Path
@@ -52,7 +51,7 @@ def main(rss_links, feed_output, with_images, dry_run, restore, until, classify,
             for entry in feed.entries:
                 if not entry.get("published_parsed"):
                     continue
-                feed_date = datetime.utcfromtimestamp(calendar.timegm(entry.published_parsed))
+                feed_date = datetime(*entry.published_parsed[:6])
                 if feed_date <= date_midnight:
                     continue
                 if date_until is not None and feed_date > date_until:
