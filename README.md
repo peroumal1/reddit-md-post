@@ -167,4 +167,5 @@ The head is ~800KB and safe to commit. Both `BAAI/bge-m3` and `multilingual-e5-l
 
 ```zsh
 pdm run pytest
+pdm run pytest --cov=rss_summary   # with coverage report
 ```
