@@ -1,6 +1,6 @@
 from unittest.mock import patch
 
-from rss_summary.parsing import extract_first_paragraph, get_default_image_link
+from rss_summary.parsing import extract_first_paragraph, get_default_image_link, parse_daily_feed_md
 
 
 class TestExtractFirstParagraph:
@@ -55,3 +55,60 @@ class TestGetDefaultImageLink:
         mock_get.side_effect = requests.RequestException("timeout")
         result = get_default_image_link({}, "https://example.com/article")
         assert result == [{"url": ""}]
+
+
+class TestParseDailyFeedMd:
+    _TABLE = (
+        "| Titre | Résumé | Date de publication |\n"
+        "|---|---|---|\n"
+        "| [Article one](https://rci.fm/a) | Summary here | 2025-01-01T10:00:00 |\n"
+        "| [Article two](https://karibinfo.com/b) | Other summary | 2025-03-15T08:30:00 |\n"
+    )
+
+    def test_parses_correct_number_of_entries(self, tmp_path):
+        f = tmp_path / "feed.md"
+        f.write_text(self._TABLE)
+        articles = parse_daily_feed_md(f)
+        assert len(articles) == 2
+
+    def test_parses_title_and_url(self, tmp_path):
+        f = tmp_path / "feed.md"
+        f.write_text(self._TABLE)
+        article = parse_daily_feed_md(f)[0]
+        assert article["title"] == "Article one"
+        assert article["url"] == "https://rci.fm/a"
+
+    def test_parses_date(self, tmp_path):
+        from datetime import datetime
+        f = tmp_path / "feed.md"
+        f.write_text(self._TABLE)
+        article = parse_daily_feed_md(f)[0]
+        assert article["date"] == datetime(2025, 1, 1, 10, 0)
+
+    def test_skips_separator_rows(self, tmp_path):
+        f = tmp_path / "feed.md"
+        f.write_text(self._TABLE)
+        articles = parse_daily_feed_md(f)
+        assert all(a["title"] for a in articles)
+
+    def test_skips_section_header_rows(self, tmp_path):
+        md = (
+            "## Une section\n\n"
+            "| Titre | Résumé | Date de publication |\n"
+            "|---|---|---|\n"
+            "| [Article](https://rci.fm/a) | Summary | 2025-01-01T10:00:00 |\n"
+        )
+        f = tmp_path / "feed.md"
+        f.write_text(md)
+        articles = parse_daily_feed_md(f)
+        assert len(articles) == 1
+
+    def test_skips_invalid_date_rows(self, tmp_path):
+        md = (
+            "| Titre | Résumé | Date de publication |\n"
+            "|---|---|---|\n"
+            "| [Article](https://example.com) | Summary | not-a-date |\n"
+        )
+        f = tmp_path / "feed.md"
+        f.write_text(md)
+        assert parse_daily_feed_md(f) == []

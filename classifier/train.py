@@ -73,7 +73,6 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
 
     X = encode_concat(texts)
 
-    # Encode labels
     le = LabelEncoder()
     y = le.fit_transform(raw_labels)
 
@@ -85,13 +84,8 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     y_pred_cv = cross_val_predict(clf_cv, X, y, cv=cv)
 
-    theme_names = [t["theme"] for t in themes]
-    label_names = [t["label"] for t in themes]
-    # Map label encoder classes back to theme display names for the report
-    display_names = []
-    for cls in le.classes_:
-        idx = label_names.index(cls)
-        display_names.append(theme_names[idx])
+    label_to_theme = {t["label"]: t["theme"] for t in themes}
+    display_names = [label_to_theme[cls] for cls in le.classes_]
 
     report_str = classification_report(y, y_pred_cv, target_names=display_names)
     report_dict = classification_report(
@@ -100,7 +94,6 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
     print("\nCross-validation results:")
     print(report_str)
 
-    # Train final model on all data
     print("Training final model on all examples...")
     t0 = time.time()
     clf = CalibratedClassifierCV(
@@ -110,7 +103,6 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
     elapsed = time.time() - t0
     print(f"Training done in {elapsed:.1f}s")
 
-    # Save head
     head = {
         "clf": clf,
         "label_encoder": le,
@@ -121,7 +113,6 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
     joblib.dump(head, output_path)
     print(f"\nHead saved to {output_path}")
 
-    # Save eval
     eval_data = {
         "timestamp": datetime.now().isoformat(),
         "backbone": f"{BGE_MODEL_ID} + {E5_MODEL_ID} (concat 2048-dim)",

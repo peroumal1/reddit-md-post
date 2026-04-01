@@ -32,9 +32,8 @@ def load_dataset(themes_path: str) -> tuple[list[str], list[str], list[str]]:
 def run_cv(X: np.ndarray, y: np.ndarray, clf, theme_names: list[str], le: LabelEncoder) -> dict:
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
     y_pred = cross_val_predict(clf, X, y, cv=cv)
-    display_names = [theme_names[list(le.classes_).index(c)] if c in le.classes_ else c for c in le.classes_]
-    # Map label indices back to theme names
-    label_to_theme = {theme["label"]: theme["theme"] for theme in json.load(open("data/themes.json"))}
+    with open("data/themes.json") as f:
+        label_to_theme = {t["label"]: t["theme"] for t in json.load(f)}
     display_names = [label_to_theme.get(c, c) for c in le.classes_]
     report = classification_report(y, y_pred, target_names=display_names, output_dict=True, zero_division=0)
     return report

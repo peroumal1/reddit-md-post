@@ -42,13 +42,14 @@ def encode_for_classification(text: str, model_bge, model_e5) -> "np.ndarray":
 
 def load_classifier_head(path=None):
     """Load the trained classifier head. Raises FileNotFoundError if not found."""
+    import joblib
     p = Path(path) if path else DEFAULT_HEAD_PATH
-    if not p.exists():
+    try:
+        return joblib.load(p)
+    except FileNotFoundError:
         raise FileNotFoundError(
             f"Classifier head not found at '{p}'. Run: pdm run python classifier/train.py"
         )
-    import joblib
-    return joblib.load(p)
 
 
 def classify_article(embedding, head, threshold=0.15):
