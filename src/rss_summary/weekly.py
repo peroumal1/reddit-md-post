@@ -1,4 +1,5 @@
 import logging
+import os
 import re
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
@@ -151,6 +152,81 @@ def pick_representative_article(raw_cluster, centroid):
     return best
 
 
+def _cluster_sections(clusters):
+    """Build numbered article sections shared by both narrative generators."""
+    sections = []
+    for i, cluster in enumerate(clusters, 1):
+        rep = pick_representative_article(cluster["raw"], cluster["centroid"])
+        article_lines = []
+        for item in cluster["raw"]:
+            a = item["article"]
+            summary = a.get("summary", "").strip()[:300]
+            line = f'- [{a["source"]}, {a["date"].strftime("%d/%m")}] [{a["title"]}]({a["url"]})'
+            if summary:
+                line += f" : {summary}"
+            article_lines.append(line)
+        sections.append(f"[{i}] {rep['title']}\n" + "\n".join(article_lines))
+    return sections
+
+
+def generate_all_narratives(clusters, client):
+    """Single Mistral call to generate one prose paragraph per cluster.
+
+    Returns a list of markdown strings (with inline links) in cluster order.
+    """
+    sections = _cluster_sections(clusters)
+    prompt = (
+        "Tu rédiges des synthèses journalistiques courtes en français pour un digest hebdomadaire "
+        "de l'actualité en Guadeloupe.\n\n"
+        "Pour chaque sujet numéroté, écris un paragraphe de 2 à 4 phrases résumant l'essentiel. "
+        "Inclus des liens markdown vers les articles sources là où c'est pertinent. "
+        "Sois factuel et concis. N'invente aucun fait absent des articles fournis.\n\n"
+        "Réponds en respectant exactement ce format (un bloc par sujet) :\n"
+        "[1]\nTexte du résumé.\n\n[2]\nTexte du résumé.\n\n"
+        "=== Sujets ===\n\n"
+        + "\n\n".join(sections)
+    )
+
+    response = client.chat.complete(
+        model="mistral-small-latest",
+        messages=[{"role": "user", "content": prompt}],
+    )
+    text = response.choices[0].message.content.strip()
+
+    narratives = [""] * len(clusters)
+    parts = re.split(r"\[(\d+)\]", text)
+    for j in range(1, len(parts) - 1, 2):
+        idx = int(parts[j]) - 1
+        if 0 <= idx < len(clusters):
+            narratives[idx] = parts[j + 1].strip()
+    return narratives
+
+
+def generate_stitched_narrative(clusters, week_num, week_start, week_end, client):
+    """Single Mistral call producing one flowing editorial text covering all clusters."""
+    start_str = f"{week_start.day} {MOIS[week_start.month]}"
+    end_str = f"{week_end.day} {MOIS[week_end.month]} {week_end.year}"
+    sections = _cluster_sections(clusters)
+    prompt = (
+        f"Tu es journaliste et rédiges le résumé de l'actualité hebdomadaire en Guadeloupe "
+        f"pour un digest en ligne (semaine W{week_num:02d}, {start_str} au {end_str}).\n\n"
+        "Voici les principaux sujets de la semaine, classés par importance :\n\n"
+        + "\n\n".join(sections)
+        + "\n\nRédige un texte fluide et cohérent de 400 à 600 mots qui passe naturellement "
+        "d'un sujet à l'autre. Règles strictes à respecter :\n"
+        "- Ton strictement factuel et neutre. Aucune opinion, aucun jugement, aucune recommandation aux autorités ou à la population.\n"
+        "- Ne rédige pas de paragraphe d'introduction générale. Commence directement par le premier sujet.\n"
+        "- Termine par un court paragraphe de synthèse factuelle (\"En bref\" ou similaire), sans appel à l'action.\n"
+        "- Aucun titre, sous-titre, texte en gras ou en italique, lien, référence entre parenthèses, ni section sources : uniquement des paragraphes de prose.\n"
+        "- N'invente aucun fait absent des articles fournis."
+    )
+    response = client.chat.complete(
+        model="mistral-small-latest",
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return response.choices[0].message.content.strip()
+
+
 def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names, top_per_theme=2):
     start_str = f"{week_start.day} {MOIS[week_start.month]}"
     end_str = f"{week_end.day} {MOIS[week_end.month]} {week_end.year}"
@@ -180,24 +256,83 @@ def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names
                 score_parts.append("🔥 plus lu (" + ", ".join(most_read_tags) + ")")
 
             lines.append(f"\n### {rep['title']}")
-            lines.append(f"**{' · '.join(score_parts)}**\n")
+            lines.append(f"*{' · '.join(score_parts)}*\n")
 
-            rows = [
-                {
-                    "Titre": f"[{item['article']['title']}]({item['article']['url']})",
-                    "Date": item["article"]["date"].strftime("%d/%m"),
-                    "Source": item["article"]["source"],
-                }
-                for item in cluster["raw"]
-            ]
-            table = (
-                _markdown_table(rows)
-                .set_params(row_sep="markdown", quote=False)
-                .get_markdown()
-            )
-            lines.append(table)
+            narrative = cluster.get("narrative")
+            if narrative:
+                lines.append(narrative)
+                lines.append(f"\n→ [{rep['title']}]({rep['url']})")
+            else:
+                rows = [
+                    {
+                        "Titre": f"[{item['article']['title']}]({item['article']['url']})",
+                        "Date": item["article"]["date"].strftime("%d/%m"),
+                        "Source": item["article"]["source"],
+                    }
+                    for item in cluster["raw"]
+                ]
+                table = (
+                    _markdown_table(rows)
+                    .set_params(row_sep="markdown", quote=False)
+                    .get_markdown()
+                )
+                lines.append(table)
             lines.append("\n---")
 
+    return "\n".join(lines)
+
+
+def _strip_markdown(text):
+    text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)  # [text](url) → text
+    text = re.sub(r'\*\*(.+?)\*\*', r'\1', text)
+    text = re.sub(r'\*(.+?)\*', r'\1', text)
+    text = re.sub(r'_(.+?)_', r'\1', text)
+    return text
+
+
+def render_prose_digest(week_num, week_start, week_end, clusters_to_render, stitched=None):
+    """Flat plain-text digest ordered by importance score, no theme sections.
+
+    If `stitched` is provided, it replaces the per-cluster paragraphs.
+    """
+    start_str = f"{week_start.day} {MOIS[week_start.month]}"
+    end_str = f"{week_end.day} {MOIS[week_end.month]} {week_end.year}"
+
+    ordered = sorted(
+        clusters_to_render,
+        key=lambda c: (bool(c["most_read_tags"]), c["score"]),
+        reverse=True,
+    )
+
+    source_names = sorted({
+        item["article"]["source"]
+        for c in ordered
+        for item in c["raw"]
+    })
+
+    lines = [f"# Semaine W{week_num:02d} — {start_str} au {end_str}", ""]
+    if stitched:
+        lines.append(stitched)
+        lines.append("")
+        lines.append("**Sources**")
+        lines.append("")
+        for c in ordered:
+            rep = pick_representative_article(c["raw"], c["centroid"])
+            lines.append(f"- [{rep['title']}]({rep['url']})")
+        lines.append("")
+    else:
+        for cluster in ordered:
+            narrative = cluster.get("narrative", "")
+            if narrative:
+                lines.append(narrative)
+                lines.append("")
+
+    lines += [
+        "---",
+        f"*Ce digest a été généré automatiquement à partir des sujets les plus couverts "
+        f"dans les flux RSS et des articles les plus lus sur RCI et France-Antilles "
+        f"(semaine W{week_num:02d}, {start_str} au {end_str}).*",
+    ]
     return "\n".join(lines)
 
 
@@ -285,8 +420,20 @@ def render_suggestions(week_num, scored, threshold=0.15, low_confidence_margin=0
 @click.option("--top-per-theme", default=2, show_default=True, help="Max clusters to show per theme section")
 @click.option("--suggest", is_flag=True, help="Write a taxonomy review report alongside the digest")
 @click.option("--min-days", default=7, show_default=True, help="Minimum number of daily feed files required before generating")
-def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min_days):
+@click.option("--narratives", is_flag=True, help="Replace tables with Mistral-generated prose per cluster (requires MISTRAL_API_KEY)")
+@click.option("--prose", is_flag=True, help="Also write a flat plain-text digest ordered by importance (requires MISTRAL_API_KEY)")
+@click.option("--stitch", is_flag=True, help="With --prose: generate one flowing editorial text instead of per-cluster paragraphs")
+def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min_days, narratives, prose, stitch):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
+    mistral_client = None
+    if narratives or prose:
+        api_key = os.environ.get("MISTRAL_API_KEY")
+        if not api_key:
+            raise click.ClickException("--narratives/--prose requires MISTRAL_API_KEY to be set in the environment.")
+        from mistralai.client import Mistral
+        mistral_client = Mistral(api_key=api_key)
+        logging.info("Mistral client initialised for narrative generation.")
 
     today = datetime.now()
     iso = today.isocalendar()
@@ -371,6 +518,21 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
     for cluster in sorted(scored, key=lambda c: c["score"], reverse=True):
         clusters_by_theme.setdefault(cluster["theme"], []).append(cluster)
 
+    if mistral_client is not None:
+        ordered_themes = list(theme_names) + ["Autres"]
+        clusters_to_render = []
+        for theme in ordered_themes:
+            top = sorted(
+                clusters_by_theme.get(theme, []),
+                key=lambda c: (bool(c["most_read_tags"]), c["score"]),
+                reverse=True,
+            )[:top_per_theme]
+            clusters_to_render.extend(top)
+        logging.info("Generating narratives for %d clusters via Mistral…", len(clusters_to_render))
+        generated = generate_all_narratives(clusters_to_render, mistral_client)
+        for cluster, narrative in zip(clusters_to_render, generated):
+            cluster["narrative"] = narrative
+
     markdown = render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names, top_per_theme)
     output_file = Path(output_dir) / f"weekly-w{week_num:02d}.md"
     try:
@@ -379,6 +541,21 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
         raise click.ClickException(f"Could not write weekly digest to '{output_file}': {e}") from e
 
     logging.info("Weekly digest written to %s", output_file)
+
+    if prose and mistral_client is not None:
+        stitched_text = None
+        if stitch:
+            logging.info("Generating stitched narrative via Mistral…")
+            stitched_text = generate_stitched_narrative(
+                clusters_to_render, week_num, week_start, week_end, mistral_client
+            )
+        prose_text = render_prose_digest(week_num, week_start, week_end, clusters_to_render, stitched_text)
+        prose_file = Path(output_dir) / f"weekly-w{week_num:02d}-prose.md"
+        try:
+            prose_file.write_text(prose_text)
+        except OSError as e:
+            raise click.ClickException(f"Could not write prose digest to '{prose_file}': {e}") from e
+        logging.info("Prose digest written to %s", prose_file)
 
     if suggest:
         review = render_suggestions(week_num, scored)

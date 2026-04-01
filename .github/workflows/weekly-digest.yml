@@ -67,6 +67,7 @@ jobs:
         env:
           INPUT_WEEK: ${{ github.event.inputs.week }}
           INPUT_YEAR: ${{ github.event.inputs.year }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
         run: |
           WEEK_ARGS=""
           if [ -n "$INPUT_WEEK" ]; then
@@ -75,7 +76,7 @@ jobs:
           if [ -n "$INPUT_YEAR" ]; then
             WEEK_ARGS="$WEEK_ARGS --year $INPUT_YEAR"
           fi
-          pdm run weekly-digest --suggest $WEEK_ARGS
+          pdm run weekly-digest --suggest --narratives $WEEK_ARGS
 
       - name: Commit and push
         if: steps.check_weekly.outputs.already_ran != 'true'
