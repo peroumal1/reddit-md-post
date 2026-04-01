@@ -11,3 +11,4 @@ pyotp>=2.9.0
 requests>=2.32.5
 pathlib>=1.0.1
 scikit-learn>=1.8.0
+mistralai>=2.2.0

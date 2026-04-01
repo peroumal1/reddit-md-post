@@ -19,6 +19,7 @@ Requires-Dist: pyotp>=2.9.0
 Requires-Dist: requests>=2.32.5
 Requires-Dist: pathlib>=1.0.1
 Requires-Dist: scikit-learn>=1.8.0
+Requires-Dist: mistralai>=2.2.0
 
 # reddit-md-post
 
@@ -41,19 +42,19 @@ src/rss_summary/          # main package
   weekly.py               # CLI: pdm run weekly-digest
   post_to_reddit.py       # CLI: pdm run post-to-reddit
   similarity.py           # semantic deduplication via sentence-transformers
-  classification.py       # thematic classification via trained LR head
+  classification.py       # thematic classification via trained LinearSVC head
   formatting.py           # markdown table generation
   parsing.py              # HTML parsing and image extraction
   last_run.py             # .last-run timestamp persistence
 classifier/
-  train.py                # offline: train LR head on data/themes.json
+  train.py                # offline: train LinearSVC head on data/themes.json
   infer.py                # offline: batch classify a daily feed file for evaluation
 tests/
 data/
   rss_list.txt            # RSS feed URLs (one per line)
   taxonomy.toml           # ordered theme names (10 themes) used for digest section ordering
   themes.json             # labeled training examples (one per theme)
-  classifier_head.joblib  # trained classifier head (committed, ~80KB)
+  classifier_head.joblib  # trained classifier head (committed, ~800KB)
   classifier_eval.json    # last cross-validation evaluation results
   feed.md                 # latest daily digest
   feed-YYYY-MM-DD.md      # dated archive copies
@@ -90,7 +91,7 @@ Options:
 
 The model is downloaded automatically on first run and cached in `~/.cache/huggingface`.
 
-**Classification** (enabled with `--classify`): uses a trained logistic regression head on top of frozen `BAAI/bge-m3` embeddings (80.2% accuracy, 10 themes). The head is stored in `data/classifier_head.joblib` and committed to the repository — no retraining needed on first clone.
+**Classification** (enabled with `--classify`): uses a trained LinearSVC head on concatenated `BAAI/bge-m3` + `multilingual-e5-large-instruct` embeddings (2048-dim, ~81% accuracy, 10 themes). The head is stored in `data/classifier_head.joblib` and committed — no retraining needed on first clone.
 
 **Last-run tracking**: the date of last execution is stored in `.last-run`. Only entries published since the previous run are fetched.
 
@@ -181,7 +182,7 @@ git add data/classifier_head.joblib data/classifier_eval.json data/themes.json
 git commit -m "feat(classifier): retrain with updated examples"
 ```
 
-The head is tiny (~80KB) and safe to commit. The `BAAI/bge-m3` backbone is not retrained — it is used as a frozen encoder (already cached in CI for deduplication).
+The head is ~800KB and safe to commit. Both `BAAI/bge-m3` and `multilingual-e5-large-instruct` are frozen encoders — only the LinearSVC head is trained. Both models are cached in CI.
 
 ---
 
@@ -189,4 +190,5 @@ The head is tiny (~80KB) and safe to commit. The `BAAI/bge-m3` backbone is not r
 
 ```zsh
 pdm run pytest
+pdm run pytest --cov=rss_summary   # with coverage report
 ```
