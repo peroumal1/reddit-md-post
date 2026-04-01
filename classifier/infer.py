@@ -17,6 +17,7 @@ import joblib
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
+from rss_summary.classification import UNCLASSIFIED, encode_for_classification
 from rss_summary.parsing import parse_daily_feed_md
 
 
@@ -36,8 +37,6 @@ def classify_batch(
     head: dict,
     threshold: float = 0.5,
 ) -> list[dict]:
-    from rss_summary.classification import encode_for_classification
-
     clf = head["clf"]
     le = head["label_encoder"]
     label_to_theme = head["label_to_theme"]
@@ -53,7 +52,7 @@ def classify_batch(
         score = float(np.max(proba[i]))
         pred_idx = int(np.argmax(proba[i]))
         label = le.inverse_transform([pred_idx])[0]
-        theme = label_to_theme[label] if score >= threshold else "Autres"
+        theme = label_to_theme[label] if score >= threshold else UNCLASSIFIED
         results.append({**article, "theme": theme, "label": label, "score": score})
     return results
 
@@ -92,7 +91,7 @@ def main() -> None:
         by_theme[r["theme"]].append(r)
 
     total = len(results)
-    autres = len(by_theme.get("Autres", []))
+    autres = len(by_theme.get(UNCLASSIFIED, []))
     print(f"Results: {total} articles, {autres} unclassified (Autres)\n")
 
     for theme, items in sorted(by_theme.items()):

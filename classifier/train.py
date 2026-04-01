@@ -24,9 +24,9 @@ from sklearn.model_selection import StratifiedKFold, cross_val_predict
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import LinearSVC
 
+from rss_summary.classification import E5_MODEL_ID, E5_PROMPT
+
 BGE_MODEL_ID = "BAAI/bge-m3"
-E5_MODEL_ID = "intfloat/multilingual-e5-large-instruct"
-E5_PROMPT = "Instruct: Classify the following French news headline into a thematic category.\nQuery: "
 
 
 def load_themes(path: str) -> list[dict]:

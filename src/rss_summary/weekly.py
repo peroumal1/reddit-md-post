@@ -12,7 +12,7 @@ import requests
 from bs4 import BeautifulSoup
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import classify_article_scored, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy
+from rss_summary.classification import UNCLASSIFIED, classify_article_scored, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy
 from rss_summary.parsing import parse_daily_feed_md
 from rss_summary.similarity import encode_text
 
@@ -354,7 +354,6 @@ def apply_suggestions_to_themes(suggestions, themes_path):
 
 def render_suggestions(week_num, scored, threshold=0.15, low_confidence_margin=0.10, ambiguity_margin=0.05):
     """Build a taxonomy review report from scored clusters."""
-    UNCLASSIFIED = "Autres"
     unclassified, low_confidence, ambiguous = [], [], []
 
     for cluster in scored:
