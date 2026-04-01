@@ -29,13 +29,10 @@ jobs:
         id: check_weekly
         run: |
           WEEK=$(date +%V)
-          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ]; then
-            echo "already_ran=false" >> $GITHUB_OUTPUT
-          elif ls data/weekly-w${WEEK}.md 2>/dev/null; then
+          echo "already_ran=false" >> $GITHUB_OUTPUT
+          if [ "$GITHUB_EVENT_NAME" != "workflow_dispatch" ] && [ -f "data/weekly-w${WEEK}.md" ]; then
             echo "already_ran=true" >> $GITHUB_OUTPUT
             echo "Weekly digest for W${WEEK} already exists, skipping."
-          else
-            echo "already_ran=false" >> $GITHUB_OUTPUT
           fi
 
       - uses: actions/setup-python@v5
