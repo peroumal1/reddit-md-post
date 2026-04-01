@@ -106,7 +106,7 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
     head = {
         "clf": clf,
         "label_encoder": le,
-        "label_to_theme": {t["label"]: t["theme"] for t in themes},
+        "label_to_theme": label_to_theme,
         "theme_to_label": {t["theme"]: t["label"] for t in themes},
     }
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)

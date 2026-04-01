@@ -1,4 +1,4 @@
-from rss_summary.formatting import format_feed_entries, format_feed_entries_classified
+from rss_summary.formatting import UNCLASSIFIED, format_feed_entries, format_feed_entries_classified
 
 
 class TestFormatFeedEntries:
@@ -45,16 +45,16 @@ class TestFormatFeedEntriesClassified:
 
     def test_unclassified_at_end(self, sample_feed_entry):
         entries = [
-            {**sample_feed_entry, "title": "Unknown", "theme": "Autres"},
+            {**sample_feed_entry, "title": "Unknown", "theme": UNCLASSIFIED},
             {**sample_feed_entry, "title": "Known", "theme": "Politique"},
         ]
         output = format_feed_entries_classified(entries, ["Politique"])
-        assert output.index("## Politique") < output.index("## Autres")
+        assert output.index("## Politique") < output.index(f"## {UNCLASSIFIED}")
 
     def test_missing_theme_falls_back_to_unclassified(self, sample_feed_entry):
         entries = [{**sample_feed_entry, "title": "No theme"}]  # no "theme" key
         output = format_feed_entries_classified(entries, ["Politique"])
-        assert "## Autres" in output
+        assert f"## {UNCLASSIFIED}" in output
 
     def test_empty_theme_section_omitted(self, sample_feed_entry):
         entries = [{**sample_feed_entry, "theme": "Sport"}]
