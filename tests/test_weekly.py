@@ -5,6 +5,7 @@ import numpy as np
 import pytest
 import requests
 
+from rss_summary.classification import UNCLASSIFIED
 from rss_summary.weekly import (
     cluster_articles,
     extract_source,
@@ -125,20 +126,13 @@ class TestClusterArticles:
         assert len(clusters) == 1
         assert len(clusters[0]) == 1
 
-    def test_similar_articles_grouped(self):
-        model = self._make_model(0.9)  # above CLUSTER_THRESHOLD=0.70
+    @pytest.mark.parametrize("sim_value,expected_clusters", [(0.9, 1), (0.3, 2)])
+    def test_cluster_count_by_similarity(self, sim_value, expected_clusters):
+        model = self._make_model(sim_value)
         articles = [_make_article("A"), _make_article("B")]
         with patch("rss_summary.weekly.encode_text", return_value=np.array([1.0, 0.0])):
             clusters = cluster_articles(articles, model)
-        assert len(clusters) == 1
-        assert len(clusters[0]) == 2
-
-    def test_dissimilar_articles_separate(self):
-        model = self._make_model(0.3)  # below CLUSTER_THRESHOLD=0.70
-        articles = [_make_article("A"), _make_article("B")]
-        with patch("rss_summary.weekly.encode_text", return_value=np.array([1.0, 0.0])):
-            clusters = cluster_articles(articles, model)
-        assert len(clusters) == 2
+        assert len(clusters) == expected_clusters
 
 
 class TestScoreCluster:
@@ -261,7 +255,7 @@ class TestRenderSuggestions:
         }
 
     def test_unclassified_listed(self):
-        scored = [self._make_scored("Autres", top_score=0.05, title="Mystery")]
+        scored = [self._make_scored(UNCLASSIFIED, top_score=0.05, title="Mystery")]
         output = render_suggestions(1, scored, threshold=0.15)
         assert "Mystery" in output
         assert "non classifiés" in output

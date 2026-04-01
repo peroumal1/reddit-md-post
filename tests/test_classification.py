@@ -3,6 +3,7 @@ import pytest
 from unittest.mock import MagicMock, patch
 
 from rss_summary.classification import (
+    UNCLASSIFIED,
     classify_article,
     classify_article_scored,
     encode_for_classification,
@@ -81,7 +82,7 @@ class TestClassifyArticleScored:
             label_to_theme={"eco": "Économie", "pol": "Politique", "spo": "Sport"},
         )
         result = classify_article_scored(np.array([1.0, 0.0]), head, threshold=0.95)
-        assert result["theme"] == "Autres"
+        assert result["theme"] == UNCLASSIFIED
 
     def test_runner_up_populated(self):
         head = self._make_head(
@@ -99,7 +100,6 @@ class TestClassifyArticleScored:
             classes=["a", "b"],
             label_to_theme={"a": "A", "b": "B"},
         )
-        # Pass unnormalized embedding — should still classify correctly
         result = classify_article_scored(np.array([5.0, 0.0]), head, threshold=0.15)
         assert result["theme"] == "B"
 
