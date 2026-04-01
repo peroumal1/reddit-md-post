@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import re
@@ -222,6 +223,135 @@ def render_prose_digest(week_num, week_start, week_end, clusters, stitched):
     return "\n".join(lines)
 
 
+def _problematic_clusters(scored, threshold=0.15, low_confidence_margin=0.10, ambiguity_margin=0.05):
+    """Return clusters that are unclassified, low-confidence, or ambiguous."""
+    result = []
+    for cluster in scored:
+        top = cluster["top_score"]
+        runner_score = cluster["runner_up_score"]
+        if (cluster["theme"] == "Autres"
+                or top < threshold + low_confidence_margin
+                or (runner_score is not None and (top - runner_score) < ambiguity_margin)):
+            result.append(cluster)
+    return result
+
+
+def enrich_review_with_suggestions(problematic, theme_names, client):
+    """Single Mistral call suggesting themes for problematic clusters.
+
+    Returns (markdown_section, structured_suggestions) where each suggestion is
+    a dict with keys 'theme', 'example', 'reason' (all may be None on parse failure).
+    """
+    if not problematic:
+        return "", []
+
+    themes_str = "\n".join(f"- {t}" for t in theme_names)
+    cluster_lines = []
+    for i, cluster in enumerate(problematic, 1):
+        rep = cluster["articles"][0]
+        summary = rep.get("summary", "").strip()[:300]
+        status = ("non classifié" if cluster["theme"] == "Autres"
+                  else f"classifié '{cluster['theme']}' avec score {cluster['top_score']:.2f}")
+        cluster_lines.append(
+            f"[{i}]\nTitre: {rep['title']}\nRésumé: {summary}\nStatut classifieur: {status}"
+        )
+
+    prompt = (
+        "Tu es expert en classification d'articles de presse en Guadeloupe.\n\n"
+        f"Thèmes disponibles :\n{themes_str}\n\n"
+        "Pour chaque article ci-dessous, dont la classification automatique est incertaine, réponds :\n"
+        "- Le thème le plus approprié (ou 'Nouveau thème: <nom>' si aucun ne convient)\n"
+        "- Une ligne d'exemple au format themes.json : \"Titre de l'article | Extrait du résumé\"\n"
+        "- Une justification courte (1 phrase)\n\n"
+        "Format de réponse strict :\n"
+        "[1]\nThème: <theme>\nExemple: \"<titre> | <résumé>\"\nRaison: <justification>\n\n"
+        "[2]\n...\n\n"
+        "=== Articles ===\n\n"
+        + "\n\n".join(cluster_lines)
+    )
+
+    response = client.chat.complete(
+        model=MISTRAL_MODEL,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    text = response.choices[0].message.content.strip()
+
+    raw_blocks = {}
+    parts = re.split(r"\[(\d+)\]", text)
+    for j in range(1, len(parts) - 1, 2):
+        idx = int(parts[j]) - 1
+        if 0 <= idx < len(problematic):
+            raw_blocks[idx] = parts[j + 1].strip()
+
+    structured = []
+    for i in range(len(problematic)):
+        block = raw_blocks.get(i, "")
+        theme_m = re.search(r"Thème\s*:\s*(.+)", block)
+        example_m = re.search(r'Exemple\s*:\s*["\u201c](.+?)["\u201d]', block)
+        reason_m = re.search(r"Raison\s*:\s*(.+)", block)
+        structured.append({
+            "theme": theme_m.group(1).strip() if theme_m else None,
+            "example": example_m.group(1).strip() if example_m else None,
+            "reason": reason_m.group(1).strip() if reason_m else None,
+            "_raw": block,
+        })
+
+    section = [
+        "",
+        "## Suggestions Mistral",
+        "",
+        "> Suggestions générées automatiquement — à valider avant d'ajouter dans `data/themes.json`.",
+        "",
+    ]
+    for i, cluster in enumerate(problematic):
+        rep = cluster["articles"][0]
+        section.append(f"### [{rep['title']}]({rep['url']})")
+        section.append(structured[i]["_raw"] or "_(pas de suggestion disponible)_")
+        section.append("")
+
+    return "\n".join(section), structured
+
+
+def apply_suggestions_to_themes(suggestions, themes_path):
+    """Add Mistral-suggested examples to themes.json.
+
+    Skips unknown themes and duplicates. Collects 'Nouveau thème' suggestions
+    separately for human review.
+
+    Returns (added, new_theme_suggestions) where new_theme_suggestions is a list
+    of suggestion dicts for themes not in the current taxonomy.
+    """
+    with open(themes_path) as f:
+        themes = json.load(f)
+
+    theme_map = {t["theme"]: t for t in themes}
+    added = 0
+    new_themes = []
+    for s in suggestions:
+        theme_name = s.get("theme") or ""
+        example = s.get("example") or ""
+        if not theme_name or not example:
+            continue
+        if theme_name.startswith("Nouveau thème"):
+            new_themes.append(s)
+            logging.info("New theme suggested (manual action required): %s", theme_name)
+            continue
+        if theme_name not in theme_map:
+            logging.warning("Unknown theme '%s' — skipping.", theme_name)
+            continue
+        if example not in theme_map[theme_name]["examples"]:
+            theme_map[theme_name]["examples"].append(example)
+            added += 1
+            logging.info("Added example to '%s': %.60s…", theme_name, example)
+
+    if added:
+        with open(themes_path, "w") as f:
+            json.dump(themes, f, ensure_ascii=False, indent=2)
+        logging.info("Wrote %d new examples to %s.", added, themes_path)
+
+    return added, new_themes
+
+
 def render_suggestions(week_num, scored, threshold=0.15, low_confidence_margin=0.10, ambiguity_margin=0.05):
     """Build a taxonomy review report from scored clusters."""
     UNCLASSIFIED = "Autres"
@@ -297,6 +427,31 @@ def render_suggestions(week_num, scored, threshold=0.15, low_confidence_margin=0
     return "\n".join(lines)
 
 
+def _signal_new_themes(new_themes, week_num, body_path="/tmp/new-themes-issue.md"):
+    """Write issue body to a temp file and flag GITHUB_OUTPUT for the workflow."""
+    lines = [
+        f"Mistral a suggéré {len(new_themes)} nouveau(x) thème(s) lors du digest W{week_num:02d}.\n",
+    ]
+    for s in new_themes:
+        lines.append(f"**{s['theme']}**")
+        if s.get("example"):
+            lines.append(f"Exemple : `{s['example']}`")
+        if s.get("reason"):
+            lines.append(f"Raison : {s['reason']}")
+        lines.append("")
+    lines.append(
+        "Pour appliquer : ajouter le thème dans `data/taxonomy.toml` et `data/themes.json`, "
+        "puis relancer `pdm run python classifier/train.py`."
+    )
+    Path(body_path).write_text("\n".join(lines))
+    logging.info("New theme issue body written to %s.", body_path)
+
+    github_output = os.environ.get("GITHUB_OUTPUT")
+    if github_output:
+        with open(github_output, "a") as f:
+            f.write("has_new_themes=true\n")
+
+
 @click.command()
 @click.option("--data-dir", default="data", show_default=True, help="Directory containing daily feed files")
 @click.option("--output-dir", default="data", show_default=True, help="Directory to write the weekly digest")
@@ -305,8 +460,10 @@ def render_suggestions(week_num, scored, threshold=0.15, low_confidence_margin=0
 @click.option("--taxonomy", default="data/taxonomy.toml", show_default=True, help="Path to taxonomy TOML config")
 @click.option("--top-per-theme", default=2, show_default=True, help="Max clusters per theme used for prose")
 @click.option("--suggest", is_flag=True, help="Write a taxonomy review report alongside the digest")
+@click.option("--enrich-review", is_flag=True, help="With --suggest: append Mistral theme suggestions for problematic clusters")
+@click.option("--apply-suggestions", is_flag=True, help="With --enrich-review: write Mistral suggestions into themes.json")
 @click.option("--min-days", default=7, show_default=True, help="Minimum number of daily feed files required before generating")
-def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min_days):
+def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enrich_review, apply_suggestions, min_days):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
     api_key = os.environ.get("MISTRAL_API_KEY")
@@ -415,8 +572,26 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
         raise click.ClickException(f"Could not write prose digest to '{prose_file}': {e}") from e
     logging.info("Prose digest written to %s", prose_file)
 
+    if enrich_review and not suggest:
+        raise click.ClickException("--enrich-review requires --suggest.")
+    if apply_suggestions and not enrich_review:
+        raise click.ClickException("--apply-suggestions requires --enrich-review.")
+
     if suggest:
         review = render_suggestions(week_num, scored)
+        if enrich_review:
+            problematic = _problematic_clusters(scored)
+            if problematic:
+                logging.info("Enriching review with Mistral suggestions for %d clusters…", len(problematic))
+                enrichment, structured = enrich_review_with_suggestions(problematic, theme_names, mistral_client)
+                review += enrichment
+                if apply_suggestions:
+                    themes_path = Path(data_dir) / "themes.json"
+                    _, new_themes = apply_suggestions_to_themes(structured, themes_path)
+                    if new_themes:
+                        _signal_new_themes(new_themes, week_num)
+            else:
+                logging.info("No problematic clusters — skipping Mistral enrichment.")
         review_file = Path(output_dir) / f"weekly-w{week_num:02d}-review.md"
         try:
             review_file.write_text(review)

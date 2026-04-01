@@ -17,6 +17,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   weekly:
@@ -63,6 +64,7 @@ jobs:
         run: pdm install
 
       - name: Run weekly digest
+        id: weekly
         if: steps.check_weekly.outputs.already_ran != 'true'
         env:
           INPUT_WEEK: ${{ github.event.inputs.week }}
@@ -76,7 +78,21 @@ jobs:
           if [ -n "$INPUT_YEAR" ]; then
             WEEK_ARGS="$WEEK_ARGS --year $INPUT_YEAR"
           fi
-          pdm run weekly-digest --suggest $WEEK_ARGS
+          pdm run weekly-digest --suggest --enrich-review --apply-suggestions $WEEK_ARGS
+
+      - name: Retrain classifier if themes.json changed
+        if: steps.check_weekly.outputs.already_ran != 'true'
+        run: git diff --quiet data/themes.json || pdm run python classifier/train.py
+
+      - name: Open issue for new theme suggestions
+        if: steps.weekly.outputs.has_new_themes == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          WEEK=$(date +%V)
+          gh issue create \
+            --title "Nouveaux thèmes suggérés — W${WEEK}" \
+            --body-file /tmp/new-themes-issue.md
 
       - name: Commit and push
         if: steps.check_weekly.outputs.already_ran != 'true'
@@ -84,5 +100,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           WEEK=$(date +%V)
-          git add data/weekly-w*.md
+          git add data/weekly-w*.md data/themes.json data/classifier_head.joblib data/classifier_eval.json
           git diff --cached --quiet || (git commit -m "chore(weekly): digest for W${WEEK}" && git push)
