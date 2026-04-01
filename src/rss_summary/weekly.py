@@ -1,5 +1,6 @@
 import logging
 import re
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 from pathlib import Path
 from urllib.parse import urlparse
@@ -48,39 +49,45 @@ def parse_feed_file(path):
 
 def get_most_read_urls():
     """Scrape most-read article URL paths from RCI and France-Antilles homepages."""
-    paths = set()
+    def fetch_rci():
+        paths = set()
+        try:
+            r = requests.get("https://rci.fm/guadeloupe", timeout=10)
+            if r.ok:
+                soup = BeautifulSoup(r.text, "html.parser")
+                block = soup.find(id="block-views-block-block-articles-les-plus-lus-teaser-short-block-1")
+                if block:
+                    for a in block.find_all("a", href=True):
+                        paths.add(urlparse(a["href"]).path)
+        except requests.RequestException:
+            logging.warning("Could not fetch RCI most-read section.")
+        return paths
 
-    try:
-        r = requests.get("https://rci.fm/guadeloupe", timeout=10)
-        if r.ok:
-            soup = BeautifulSoup(r.text, "html.parser")
-            block = soup.find(id="block-views-block-block-articles-les-plus-lus-teaser-short-block-1")
-            if block:
-                for a in block.find_all("a", href=True):
-                    paths.add(urlparse(a["href"]).path)
-    except requests.RequestException:
-        logging.warning("Could not fetch RCI most-read section.")
+    def fetch_fa():
+        paths = set()
+        try:
+            r = requests.get("https://www.guadeloupe.franceantilles.fr", timeout=10)
+            if r.ok:
+                soup = BeautifulSoup(r.text, "html.parser")
+                marker = soup.find(string=re.compile(r"Articles les plus [Ll]us"))
+                if marker:
+                    container = marker.find_parent()
+                    for _ in range(6):
+                        if container is None:
+                            break
+                        links = container.find_all("a", href=True)
+                        if len(links) >= 3:
+                            for a in links:
+                                paths.add(urlparse(a["href"]).path)
+                            break
+                        container = container.parent
+        except requests.RequestException:
+            logging.warning("Could not fetch France-Antilles most-read section.")
+        return paths
 
-    try:
-        r = requests.get("https://www.guadeloupe.franceantilles.fr", timeout=10)
-        if r.ok:
-            soup = BeautifulSoup(r.text, "html.parser")
-            marker = soup.find(string=re.compile(r"Articles les plus [Ll]us"))
-            if marker:
-                container = marker.find_parent()
-                for _ in range(6):
-                    if container is None:
-                        break
-                    links = container.find_all("a", href=True)
-                    if len(links) >= 3:
-                        for a in links:
-                            paths.add(urlparse(a["href"]).path)
-                        break
-                    container = container.parent
-    except requests.RequestException:
-        logging.warning("Could not fetch France-Antilles most-read section.")
-
-    return paths
+    with ThreadPoolExecutor(max_workers=2) as ex:
+        f_rci, f_fa = ex.submit(fetch_rci), ex.submit(fetch_fa)
+        return f_rci.result() | f_fa.result()
 
 
 def cluster_articles(articles, model):
@@ -154,7 +161,6 @@ def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names
         all_theme_clusters = clusters_by_theme.get(theme, [])
         if not all_theme_clusters:
             continue
-        # Most-read first, then by score descending, then cap
         theme_clusters = sorted(
             all_theme_clusters,
             key=lambda c: (bool(c["most_read_tags"]), c["score"]),
@@ -166,7 +172,7 @@ def render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names
             score = cluster["score"]
             sources = {item["article"]["source"] for item in cluster["raw"]}
             days = len({item["article"]["date"].date() for item in cluster["raw"]})
-            most_read_tags = cluster.get("most_read_tags", [])
+            most_read_tags = cluster.get("most_read_tags", set())
 
             score_parts = [f"{days} jour{'s' if days > 1 else ''}",
                            f"{len(sources)} source{'s' if len(sources) > 1 else ''}"]
@@ -290,7 +296,6 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
     week_start = datetime.fromisocalendar(year_num, week_num, 1)
     week_end = datetime.fromisocalendar(year_num, week_num, 7)
 
-    # Collect daily feed files for the week
     data_path = Path(data_dir)
     articles = []
     days_found = 0
@@ -316,12 +321,10 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
 
     logging.info("Total articles to cluster: %d", len(articles))
 
-    # Fetch most-read signals
     logging.info("Fetching most-read signals…")
     most_read_paths = get_most_read_urls()
     logging.info("Found %d most-read paths.", len(most_read_paths))
 
-    # Load models, taxonomy, and classifier head
     model = SentenceTransformer("BAAI/bge-m3")
     try:
         theme_names = load_taxonomy(taxonomy)
@@ -330,12 +333,10 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
         raise click.ClickException(str(e))
     model_e5 = load_e5_model()
 
-    # Cluster articles
     logging.info("Clustering articles…")
     raw_clusters = cluster_articles(articles, model)
     logging.info("Found %d clusters.", len(raw_clusters))
 
-    # Score, classify, and annotate clusters
     scored = []
     for raw_cluster in raw_clusters:
         score = score_cluster(raw_cluster, most_read_paths)
@@ -345,13 +346,10 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
         cls_embedding = encode_for_classification(rep_text, model, model_e5)
         classification = classify_article_scored(cls_embedding, head)
 
-        most_read_tags = []
+        most_read_tags = set()
         for item in raw_cluster:
-            path = urlparse(item["article"]["url"]).path
-            if path in most_read_paths:
-                src = item["article"]["source"]
-                if src not in most_read_tags:
-                    most_read_tags.append(src)
+            if urlparse(item["article"]["url"]).path in most_read_paths:
+                most_read_tags.add(item["article"]["source"])
 
         scored.append({
             "raw": raw_cluster,
@@ -369,12 +367,10 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, min
             ),
         })
 
-    # Group by theme, sort each group by score descending
     clusters_by_theme = {}
     for cluster in sorted(scored, key=lambda c: c["score"], reverse=True):
         clusters_by_theme.setdefault(cluster["theme"], []).append(cluster)
 
-    # Render and write
     markdown = render_weekly(week_num, week_start, week_end, clusters_by_theme, theme_names, top_per_theme)
     output_file = Path(output_dir) / f"weekly-w{week_num:02d}.md"
     try:

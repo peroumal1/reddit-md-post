@@ -37,10 +37,10 @@ def _fetch_body(feed_file, feed_url):
         if not r.ok:
             raise click.ClickException(f"Failed to fetch feed URL (HTTP {r.status_code}): {feed_url}")
         return r.text
-    path = Path(feed_file)
-    if not path.exists():
-        raise click.ClickException(f"Feed file not found: {path}")
-    return path.read_text()
+    try:
+        return Path(feed_file).read_text()
+    except FileNotFoundError:
+        raise click.ClickException(f"Feed file not found: {feed_file}")
 
 
 def run(playwright: Playwright, body: str) -> None:
@@ -50,7 +50,6 @@ def run(playwright: Playwright, body: str) -> None:
     context = browser.new_context()
     page = context.new_page()
 
-    # Login
     page.goto("https://www.reddit.com/")
     page.get_by_role("button", name="Accept All").click()
     page.get_by_role("link", name="Log In").click()
@@ -65,20 +64,16 @@ def run(playwright: Playwright, body: str) -> None:
     page.get_by_role("textbox", name="Verification code").fill(params["code"])
     page.get_by_role("button", name="Check code").click()
 
-    # Navigate to post creation
     page.locator("#moderation_section").get_by_role("link", name="r/Guadeloupe").click()
     page.get_by_test_id("create-post").click()
 
-    # Title
     page.get_by_role("textbox", name="Titre").click()
     page.get_by_role("textbox", name="Titre").fill("Les infos quotidiennes - " + today)
 
-    # Flair
     page.get_by_role("button", name="Ajouter un flair et des é").click()
     page.get_by_role("radio", name="News").click()
     page.get_by_role("button", name="Ajouter", exact=True).click()
 
-    # Switch to Markdown mode
     page.get_by_role("paragraph").click()
     page.get_by_role("button", name="Plus d\u2019options").click()
     page.get_by_role("menuitem", name="Passer à Markdown").click()
@@ -93,7 +88,6 @@ def run(playwright: Playwright, body: str) -> None:
     # Save as draft — change to "Publier" when ready to submit for real
     page.get_by_role("button", name="Enregistrer le brouillon").click()
 
-    # ---------------------
     context.close()
     browser.close()
 

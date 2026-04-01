@@ -17,8 +17,9 @@ def set_last_run_date():
 def restore_last_run_date():
     """Restore .last-run from .last-run.bak."""
     if LAST_RUN_BACKUP.exists():
-        shutil.copy2(LAST_RUN_BACKUP, LAST_RUN_FILE)
-        logging.info("Restored .last-run to: %s", LAST_RUN_FILE.read_text())
+        text = LAST_RUN_BACKUP.read_text()
+        LAST_RUN_FILE.write_text(text)
+        logging.info("Restored .last-run to: %s", text)
     else:
         logging.warning("No backup found (.last-run.bak does not exist).")
 
