@@ -1,6 +1,6 @@
 from py_markdown_table.markdown_table import markdown_table as _markdown_table
 
-UNCLASSIFIED = "Autres"
+from rss_summary.classification import UNCLASSIFIED
 
 
 def format_feed_entries(entries, with_images=False):
