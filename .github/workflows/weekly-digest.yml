@@ -76,7 +76,7 @@ jobs:
           if [ -n "$INPUT_YEAR" ]; then
             WEEK_ARGS="$WEEK_ARGS --year $INPUT_YEAR"
           fi
-          pdm run weekly-digest --suggest --narratives $WEEK_ARGS
+          pdm run weekly-digest --suggest $WEEK_ARGS
 
       - name: Commit and push
         if: steps.check_weekly.outputs.already_ran != 'true'

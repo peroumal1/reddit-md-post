@@ -13,7 +13,6 @@ from rss_summary.weekly import (
     parse_feed_file,
     pick_representative_article,
     render_suggestions,
-    render_weekly,
     representative_embedding,
     score_cluster,
 )
@@ -182,65 +181,6 @@ class TestPickRepresentativeArticle:
         rep = pick_representative_article(cluster, centroid)
         assert rep["title"] == "Near"
 
-
-class TestRenderWeekly:
-    def _make_scored_cluster(self, theme="Politique", title="Article"):
-        article = _make_article(title=title)
-        raw = [{"article": article, "embedding": np.array([1.0, 0.0])}]
-        return {
-            "raw": raw,
-            "centroid": np.array([1.0, 0.0]),
-            "score": 2,
-            "theme": theme,
-            "most_read_tags": set(),
-            "articles": [article],
-        }
-
-    def test_contains_week_header(self):
-        output = render_weekly(
-            week_num=1,
-            week_start=datetime(2025, 1, 6),
-            week_end=datetime(2025, 1, 12),
-            clusters_by_theme={},
-            theme_names=["Politique"],
-        )
-        assert "W01" in output
-
-    def test_theme_section_rendered(self):
-        cluster = self._make_scored_cluster(theme="Politique", title="Un article politique")
-        output = render_weekly(
-            week_num=1,
-            week_start=datetime(2025, 1, 6),
-            week_end=datetime(2025, 1, 12),
-            clusters_by_theme={"Politique": [cluster]},
-            theme_names=["Politique"],
-        )
-        assert "## Politique" in output
-        assert "Un article politique" in output
-
-    def test_top_per_theme_cap(self):
-        clusters = [self._make_scored_cluster(title=f"Article {i}") for i in range(4)]
-        output = render_weekly(
-            week_num=1,
-            week_start=datetime(2025, 1, 6),
-            week_end=datetime(2025, 1, 12),
-            clusters_by_theme={"Politique": clusters},
-            theme_names=["Politique"],
-            top_per_theme=2,
-        )
-        assert output.count("### Article") == 2
-
-    def test_taxonomy_order_preserved(self):
-        c_sport = self._make_scored_cluster(theme="Sport", title="Sport article")
-        c_pol = self._make_scored_cluster(theme="Politique", title="Politique article")
-        output = render_weekly(
-            week_num=1,
-            week_start=datetime(2025, 1, 6),
-            week_end=datetime(2025, 1, 12),
-            clusters_by_theme={"Politique": [c_pol], "Sport": [c_sport]},
-            theme_names=["Politique", "Sport"],
-        )
-        assert output.index("## Politique") < output.index("## Sport")
 
 
 class TestRenderSuggestions:
