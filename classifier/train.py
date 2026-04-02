@@ -29,6 +29,10 @@ from rss_summary.classification import E5_MODEL_ID, E5_PROMPT
 BGE_MODEL_ID = "BAAI/bge-m3"
 
 
+def _make_clf():
+    return CalibratedClassifierCV(LinearSVC(max_iter=2000, C=1.0, class_weight="balanced"), cv=5)
+
+
 def load_themes(path: str) -> list[dict]:
     with open(path) as f:
         return json.load(f)
@@ -78,11 +82,8 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
 
     # Cross-validation evaluation (more reliable than a single split given small data)
     print("\nRunning 5-fold stratified cross-validation...")
-    clf_cv = CalibratedClassifierCV(
-        LinearSVC(max_iter=2000, C=1.0, class_weight="balanced"), cv=5
-    )
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-    y_pred_cv = cross_val_predict(clf_cv, X, y, cv=cv)
+    y_pred_cv = cross_val_predict(_make_clf(), X, y, cv=cv)
 
     label_to_theme = {t["label"]: t["theme"] for t in themes}
     display_names = [label_to_theme[cls] for cls in le.classes_]
@@ -96,9 +97,7 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
 
     print("Training final model on all examples...")
     t0 = time.time()
-    clf = CalibratedClassifierCV(
-        LinearSVC(max_iter=2000, C=1.0, class_weight="balanced"), cv=5
-    )
+    clf = _make_clf()
     clf.fit(X, y)
     elapsed = time.time() - t0
     print(f"Training done in {elapsed:.1f}s")
