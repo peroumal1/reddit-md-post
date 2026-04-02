@@ -1,6 +1,8 @@
 import tomllib
 from pathlib import Path
 
+import numpy as np
+
 DEFAULT_TAXONOMY_PATH = Path("data/taxonomy.toml")
 DEFAULT_HEAD_PATH = Path("data/classifier_head.joblib")
 UNCLASSIFIED = "Autres"
@@ -23,13 +25,12 @@ def load_e5_model():
     return SentenceTransformer(E5_MODEL_ID)
 
 
-def encode_for_classification(text: str, model_bge, model_e5) -> "np.ndarray":
+def encode_for_classification(text: str, model_bge, model_e5) -> np.ndarray:
     """Encode text with bge-m3 + e5-instruct and return a concatenated 2048-dim vector.
 
     Both individual embeddings are L2-normalized before concatenation.
     The result is also L2-normalized to match the training distribution.
     """
-    import numpy as np
     from rss_summary.parsing import strip_html
 
     clean = strip_html(text)
@@ -66,7 +67,6 @@ def classify_article_scored(embedding, head, threshold=0.15):
       runner_up    — name of the second-best theme (or None)
       runner_up_score — score of the second-best theme (or None)
     """
-    import numpy as np
     clf = head["clf"]
     le = head["label_encoder"]
     label_to_theme = head["label_to_theme"]

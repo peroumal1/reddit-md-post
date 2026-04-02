@@ -8,8 +8,10 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import click
+import numpy as np
 import requests
 from bs4 import BeautifulSoup
+from mistralai.client import Mistral
 from sentence_transformers import SentenceTransformer
 
 from rss_summary.classification import UNCLASSIFIED, classify_article_scored, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy
@@ -128,7 +130,6 @@ def score_cluster(cluster, most_read_paths):
 
 def representative_embedding(cluster):
     """Return the centroid embedding of a cluster."""
-    import numpy as np
     vecs = [item["embedding"] for item in cluster]
     return np.mean(vecs, axis=0)
 
@@ -139,7 +140,6 @@ def pick_representative_article(raw_cluster, centroid):
     This tends to be the most generic/encompassing article rather than a
     specific local variant, making it a better section heading.
     """
-    import numpy as np
     norm = np.linalg.norm(centroid)
     c = centroid / norm if norm > 0 else centroid
     best, best_sim = raw_cluster[0]["article"], -1.0
@@ -164,7 +164,7 @@ def _cluster_sections(clusters):
     """Build numbered article sections for the Mistral prompt."""
     sections = []
     for i, cluster in enumerate(clusters, 1):
-        rep = pick_representative_article(cluster["raw"], cluster["centroid"])
+        rep = cluster["rep"]
         article_lines = []
         for item in cluster["raw"]:
             a = item["article"]
@@ -211,7 +211,7 @@ def render_prose_digest(week_num, week_start, week_end, clusters, stitched):
     lines.append("**Sources**")
     lines.append("")
     for c in ordered:
-        rep = pick_representative_article(c["raw"], c["centroid"])
+        rep = c["rep"]
         lines.append(f"- [{rep['title']}]({rep['url']})")
     lines.append("")
     lines += [
@@ -223,17 +223,22 @@ def render_prose_digest(week_num, week_start, week_end, clusters, stitched):
     return "\n".join(lines)
 
 
+def _cluster_status(cluster, threshold=0.15, low_confidence_margin=0.10, ambiguity_margin=0.05):
+    """Return the problematic status of a cluster, or None if clean."""
+    top = cluster["top_score"]
+    runner_score = cluster["runner_up_score"]
+    if cluster["theme"] == UNCLASSIFIED:
+        return "unclassified"
+    if top < threshold + low_confidence_margin:
+        return "low_confidence"
+    if runner_score is not None and (top - runner_score) < ambiguity_margin:
+        return "ambiguous"
+    return None
+
+
 def _problematic_clusters(scored, threshold=0.15, low_confidence_margin=0.10, ambiguity_margin=0.05):
     """Return clusters that are unclassified, low-confidence, or ambiguous."""
-    result = []
-    for cluster in scored:
-        top = cluster["top_score"]
-        runner_score = cluster["runner_up_score"]
-        if (cluster["theme"] == "Autres"
-                or top < threshold + low_confidence_margin
-                or (runner_score is not None and (top - runner_score) < ambiguity_margin)):
-            result.append(cluster)
-    return result
+    return [c for c in scored if _cluster_status(c, threshold, low_confidence_margin, ambiguity_margin) is not None]
 
 
 def enrich_review_with_suggestions(problematic, theme_names, client):
@@ -250,7 +255,7 @@ def enrich_review_with_suggestions(problematic, theme_names, client):
     for i, cluster in enumerate(problematic, 1):
         rep = cluster["articles"][0]
         summary = rep.get("summary", "").strip()[:300]
-        status = ("non classifié" if cluster["theme"] == "Autres"
+        status = ("non classifié" if cluster["theme"] == UNCLASSIFIED
                   else f"classifié '{cluster['theme']}' avec score {cluster['top_score']:.2f}")
         cluster_lines.append(
             f"[{i}]\nTitre: {rep['title']}\nRésumé: {summary}\nStatut classifieur: {status}"
@@ -327,10 +332,11 @@ def apply_suggestions_to_themes(suggestions, themes_path):
     theme_map = {t["theme"]: t for t in themes}
     added = 0
     new_themes = []
-    for s in suggestions:
+    for i, s in enumerate(suggestions):
         theme_name = s.get("theme") or ""
         example = s.get("example") or ""
         if not theme_name or not example:
+            logging.warning("Could not parse suggestion %d — skipping.", i)
             continue
         if theme_name.startswith("Nouveau thème"):
             new_themes.append(s)
@@ -357,17 +363,19 @@ def render_suggestions(week_num, scored, threshold=0.15, low_confidence_margin=0
     unclassified, low_confidence, ambiguous = [], [], []
 
     for cluster in scored:
+        status = _cluster_status(cluster, threshold, low_confidence_margin, ambiguity_margin)
+        if status is None:
+            continue
         rep = cluster["articles"][0]
         title = f"[{rep['title']}]({rep['url']})"
         top = cluster["top_score"]
         runner = cluster["runner_up"]
         runner_score = cluster["runner_up_score"]
-
-        if cluster["theme"] == UNCLASSIFIED:
-            unclassified.append((title, runner, top))  # runner is best theme even if below threshold
-        elif top < threshold + low_confidence_margin:
+        if status == "unclassified":
+            unclassified.append((title, runner, top))
+        elif status == "low_confidence":
             low_confidence.append((title, cluster["theme"], top, runner, runner_score))
-        elif runner_score is not None and (top - runner_score) < ambiguity_margin:
+        else:
             ambiguous.append((title, cluster["theme"], top, runner, runner_score))
 
     lines = [
@@ -465,10 +473,14 @@ def _signal_new_themes(new_themes, week_num, body_path="/tmp/new-themes-issue.md
 def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enrich_review, apply_suggestions, min_days):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
+    if enrich_review and not suggest:
+        raise click.ClickException("--enrich-review requires --suggest.")
+    if apply_suggestions and not enrich_review:
+        raise click.ClickException("--apply-suggestions requires --enrich-review.")
+
     api_key = os.environ.get("MISTRAL_API_KEY")
     if not api_key:
         raise click.ClickException("MISTRAL_API_KEY is required.")
-    from mistralai.client import Mistral
     mistral_client = Mistral(api_key=api_key)
 
     today = datetime.now()
@@ -537,6 +549,7 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enr
         scored.append({
             "raw": raw_cluster,
             "centroid": centroid,
+            "rep": rep,
             "score": score,
             "theme": classification["theme"],
             "top_score": classification["top_score"],
@@ -554,7 +567,7 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enr
     for cluster in sorted(scored, key=lambda c: c["score"], reverse=True):
         clusters_by_theme.setdefault(cluster["theme"], []).append(cluster)
 
-    ordered_themes = list(theme_names) + ["Autres"]
+    ordered_themes = list(theme_names) + [UNCLASSIFIED]
     clusters_to_render = []
     for theme in ordered_themes:
         top = sorted(clusters_by_theme.get(theme, []), key=_CLUSTER_SORT_KEY, reverse=True)[:top_per_theme]
@@ -570,11 +583,6 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enr
     except OSError as e:
         raise click.ClickException(f"Could not write prose digest to '{prose_file}': {e}") from e
     logging.info("Prose digest written to %s", prose_file)
-
-    if enrich_review and not suggest:
-        raise click.ClickException("--enrich-review requires --suggest.")
-    if apply_suggestions and not enrich_review:
-        raise click.ClickException("--apply-suggestions requires --enrich-review.")
 
     if suggest:
         review = render_suggestions(week_num, scored)
