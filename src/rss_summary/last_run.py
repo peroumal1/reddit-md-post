@@ -9,8 +9,10 @@ DATE_FMT = "%d-%b-%Y (%H:%M:%S.%f)"
 
 
 def set_last_run_date():
-    if LAST_RUN_FILE.exists():
+    try:
         shutil.copy2(LAST_RUN_FILE, LAST_RUN_BACKUP)
+    except FileNotFoundError:
+        pass
     LAST_RUN_FILE.write_text(datetime.today().strftime(DATE_FMT))
 
 

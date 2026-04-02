@@ -24,9 +24,7 @@ from sklearn.model_selection import StratifiedKFold, cross_val_predict
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import LinearSVC
 
-from rss_summary.classification import E5_MODEL_ID, E5_PROMPT
-
-BGE_MODEL_ID = "BAAI/bge-m3"
+from rss_summary.classification import BGE_MODEL_ID, E5_MODEL_ID, E5_PROMPT
 
 
 def _make_clf():

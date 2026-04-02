@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 from mistralai.client import Mistral
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import UNCLASSIFIED, classify_article_scored, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy
+from rss_summary.classification import BGE_MODEL_ID, UNCLASSIFIED, classify_article_scored, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy
 from rss_summary.parsing import parse_daily_feed_md
 from rss_summary.similarity import encode_text
 
@@ -522,7 +522,7 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enr
     most_read_paths = get_most_read_urls()
     logging.info("Found %d most-read paths.", len(most_read_paths))
 
-    model = SentenceTransformer("BAAI/bge-m3")
+    model = SentenceTransformer(BGE_MODEL_ID)
     try:
         theme_names = load_taxonomy(taxonomy)
         head = load_classifier_head()
