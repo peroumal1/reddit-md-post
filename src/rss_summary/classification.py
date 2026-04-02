@@ -7,6 +7,7 @@ DEFAULT_TAXONOMY_PATH = Path("data/taxonomy.toml")
 DEFAULT_HEAD_PATH = Path("data/classifier_head.joblib")
 UNCLASSIFIED = "Autres"
 
+BGE_MODEL_ID = "BAAI/bge-m3"
 E5_MODEL_ID = "intfloat/multilingual-e5-large-instruct"
 E5_PROMPT = "Instruct: Classify the following French news headline into a thematic category.\nQuery: "
 

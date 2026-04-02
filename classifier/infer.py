@@ -17,7 +17,7 @@ import joblib
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import UNCLASSIFIED, encode_for_classification
+from rss_summary.classification import BGE_MODEL_ID, UNCLASSIFIED, encode_for_classification
 from rss_summary.parsing import parse_daily_feed_md
 
 
@@ -75,7 +75,7 @@ def main() -> None:
 
     print("Loading models and head...")
     from rss_summary.classification import load_e5_model
-    model_bge = SentenceTransformer("BAAI/bge-m3")
+    model_bge = SentenceTransformer(BGE_MODEL_ID)
     model_e5 = load_e5_model()
     head = load_head(args.head)
 

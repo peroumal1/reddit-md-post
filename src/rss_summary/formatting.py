@@ -20,12 +20,10 @@ def format_feed_entries(entries, with_images=False):
 
 def format_feed_entries_classified(entries, theme_names, with_images=False):
     """Render entries grouped by theme as a markdown document with section headers."""
-    # Preserve theme order from taxonomy, append Autres at the end
     ordered_themes = list(theme_names) + [UNCLASSIFIED]
-    by_theme = {theme: [] for theme in ordered_themes}
+    by_theme = {}
     for item in entries:
-        theme = item.get("theme", UNCLASSIFIED)
-        by_theme.setdefault(theme, []).append(item)
+        by_theme.setdefault(item.get("theme", UNCLASSIFIED), []).append(item)
 
     sections = []
     for theme in ordered_themes:
