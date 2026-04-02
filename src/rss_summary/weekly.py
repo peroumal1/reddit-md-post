@@ -165,6 +165,8 @@ def _cluster_sections(clusters):
     sections = []
     for i, cluster in enumerate(clusters, 1):
         rep = cluster["rep"]
+        theme = cluster.get("theme", "")
+        theme_prefix = f"[{theme}] " if theme and theme != UNCLASSIFIED else ""
         article_lines = []
         for item in cluster["raw"]:
             a = item["article"]
@@ -173,7 +175,7 @@ def _cluster_sections(clusters):
             if summary:
                 line += f" : {summary}"
             article_lines.append(line)
-        sections.append(f"[{i}] {rep['title']}\n" + "\n".join(article_lines))
+        sections.append(f"[{i}] {theme_prefix}{rep['title']}\n" + "\n".join(article_lines))
     return sections
 
 
@@ -190,7 +192,7 @@ def generate_stitched_narrative(clusters, week_num, week_start, week_end, client
         "d'un sujet à l'autre. Règles strictes à respecter :\n"
         "- Ton strictement factuel et neutre. Aucune opinion, aucun jugement, aucune recommandation aux autorités ou à la population.\n"
         "- Ne rédige pas de paragraphe d'introduction générale. Commence directement par le premier sujet.\n"
-        "- Termine par un court paragraphe de synthèse factuelle (\"En bref\" ou similaire), sans appel à l'action.\n"
+        "- Ne rédige pas de paragraphe de conclusion générale.\n"
         "- Aucun titre, sous-titre, texte en gras ou en italique, lien, référence entre parenthèses, ni section sources : uniquement des paragraphes de prose.\n"
         "- N'invente aucun fait absent des articles fournis."
     )

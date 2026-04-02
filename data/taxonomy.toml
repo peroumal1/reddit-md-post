@@ -1,12 +1,12 @@
 themes = [
   "Faits divers",
-  "Eau & environnement",
   "Politique",
-  "Culture & société",
-  "Sport",
-  "Santé",
   "Économie & social",
-  "Éducation",
-  "Outre-mer & Caraïbes",
+  "Santé",
+  "Eau & environnement",
   "International",
+  "Outre-mer & Caraïbes",
+  "Sport",
+  "Culture & société",
+  "Éducation",
 ]
