@@ -179,6 +179,48 @@ def _cluster_sections(clusters):
     return sections
 
 
+def split_mixed_clusters(raw_clusters, model_bge, model_e5, head):
+    """Split clusters that mix 'Faits divers' articles with other themes.
+
+    After semantic clustering, articles about the same venue (e.g. a school)
+    can end up together even when they cover unrelated events (an accident vs.
+    a ranking). This pass classifies each article individually and splits any
+    cluster where 'Faits divers' is mixed with another theme.
+    """
+    result = []
+    for cluster in raw_clusters:
+        if len(cluster) == 1:
+            result.append(cluster)
+            continue
+
+        themes = []
+        for item in cluster:
+            a = item["article"]
+            text = f"{a['title']}. {a.get('summary', '')}"
+            emb = encode_for_classification(text, model_bge, model_e5)
+            themes.append(classify_article_scored(emb, head)["theme"])
+
+        unique_themes = set(themes)
+        has_faits_divers = "Faits divers" in unique_themes
+        has_other = bool(unique_themes - {"Faits divers", UNCLASSIFIED})
+
+        if has_faits_divers and has_other:
+            by_theme = {}
+            for item, theme in zip(cluster, themes):
+                by_theme.setdefault(theme, []).append(item)
+            result.extend(by_theme.values())
+            logging.info(
+                "Split cluster '%s…' (%d articles) → %s",
+                cluster[0]["article"]["title"][:50],
+                len(cluster),
+                list(by_theme.keys()),
+            )
+        else:
+            result.append(cluster)
+
+    return result
+
+
 def generate_stitched_narrative(clusters, week_num, week_start, week_end, client):
     """Single Mistral call producing one flowing editorial text covering all clusters."""
     start_str, end_str = _format_week_range(week_start, week_end)
@@ -533,6 +575,9 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enr
     logging.info("Clustering articles…")
     raw_clusters = cluster_articles(articles, model)
     logging.info("Found %d clusters.", len(raw_clusters))
+
+    raw_clusters = split_mixed_clusters(raw_clusters, model, model_e5, head)
+    logging.info("After splitting mixed clusters: %d clusters.", len(raw_clusters))
 
     scored = []
     for raw_cluster in raw_clusters:
