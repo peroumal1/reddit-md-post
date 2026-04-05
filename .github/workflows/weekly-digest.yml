@@ -31,7 +31,7 @@ jobs:
         run: |
           WEEK=$(date +%V)
           echo "already_ran=false" >> $GITHUB_OUTPUT
-          if [ "$GITHUB_EVENT_NAME" != "workflow_dispatch" ] && [ -f "data/weekly-w${WEEK}.md" ]; then
+          if [ "$GITHUB_EVENT_NAME" != "workflow_dispatch" ] && [ -f "data/weekly-w${WEEK}-prose.md" ]; then
             echo "already_ran=true" >> $GITHUB_OUTPUT
             echo "Weekly digest for W${WEEK} already exists, skipping."
           fi
