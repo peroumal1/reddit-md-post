@@ -26,6 +26,11 @@ def load_e5_model():
     return SentenceTransformer(E5_MODEL_ID)
 
 
+def _l2_normalize(v: np.ndarray) -> np.ndarray:
+    norm = np.linalg.norm(v)
+    return v / norm if norm > 0 else v
+
+
 def encode_for_classification(text: str, model_bge, model_e5) -> np.ndarray:
     """Encode text with bge-m3 + e5-instruct and return a concatenated 2048-dim vector.
 
@@ -37,9 +42,7 @@ def encode_for_classification(text: str, model_bge, model_e5) -> np.ndarray:
     clean = strip_html(text)
     emb_bge = model_bge.encode(clean, normalize_embeddings=True)
     emb_e5 = model_e5.encode(E5_PROMPT + clean, normalize_embeddings=True)
-    concat = np.concatenate([emb_bge, emb_e5])
-    norm = np.linalg.norm(concat)
-    return concat / norm if norm > 0 else concat
+    return _l2_normalize(np.concatenate([emb_bge, emb_e5]))
 
 
 def load_classifier_head(path=None):
@@ -73,9 +76,7 @@ def classify_article_scored(embedding, head, threshold=0.15):
     label_to_theme = head["label_to_theme"]
 
     # Normalize to match training distribution (train.py uses normalize_embeddings=True)
-    norm = np.linalg.norm(embedding)
-    if norm > 0:
-        embedding = embedding / norm
+    embedding = _l2_normalize(embedding)
 
     proba = clf.predict_proba([embedding])[0]
     sorted_idx = np.argsort(proba)[::-1]
