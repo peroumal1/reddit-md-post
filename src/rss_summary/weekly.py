@@ -33,6 +33,7 @@ SOURCE_MAP = {
 
 CLUSTER_THRESHOLD = 0.70
 MISTRAL_MODEL = "mistral-small-latest"
+_FAITS_DIVERS = "Faits divers"
 _CLUSTER_SORT_KEY = lambda c: (bool(c["most_read_tags"]), c["score"])
 
 
@@ -201,8 +202,8 @@ def split_mixed_clusters(raw_clusters, model_bge, model_e5, head):
             themes.append(classify_article_scored(emb, head)["theme"])
 
         unique_themes = set(themes)
-        has_faits_divers = "Faits divers" in unique_themes
-        has_other = bool(unique_themes - {"Faits divers", UNCLASSIFIED})
+        has_faits_divers = _FAITS_DIVERS in unique_themes
+        has_other = bool(unique_themes - {_FAITS_DIVERS, UNCLASSIFIED})
 
         if has_faits_divers and has_other:
             by_theme = {}
@@ -595,7 +596,6 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enr
 
         scored.append({
             "raw": raw_cluster,
-            "centroid": centroid,
             "rep": rep,
             "score": score,
             "theme": classification["theme"],

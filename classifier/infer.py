@@ -11,23 +11,11 @@ on real articles before enabling --classify in the main pipeline.
 import argparse
 import time
 from collections import defaultdict
-from pathlib import Path
-
-import joblib
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import BGE_MODEL_ID, UNCLASSIFIED, encode_for_classification
+from rss_summary.classification import BGE_MODEL_ID, UNCLASSIFIED, encode_for_classification, load_classifier_head, load_e5_model
 from rss_summary.parsing import parse_daily_feed_md
-
-
-def parse_feed_md(path: str) -> list[dict]:
-    """Extract articles from a daily feed markdown table."""
-    return [{"title": a["title"], "summary": a["summary"]} for a in parse_daily_feed_md(path)]
-
-
-def load_head(path: str) -> dict:
-    return joblib.load(path)
 
 
 def classify_batch(
@@ -64,20 +52,18 @@ def main() -> None:
     parser.add_argument("--threshold", type=float, default=0.15)
     args = parser.parse_args()
 
-    if not Path(args.head).exists():
-        print(f"Error: classifier head not found at {args.head}")
-        print("Run: pdm run python classifier/train.py")
-        raise SystemExit(1)
-
     print(f"Loading articles from {args.feed}...")
-    articles = parse_feed_md(args.feed)
+    articles = [{"title": a["title"], "summary": a["summary"]} for a in parse_daily_feed_md(args.feed)]
     print(f"Found {len(articles)} articles")
 
     print("Loading models and head...")
-    from rss_summary.classification import load_e5_model
     model_bge = SentenceTransformer(BGE_MODEL_ID)
     model_e5 = load_e5_model()
-    head = load_head(args.head)
+    try:
+        head = load_classifier_head(args.head)
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        raise SystemExit(1)
 
     print("Classifying...")
     t0 = time.time()
@@ -85,7 +71,6 @@ def main() -> None:
     elapsed = time.time() - t0
     print(f"Done in {elapsed:.1f}s\n")
 
-    # Group by theme
     by_theme = defaultdict(list)
     for r in results:
         by_theme[r["theme"]].append(r)
