@@ -68,7 +68,7 @@ Options:
 
 The model is downloaded automatically on first run and cached in `~/.cache/huggingface`.
 
-**Classification** (enabled with `--classify`): uses a trained LinearSVC head on concatenated `BAAI/bge-m3` + `multilingual-e5-large-instruct` embeddings (2048-dim, ~79% accuracy / 0.80 macro F1, 10 themes). The head is stored in `data/classifier_head.joblib` and committed — no retraining needed on first clone.
+**Classification** (enabled with `--classify`): uses a trained LinearSVC head on concatenated `BAAI/bge-m3` + `multilingual-e5-large-instruct` embeddings (2048-dim, ~80% accuracy / 0.82 macro F1, 10 themes). The head is stored in `data/classifier_head.joblib` and committed — no retraining needed on first clone.
 
 **Last-run tracking**: the date of last execution is stored in `.last-run`. Only entries published since the previous run are fetched.
 
