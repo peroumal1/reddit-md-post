@@ -8,13 +8,11 @@ import feedparser
 from py_markdown_table.markdown_table import markdown_table
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import BGE_MODEL_ID, classify_article, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy
+from rss_summary.classification import BGE_MODEL_ID, MISTRAL_MODEL, classify_article, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy
 from rss_summary.formatting import format_feed_entries, format_feed_entries_classified
 from rss_summary.last_run import get_last_run_date, restore_last_run_date, set_last_run_date
-from rss_summary.parsing import extract_first_paragraph, get_default_image_link
+from rss_summary.parsing import extract_first_paragraph, format_article_text, get_default_image_link
 from rss_summary.similarity import encode_text, is_duplicate, title_is_duplicate
-
-MISTRAL_MODEL = "mistral-small-latest"
 
 
 def generate_daily_summary(articles, client):
@@ -135,7 +133,7 @@ def main(rss_links, feed_output, with_images, dry_run, restore, until, classify,
             model_e5 = load_e5_model()
             for item in sorted_list:
                 cls_embedding = encode_for_classification(
-                    f"{item['title']}. {item['summary']}", model, model_e5
+                    format_article_text(item), model, model_e5
                 )
                 item["theme"] = classify_article(cls_embedding, head)
             markdown = format_feed_entries_classified(sorted_list, theme_names, with_images)

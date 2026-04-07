@@ -3,6 +3,8 @@ from pathlib import Path
 
 import numpy as np
 
+from rss_summary.parsing import strip_html
+
 DEFAULT_TAXONOMY_PATH = Path("data/taxonomy.toml")
 DEFAULT_HEAD_PATH = Path("data/classifier_head.joblib")
 UNCLASSIFIED = "Autres"
@@ -10,6 +12,8 @@ UNCLASSIFIED = "Autres"
 BGE_MODEL_ID = "BAAI/bge-m3"
 E5_MODEL_ID = "intfloat/multilingual-e5-large-instruct"
 E5_PROMPT = "Instruct: Classify the following French news headline into a thematic category.\nQuery: "
+MISTRAL_MODEL = "mistral-small-latest"
+CLASSIFICATION_THRESHOLD = 0.15
 
 
 def load_taxonomy(path=None):
@@ -37,8 +41,6 @@ def encode_for_classification(text: str, model_bge, model_e5) -> np.ndarray:
     Both individual embeddings are L2-normalized before concatenation.
     The result is also L2-normalized to match the training distribution.
     """
-    from rss_summary.parsing import strip_html
-
     clean = strip_html(text)
     emb_bge = model_bge.encode(clean, normalize_embeddings=True)
     emb_e5 = model_e5.encode(E5_PROMPT + clean, normalize_embeddings=True)
@@ -50,8 +52,6 @@ def batch_encode_e5(texts: list, model_e5) -> np.ndarray:
 
     Strips HTML and prepends the instruction prompt before encoding.
     """
-    from rss_summary.parsing import strip_html
-
     prompts = [E5_PROMPT + strip_html(t) for t in texts]
     return model_e5.encode(prompts, normalize_embeddings=True)
 
@@ -77,12 +77,12 @@ def load_classifier_head(path=None):
         )
 
 
-def classify_article(embedding, head, threshold=0.15):
+def classify_article(embedding, head, threshold=CLASSIFICATION_THRESHOLD):
     """Return the theme name for the given article embedding."""
     return classify_article_scored(embedding, head, threshold)["theme"]
 
 
-def classify_article_scored(embedding, head, threshold=0.15):
+def classify_article_scored(embedding, head, threshold=CLASSIFICATION_THRESHOLD):
     """Return classification result with full score breakdown.
 
     Returns a dict with:
