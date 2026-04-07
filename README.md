@@ -60,6 +60,7 @@ Options:
   --until DATETIME    Upper date bound for articles (YYYY-MM-DD or YYYY-MM-DD HH:MM:SS)
   --dry-run           Run without updating .last-run
   --restore           Restore .last-run from backup and exit
+  --summarize         Prepend a Mistral-generated prose summary (requires MISTRAL_API_KEY)
 ```
 
 **Deduplication** uses a two-stage pipeline:
@@ -71,6 +72,8 @@ The model is downloaded automatically on first run and cached in `~/.cache/huggi
 **Classification** (enabled with `--classify`): uses a trained LinearSVC head on concatenated `BAAI/bge-m3` + `multilingual-e5-large-instruct` embeddings (2048-dim, ~80% accuracy / 0.82 macro F1, 10 themes). The head is stored in `data/classifier_head.joblib` and committed — no retraining needed on first clone.
 
 **Last-run tracking**: the date of last execution is stored in `.last-run`. Only entries published since the previous run are fetched.
+
+**Summary** (enabled with `--summarize`): calls Mistral once to generate a 100–150 word neutral prose overview of the day's articles. The output is structured as `## En bref` (prose) followed by `## Plus en détails` (the article table). Enabled by default in the CI daily workflow via `MISTRAL_API_KEY`.
 
 ---
 
