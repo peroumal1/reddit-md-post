@@ -45,6 +45,26 @@ def encode_for_classification(text: str, model_bge, model_e5) -> np.ndarray:
     return _l2_normalize(np.concatenate([emb_bge, emb_e5]))
 
 
+def batch_encode_e5(texts: list, model_e5) -> np.ndarray:
+    """Batch-encode a list of texts with e5-instruct. Returns a 2D array (N, 1024).
+
+    Strips HTML and prepends the instruction prompt before encoding.
+    """
+    from rss_summary.parsing import strip_html
+
+    prompts = [E5_PROMPT + strip_html(t) for t in texts]
+    return model_e5.encode(prompts, normalize_embeddings=True)
+
+
+def build_cls_embedding(bge_embedding: np.ndarray, e5_embedding: np.ndarray) -> np.ndarray:
+    """Build a 2048-dim classification embedding from pre-computed components.
+
+    bge_embedding may be unnormalized (as produced by encode_text in similarity.py);
+    it is L2-normalized here to match the training distribution before concatenation.
+    """
+    return _l2_normalize(np.concatenate([_l2_normalize(bge_embedding), e5_embedding]))
+
+
 def load_classifier_head(path=None):
     """Load the trained classifier head. Raises FileNotFoundError if not found."""
     import joblib
