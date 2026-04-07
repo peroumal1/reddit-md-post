@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 from mistralai.client import Mistral
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import BGE_MODEL_ID, UNCLASSIFIED, classify_article_scored, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy
+from rss_summary.classification import BGE_MODEL_ID, UNCLASSIFIED, batch_encode_e5, build_cls_embedding, classify_article_scored, load_classifier_head, load_e5_model, load_taxonomy
 from rss_summary.parsing import parse_daily_feed_md
 from rss_summary.similarity import encode_text
 
@@ -187,27 +187,48 @@ def split_mixed_clusters(raw_clusters, model_bge, model_e5, head):
     can end up together even when they cover unrelated events (an accident vs.
     a ranking). This pass classifies each article individually and splits any
     cluster where 'Faits divers' is mixed with another theme.
+
+    Reuses bge-m3 embeddings cached in item["embedding"] from cluster_articles,
+    and batch-encodes all e5 inputs in a single model call.
     """
-    result = []
-    for cluster in raw_clusters:
+    # Collect articles from multi-item clusters for batch e5 encoding.
+    flat_items = []   # (cluster_idx, item) in order
+    flat_texts = []
+    for cluster_idx, cluster in enumerate(raw_clusters):
         if len(cluster) == 1:
+            continue
+        for item in cluster:
+            a = item["article"]
+            flat_texts.append(f"{a['title']}. {a.get('summary', '')}")
+            flat_items.append((cluster_idx, item))
+
+    if not flat_items:
+        return raw_clusters
+
+    e5_embs = batch_encode_e5(flat_texts, model_e5)
+
+    # Classify each article using cached bge embedding + batched e5.
+    article_themes = {}  # cluster_idx → list of theme strings (in cluster order)
+    for (cluster_idx, item), e5_emb in zip(flat_items, e5_embs):
+        cls_emb = build_cls_embedding(item["embedding"], e5_emb)
+        theme = classify_article_scored(cls_emb, head)["theme"]
+        article_themes.setdefault(cluster_idx, []).append((item, theme))
+
+    result = []
+    for cluster_idx, cluster in enumerate(raw_clusters):
+        if cluster_idx not in article_themes:
             result.append(cluster)
             continue
 
-        themes = []
-        for item in cluster:
-            a = item["article"]
-            text = f"{a['title']}. {a.get('summary', '')}"
-            emb = encode_for_classification(text, model_bge, model_e5)
-            themes.append(classify_article_scored(emb, head)["theme"])
-
+        items_and_themes = article_themes[cluster_idx]
+        themes = [t for _, t in items_and_themes]
         unique_themes = set(themes)
         has_faits_divers = _FAITS_DIVERS in unique_themes
         has_other = bool(unique_themes - {_FAITS_DIVERS, UNCLASSIFIED})
 
         if has_faits_divers and has_other:
             by_theme = {}
-            for item, theme in zip(cluster, themes):
+            for item, theme in items_and_themes:
                 by_theme.setdefault(theme, []).append(item)
             result.extend(by_theme.values())
             logging.info(
@@ -580,19 +601,30 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enr
     raw_clusters = split_mixed_clusters(raw_clusters, model, model_e5, head)
     logging.info("After splitting mixed clusters: %d clusters.", len(raw_clusters))
 
-    scored = []
+    # Pre-compute centroids, reps, and scores; batch-encode e5 for all reps at once.
+    cluster_meta = []
     for raw_cluster in raw_clusters:
-        score = score_cluster(raw_cluster, most_read_paths)
         centroid = representative_embedding(raw_cluster)
         rep = pick_representative_article(raw_cluster, centroid)
-        rep_text = f"{rep['title']}. {rep['summary']}"
-        cls_embedding = encode_for_classification(rep_text, model, model_e5)
-        classification = classify_article_scored(cls_embedding, head)
+        rep_bge = next(
+            (item["embedding"] for item in raw_cluster if item["article"] is rep),
+            centroid,
+        )
+        score = score_cluster(raw_cluster, most_read_paths)
+        most_read_tags = {
+            item["article"]["source"]
+            for item in raw_cluster
+            if urlparse(item["article"]["url"]).path in most_read_paths
+        }
+        cluster_meta.append((raw_cluster, rep, rep_bge, score, most_read_tags))
 
-        most_read_tags = set()
-        for item in raw_cluster:
-            if urlparse(item["article"]["url"]).path in most_read_paths:
-                most_read_tags.add(item["article"]["source"])
+    rep_texts = [f"{rep['title']}. {rep['summary']}" for _, rep, _, _, _ in cluster_meta]
+    rep_e5_embs = batch_encode_e5(rep_texts, model_e5)
+
+    scored = []
+    for (raw_cluster, rep, rep_bge, score, most_read_tags), e5_emb in zip(cluster_meta, rep_e5_embs):
+        cls_embedding = build_cls_embedding(rep_bge, e5_emb)
+        classification = classify_article_scored(cls_embedding, head)
 
         scored.append({
             "raw": raw_cluster,
