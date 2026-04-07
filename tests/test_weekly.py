@@ -114,7 +114,7 @@ class TestClusterArticles:
         model = MagicMock()
         tensor = MagicMock()
         tensor.item.return_value = sim_value
-        model.similarity.return_value = [[tensor]]
+        model.similarity.side_effect = lambda a, b: [[tensor] * len(b)] * len(a)
         return model
 
     def test_single_article_forms_one_cluster(self):

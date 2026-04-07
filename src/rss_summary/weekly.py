@@ -14,8 +14,8 @@ from bs4 import BeautifulSoup
 from mistralai.client import Mistral
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import BGE_MODEL_ID, UNCLASSIFIED, batch_encode_e5, build_cls_embedding, classify_article_scored, load_classifier_head, load_e5_model, load_taxonomy
-from rss_summary.parsing import parse_daily_feed_md
+from rss_summary.classification import BGE_MODEL_ID, CLASSIFICATION_THRESHOLD, MISTRAL_MODEL, UNCLASSIFIED, batch_encode_e5, build_cls_embedding, classify_article_scored, load_classifier_head, load_e5_model, load_taxonomy
+from rss_summary.parsing import format_article_text, parse_daily_feed_md
 from rss_summary.similarity import encode_text
 
 MOIS = {
@@ -32,7 +32,6 @@ SOURCE_MAP = {
 }
 
 CLUSTER_THRESHOLD = 0.70
-MISTRAL_MODEL = "mistral-small-latest"
 _FAITS_DIVERS = "Faits divers"
 _CLUSTER_SORT_KEY = lambda c: (bool(c["most_read_tags"]), c["score"])
 
@@ -98,7 +97,8 @@ def get_most_read_urls():
 
 def cluster_articles(articles, model):
     """Greedy semantic clustering across all articles. Returns list of clusters."""
-    embeddings = [encode_text(model, f"{a['title']}. {a['summary']}") for a in articles]
+    embeddings = [encode_text(model, format_article_text(a)) for a in articles]
+    sim_matrix = model.similarity(embeddings, embeddings)
     assigned = [False] * len(articles)
     clusters = []
 
@@ -110,8 +110,7 @@ def cluster_articles(articles, model):
         for j in range(i + 1, len(articles)):
             if assigned[j]:
                 continue
-            sim = model.similarity([embeddings[i]], [embeddings[j]])[0][0].item()
-            if sim >= CLUSTER_THRESHOLD:
+            if sim_matrix[i][j].item() >= CLUSTER_THRESHOLD:
                 cluster.append({"article": articles[j], "embedding": embeddings[j]})
                 assigned[j] = True
         clusters.append(cluster)
@@ -191,15 +190,13 @@ def split_mixed_clusters(raw_clusters, model_bge, model_e5, head):
     Reuses bge-m3 embeddings cached in item["embedding"] from cluster_articles,
     and batch-encodes all e5 inputs in a single model call.
     """
-    # Collect articles from multi-item clusters for batch e5 encoding.
     flat_items = []   # (cluster_idx, item) in order
     flat_texts = []
     for cluster_idx, cluster in enumerate(raw_clusters):
         if len(cluster) == 1:
             continue
         for item in cluster:
-            a = item["article"]
-            flat_texts.append(f"{a['title']}. {a.get('summary', '')}")
+            flat_texts.append(format_article_text(item["article"]))
             flat_items.append((cluster_idx, item))
 
     if not flat_items:
@@ -207,8 +204,7 @@ def split_mixed_clusters(raw_clusters, model_bge, model_e5, head):
 
     e5_embs = batch_encode_e5(flat_texts, model_e5)
 
-    # Classify each article using cached bge embedding + batched e5.
-    article_themes = {}  # cluster_idx → list of theme strings (in cluster order)
+    article_themes = {}  # cluster_idx → [(item, theme), …] in cluster order
     for (cluster_idx, item), e5_emb in zip(flat_items, e5_embs):
         cls_emb = build_cls_embedding(item["embedding"], e5_emb)
         theme = classify_article_scored(cls_emb, head)["theme"]
@@ -289,7 +285,7 @@ def render_prose_digest(week_num, week_start, week_end, clusters, stitched):
     return "\n".join(lines)
 
 
-def _cluster_status(cluster, threshold=0.15, low_confidence_margin=0.10, ambiguity_margin=0.05):
+def _cluster_status(cluster, threshold=CLASSIFICATION_THRESHOLD, low_confidence_margin=0.10, ambiguity_margin=0.05):
     """Return the problematic status of a cluster, or None if clean."""
     top = cluster["top_score"]
     runner_score = cluster["runner_up_score"]
@@ -302,7 +298,7 @@ def _cluster_status(cluster, threshold=0.15, low_confidence_margin=0.10, ambigui
     return None
 
 
-def _problematic_clusters(scored, threshold=0.15, low_confidence_margin=0.10, ambiguity_margin=0.05):
+def _problematic_clusters(scored, threshold=CLASSIFICATION_THRESHOLD, low_confidence_margin=0.10, ambiguity_margin=0.05):
     """Return clusters that are unclassified, low-confidence, or ambiguous."""
     return [c for c in scored if _cluster_status(c, threshold, low_confidence_margin, ambiguity_margin) is not None]
 
@@ -411,7 +407,7 @@ def apply_suggestions_to_themes(suggestions, themes_path):
         if theme_name not in theme_map:
             logging.warning("Unknown theme '%s' — skipping.", theme_name)
             continue
-        if example not in theme_map[theme_name]["examples"]:
+        if example not in set(theme_map[theme_name]["examples"]):
             theme_map[theme_name]["examples"].append(example)
             added += 1
             logging.info("Added example to '%s': %.60s…", theme_name, example)
@@ -424,7 +420,7 @@ def apply_suggestions_to_themes(suggestions, themes_path):
     return added, new_themes
 
 
-def render_suggestions(week_num, scored, threshold=0.15, low_confidence_margin=0.10, ambiguity_margin=0.05):
+def render_suggestions(week_num, scored, threshold=CLASSIFICATION_THRESHOLD, low_confidence_margin=0.10, ambiguity_margin=0.05):
     """Build a taxonomy review report from scored clusters."""
     unclassified, low_confidence, ambiguous = [], [], []
 
@@ -601,7 +597,6 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enr
     raw_clusters = split_mixed_clusters(raw_clusters, model, model_e5, head)
     logging.info("After splitting mixed clusters: %d clusters.", len(raw_clusters))
 
-    # Pre-compute centroids, reps, and scores; batch-encode e5 for all reps at once.
     cluster_meta = []
     for raw_cluster in raw_clusters:
         centroid = representative_embedding(raw_cluster)
@@ -618,7 +613,7 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enr
         }
         cluster_meta.append((raw_cluster, rep, rep_bge, score, most_read_tags))
 
-    rep_texts = [f"{rep['title']}. {rep['summary']}" for _, rep, _, _, _ in cluster_meta]
+    rep_texts = [format_article_text(rep) for _, rep, _, _, _ in cluster_meta]
     rep_e5_embs = batch_encode_e5(rep_texts, model_e5)
 
     scored = []

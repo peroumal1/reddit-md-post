@@ -55,6 +55,11 @@ def parse_daily_feed_md(path):
     return articles
 
 
+def format_article_text(article: dict) -> str:
+    """Concatenate title and summary into a single string for model input."""
+    return f"{article['title']}. {article.get('summary', '')}"
+
+
 def get_default_image_link(resource, origin_link):
     img_link = resource.get("media_content", None)
     if not img_link:
