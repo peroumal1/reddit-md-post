@@ -1,4 +1,5 @@
 import logging
+import os
 from datetime import datetime
 from pathlib import Path
 
@@ -13,6 +14,38 @@ from rss_summary.last_run import get_last_run_date, restore_last_run_date, set_l
 from rss_summary.parsing import extract_first_paragraph, get_default_image_link
 from rss_summary.similarity import encode_text, is_duplicate, title_is_duplicate
 
+MISTRAL_MODEL = "mistral-small-latest"
+
+
+def generate_daily_summary(articles, client):
+    """Ask Mistral for a short prose summary of the day's articles."""
+    lines = []
+    for a in articles:
+        summary = a.get("summary", "").strip()[:300]
+        line = f"- [{a['title']}]({a['link']})"
+        if summary:
+            line += f" : {summary}"
+        lines.append(line)
+
+    prompt = (
+        "Tu es journaliste et rédiges un bref résumé de l'actualité du jour en Guadeloupe "
+        "pour un digest en ligne.\n\n"
+        "Voici les articles du jour :\n\n"
+        + "\n".join(lines)
+        + "\n\nRédige un texte de 100 à 150 mots qui résume les principales informations du jour. "
+        "Règles strictes :\n"
+        "- Ton strictement factuel et neutre. Aucune opinion, aucun jugement.\n"
+        "- Commence directement par les faits. Pas de phrase d'introduction générale.\n"
+        "- Pas de titre, pas de liste, pas de texte en gras : uniquement de la prose.\n"
+        "- Si des informations positives ou neutres sont présentes, intègre-les au texte sans te limiter aux faits les plus dramatiques.\n"
+        "- N'invente aucun fait absent des articles fournis."
+    )
+    response = client.chat.complete(
+        model=MISTRAL_MODEL,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return response.choices[0].message.content.strip()
+
 
 @click.command()
 @click.argument("rss_links", default="data/rss_list.txt")
@@ -23,8 +56,18 @@ from rss_summary.similarity import encode_text, is_duplicate, title_is_duplicate
 @click.option("--until", default=None, help="Upper date bound for articles (ISO format: YYYY-MM-DD HH:MM:SS)")
 @click.option("--classify", is_flag=True, help="Group output by thematic taxonomy")
 @click.option("--taxonomy", default="data/taxonomy.toml", show_default=True, help="Path to taxonomy TOML config")
-def main(rss_links, feed_output, with_images, dry_run, restore, until, classify, taxonomy):
+@click.option("--summarize", is_flag=True, help="Prepend a Mistral-generated prose summary to the digest (requires MISTRAL_API_KEY)")
+def main(rss_links, feed_output, with_images, dry_run, restore, until, classify, taxonomy, summarize):
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+
+    mistral_client = None
+    if summarize:
+        api_key = os.environ.get("MISTRAL_API_KEY")
+        if not api_key:
+            raise click.ClickException("--summarize requires MISTRAL_API_KEY to be set.")
+        from mistralai.client import Mistral
+        mistral_client = Mistral(api_key=api_key)
+
     if restore:
         restore_last_run_date()
         return
@@ -103,6 +146,17 @@ def main(rss_links, feed_output, with_images, dry_run, restore, until, classify,
                 .set_params(row_sep="markdown", quote=False)
                 .get_markdown()
             )
+
+        if summarize:
+            logging.info("Generating daily summary via Mistral…")
+            summary_text = generate_daily_summary(sorted_list, mistral_client)
+            markdown = (
+                "## En bref\n\n"
+                + summary_text
+                + "\n\n## Plus en détails\n\n"
+                + markdown
+            )
+
         try:
             Path(feed_output).write_text(markdown)
         except OSError as e:

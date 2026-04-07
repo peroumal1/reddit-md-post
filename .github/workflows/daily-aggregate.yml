@@ -59,7 +59,9 @@ jobs:
 
       - name: Run aggregation
         if: steps.check_last_run.outputs.already_ran != 'true'
-        run: pdm run aggregate-rss
+        env:
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+        run: pdm run aggregate-rss --summarize
 
       - name: Copy feed to dated file
         if: steps.check_last_run.outputs.already_ran != 'true'
