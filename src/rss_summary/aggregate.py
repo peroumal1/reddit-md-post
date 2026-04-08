@@ -36,7 +36,8 @@ def generate_daily_summary(articles, client):
         "- Commence directement par les faits. Pas de phrase d'introduction générale.\n"
         "- Pas de titre, pas de liste, pas de texte en gras : uniquement de la prose.\n"
         "- Si des informations positives ou neutres sont présentes, intègre-les au texte sans te limiter aux faits les plus dramatiques.\n"
-        "- N'invente aucun fait absent des articles fournis."
+        "- N'invente aucun fait absent des articles fournis.\n"
+        "- N'utilise jamais l'expression 'En Guadeloupe' dans le texte, ni en début de phrase ni en milieu : le lecteur est déjà en contexte guadeloupéen et cette précision est superflue."
     )
     response = client.chat.complete(
         model=MISTRAL_MODEL,
