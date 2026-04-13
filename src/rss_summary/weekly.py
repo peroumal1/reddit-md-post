@@ -357,7 +357,7 @@ def enrich_review_with_suggestions(problematic, theme_names, client):
         example_m = re.search(r'Exemple\s*:\s*["\u201c](.+?)["\u201d]', block)
         reason_m = re.search(r"Raison\s*:\s*(.+)", block)
         structured.append({
-            "theme": theme_m.group(1).strip() if theme_m else None,
+            "theme": theme_m.group(1).strip().strip("*") if theme_m else None,
             "example": example_m.group(1).strip() if example_m else None,
             "reason": reason_m.group(1).strip() if reason_m else None,
             "_raw": block,
