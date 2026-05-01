@@ -64,7 +64,7 @@ def get_default_image_link(resource, origin_link):
     img_link = resource.get("media_content", None)
     if not img_link:
         try:
-            r = requests.get(origin_link)
+            r = requests.get(origin_link, timeout=5)
             if not r.ok:
                 return [{"url": ""}]
             soup = BeautifulSoup(r.text, features="html.parser")
