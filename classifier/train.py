@@ -17,6 +17,7 @@ from pathlib import Path
 
 import joblib
 import numpy as np
+import sklearn
 from sentence_transformers import SentenceTransformer
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.metrics import classification_report
@@ -100,11 +101,21 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
     elapsed = time.time() - t0
     print(f"Training done in {elapsed:.1f}s")
 
+    import sentence_transformers
     head = {
         "clf": clf,
         "label_encoder": le,
         "label_to_theme": label_to_theme,
         "theme_to_label": {t["theme"]: t["label"] for t in themes},
+        "meta": {
+            "trained_at": datetime.now().isoformat(),
+            "bge_model": BGE_MODEL_ID,
+            "e5_model": E5_MODEL_ID,
+            "sklearn_version": sklearn.__version__,
+            "sentence_transformers_version": sentence_transformers.__version__,
+            "num_examples": len(texts),
+            "num_classes": len(themes),
+        },
     }
     Path(output_path).parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(head, output_path)

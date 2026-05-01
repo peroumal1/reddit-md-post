@@ -13,6 +13,7 @@ from rss_summary.weekly import (
     parse_feed_file,
     pick_representative_article,
     render_suggestions,
+    split_mixed_clusters,
     representative_embedding,
     score_cluster,
 )
@@ -216,3 +217,74 @@ class TestRenderSuggestions:
         scored = [self._make_scored("Politique", top_score=0.90, runner_up_score=0.05, title="Clear")]
         output = render_suggestions(1, scored, threshold=0.15, low_confidence_margin=0.10, ambiguity_margin=0.05)
         assert "Clear" not in output
+
+
+class TestSplitMixedClusters:
+    def _make_item(self, title="T", emb=None):
+        return {
+            "article": _make_article(title=title),
+            "embedding": emb if emb is not None else np.zeros(1024),
+        }
+
+    def _patch(self, themes_by_order):
+        """Return context managers that mock batch_encode_e5 and classify_article_scored."""
+        n = len(themes_by_order)
+        e5_mock = patch("rss_summary.weekly.batch_encode_e5", return_value=np.zeros((n, 1024)))
+        call_iter = iter(themes_by_order)
+        cls_mock = patch(
+            "rss_summary.weekly.classify_article_scored",
+            side_effect=lambda emb, head: {"theme": next(call_iter)},
+        )
+        return e5_mock, cls_mock
+
+    def test_empty_returns_empty(self):
+        assert split_mixed_clusters([], None, None, None) == []
+
+    def test_single_item_clusters_pass_through_without_model_calls(self):
+        clusters = [[self._make_item("A")], [self._make_item("B")]]
+        # No mocking needed — single-item clusters never touch models
+        result = split_mixed_clusters(clusters, None, None, None)
+        assert result == clusters
+
+    def test_homogeneous_multi_item_cluster_passes_through(self):
+        items = [self._make_item("A"), self._make_item("B")]
+        e5_mock, cls_mock = self._patch(["Politique", "Politique"])
+        with e5_mock, cls_mock:
+            result = split_mixed_clusters([items], None, MagicMock(), {})
+        assert len(result) == 1
+        assert result[0] == items
+
+    def test_faits_divers_mixed_with_other_theme_splits(self):
+        crime = self._make_item("Crime report")
+        politics = self._make_item("Budget vote")
+        e5_mock, cls_mock = self._patch(["Faits divers", "Politique"])
+        with e5_mock, cls_mock:
+            result = split_mixed_clusters([[crime, politics]], None, MagicMock(), {})
+        assert len(result) == 2
+        titles = {r[0]["article"]["title"] for r in result}
+        assert titles == {"Crime report", "Budget vote"}
+
+    def test_faits_divers_with_unclassified_only_does_not_split(self):
+        crime = self._make_item("Crime")
+        other = self._make_item("Unknown")
+        e5_mock, cls_mock = self._patch(["Faits divers", UNCLASSIFIED])
+        with e5_mock, cls_mock:
+            result = split_mixed_clusters([[crime, other]], None, MagicMock(), {})
+        assert len(result) == 1
+
+    def test_non_faits_divers_mixed_cluster_passes_through(self):
+        a = self._make_item("A")
+        b = self._make_item("B")
+        e5_mock, cls_mock = self._patch(["Politique", "Économie & social"])
+        with e5_mock, cls_mock:
+            result = split_mixed_clusters([[a, b]], None, MagicMock(), {})
+        assert len(result) == 1
+
+    def test_only_mixed_cluster_is_split_homogeneous_unchanged(self):
+        homo = [self._make_item("X"), self._make_item("Y")]
+        mixed = [self._make_item("Crime"), self._make_item("School")]
+        e5_mock, cls_mock = self._patch(["Santé", "Santé", "Faits divers", "Éducation"])
+        with e5_mock, cls_mock:
+            result = split_mixed_clusters([homo, mixed], None, MagicMock(), {})
+        assert len(result) == 3  # 1 homogeneous + 2 from split
+        assert homo in result
