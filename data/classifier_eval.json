@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-05-03T19:42:58.451586",
+  "timestamp": "2026-05-04T08:22:54.063251",
   "backbone": "BAAI/bge-m3 + intfloat/multilingual-e5-large-instruct (concat 2048-dim)",
   "num_classes": 10,
   "num_examples": 283,
