@@ -399,17 +399,29 @@ def enrich_review_with_suggestions(problematic, theme_names, client):
     return "\n".join(section), structured
 
 
-def apply_suggestions_to_themes(suggestions, themes_path):
+_CLASSIFIER_CONFLICT_THRESHOLD = 0.35
+
+
+def apply_suggestions_to_themes(suggestions, themes_path, head=None, model_bge=None, model_e5=None):
     """Add Mistral-suggested examples to themes.json.
 
     Skips unknown themes and duplicates. Collects 'Nouveau thème' suggestions
     separately for human review.
+
+    When head, model_bge, and model_e5 are provided, each suggested example is
+    encoded and classified before being applied. If the classifier predicts a
+    *different* theme with score >= _CLASSIFIER_CONFLICT_THRESHOLD the suggestion
+    is rejected — this prevents Mistral's geographic or thematic mistakes from
+    polluting the training data (e.g. Haiti articles labelled Outre-mer when the
+    classifier correctly places them in International).
 
     Returns (added, new_theme_suggestions) where new_theme_suggestions is a list
     of suggestion dicts for themes not in the current taxonomy.
     """
     with open(themes_path) as f:
         themes = json.load(f)
+
+    classifier_active = head is not None and model_bge is not None and model_e5 is not None
 
     theme_map = {t["theme"]: t for t in themes}
     added = 0
@@ -427,6 +439,19 @@ def apply_suggestions_to_themes(suggestions, themes_path):
         if theme_name not in theme_map:
             logging.warning("Unknown theme '%s' — skipping.", theme_name)
             continue
+        if classifier_active:
+            bge_emb = encode_text(model_bge, example)
+            e5_emb = batch_encode_e5([example], model_e5)[0]
+            cls_emb = build_cls_embedding(bge_emb, e5_emb)
+            prediction = classify_article_scored(cls_emb, head)
+            predicted = prediction["theme"]
+            predicted_score = prediction["top_score"]
+            if predicted != theme_name and predicted_score >= _CLASSIFIER_CONFLICT_THRESHOLD:
+                logging.warning(
+                    "Rejected suggestion for '%s' (classifier predicts '%s' %.2f): %.60s…",
+                    theme_name, predicted, predicted_score, example,
+                )
+                continue
         if example not in set(theme_map[theme_name]["examples"]):
             theme_map[theme_name]["examples"].append(example)
             added += 1
@@ -688,7 +713,10 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enr
                 review += enrichment
                 if apply_suggestions:
                     themes_path = Path(data_dir) / "themes.json"
-                    _, new_themes = apply_suggestions_to_themes(structured, themes_path)
+                    _, new_themes = apply_suggestions_to_themes(
+                        structured, themes_path,
+                        head=head, model_bge=model, model_e5=model_e5,
+                    )
                     if new_themes:
                         _signal_new_themes(new_themes, week_num)
             else:

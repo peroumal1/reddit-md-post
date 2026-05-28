@@ -7,6 +7,7 @@ import requests
 
 from rss_summary.classification import UNCLASSIFIED
 from rss_summary.weekly import (
+    apply_suggestions_to_themes,
     cluster_articles,
     extract_source,
     get_most_read_urls,
@@ -288,3 +289,109 @@ class TestSplitMixedClusters:
             result = split_mixed_clusters([homo, mixed], None, MagicMock(), {})
         assert len(result) == 3  # 1 homogeneous + 2 from split
         assert homo in result
+
+
+def _minimal_themes_json(tmp_path, themes=None):
+    """Write a minimal themes.json and return its path."""
+    data = themes or [
+        {"theme": "Politique", "label": "politique", "description": "", "examples": ["existing example"]},
+        {"theme": "International", "label": "international", "description": "", "examples": []},
+    ]
+    p = tmp_path / "themes.json"
+    import json
+    p.write_text(json.dumps(data, ensure_ascii=False))
+    return p
+
+
+class TestApplySuggestionsToThemes:
+    def _suggestion(self, theme, example):
+        return {"theme": theme, "example": example, "reason": "test", "_raw": ""}
+
+    def test_adds_new_example(self, tmp_path):
+        path = _minimal_themes_json(tmp_path)
+        added, _ = apply_suggestions_to_themes([self._suggestion("Politique", "new example")], path)
+        assert added == 1
+        import json
+        themes = json.loads(path.read_text())
+        assert "new example" in themes[0]["examples"]
+
+    def test_skips_duplicate(self, tmp_path):
+        path = _minimal_themes_json(tmp_path)
+        added, _ = apply_suggestions_to_themes([self._suggestion("Politique", "existing example")], path)
+        assert added == 0
+
+    def test_skips_unknown_theme(self, tmp_path):
+        path = _minimal_themes_json(tmp_path)
+        added, _ = apply_suggestions_to_themes([self._suggestion("Inexistant", "some text")], path)
+        assert added == 0
+
+    def test_collects_new_theme_suggestions(self, tmp_path):
+        path = _minimal_themes_json(tmp_path)
+        _, new = apply_suggestions_to_themes([self._suggestion("Nouveau thème: Tourisme", "text")], path)
+        assert len(new) == 1
+        assert new[0]["theme"] == "Nouveau thème: Tourisme"
+
+    def test_gate_blocks_when_classifier_disagrees_strongly(self, tmp_path):
+        path = _minimal_themes_json(tmp_path)
+        head = MagicMock()
+        model_bge = MagicMock()
+        model_e5 = MagicMock()
+        with (
+            patch("rss_summary.weekly.encode_text", return_value=np.zeros(1024)),
+            patch("rss_summary.weekly.batch_encode_e5", return_value=np.zeros((1, 1024))),
+            patch("rss_summary.weekly.build_cls_embedding", return_value=np.zeros(2048)),
+            patch("rss_summary.weekly.classify_article_scored",
+                  return_value={"theme": "International", "top_score": 0.45,
+                                "runner_up": "Politique", "runner_up_score": 0.20}),
+        ):
+            added, _ = apply_suggestions_to_themes(
+                [self._suggestion("Politique", "Haiti article")], path,
+                head=head, model_bge=model_bge, model_e5=model_e5,
+            )
+        assert added == 0  # classifier says International (0.45) but Mistral said Politique
+
+    def test_gate_allows_when_classifier_agrees(self, tmp_path):
+        path = _minimal_themes_json(tmp_path)
+        head = MagicMock()
+        model_bge = MagicMock()
+        model_e5 = MagicMock()
+        with (
+            patch("rss_summary.weekly.encode_text", return_value=np.zeros(1024)),
+            patch("rss_summary.weekly.batch_encode_e5", return_value=np.zeros((1, 1024))),
+            patch("rss_summary.weekly.build_cls_embedding", return_value=np.zeros(2048)),
+            patch("rss_summary.weekly.classify_article_scored",
+                  return_value={"theme": "Politique", "top_score": 0.50,
+                                "runner_up": "International", "runner_up_score": 0.20}),
+        ):
+            added, _ = apply_suggestions_to_themes(
+                [self._suggestion("Politique", "political article")], path,
+                head=head, model_bge=model_bge, model_e5=model_e5,
+            )
+        assert added == 1
+
+    def test_gate_allows_when_classifier_disagrees_but_low_confidence(self, tmp_path):
+        path = _minimal_themes_json(tmp_path)
+        head = MagicMock()
+        model_bge = MagicMock()
+        model_e5 = MagicMock()
+        with (
+            patch("rss_summary.weekly.encode_text", return_value=np.zeros(1024)),
+            patch("rss_summary.weekly.batch_encode_e5", return_value=np.zeros((1, 1024))),
+            patch("rss_summary.weekly.build_cls_embedding", return_value=np.zeros(2048)),
+            patch("rss_summary.weekly.classify_article_scored",
+                  return_value={"theme": "International", "top_score": 0.28,
+                                "runner_up": "Politique", "runner_up_score": 0.25}),
+        ):
+            added, _ = apply_suggestions_to_themes(
+                [self._suggestion("Politique", "ambiguous article")], path,
+                head=head, model_bge=model_bge, model_e5=model_e5,
+            )
+        assert added == 1  # score 0.28 < threshold 0.35 → allowed
+
+    def test_gate_inactive_without_models(self, tmp_path):
+        path = _minimal_themes_json(tmp_path)
+        # no head/model_bge/model_e5 passed — old behaviour, no classifier check
+        added, _ = apply_suggestions_to_themes(
+            [self._suggestion("Politique", "any article")], path
+        )
+        assert added == 1
