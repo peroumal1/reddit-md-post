@@ -8,7 +8,7 @@ import feedparser
 from py_markdown_table.markdown_table import markdown_table
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import BGE_MODEL_ID, MISTRAL_MODEL, classify_article, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy
+from rss_summary.classification import BGE_MODEL_ID, MISTRAL_MODEL, classify_article, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy, mistral_chat_with_retry
 from rss_summary.formatting import format_feed_entries, format_feed_entries_classified
 from rss_summary.last_run import get_last_run_date, restore_last_run_date, set_last_run_date
 from rss_summary.parsing import extract_first_paragraph, format_article_text, get_default_image_link
@@ -39,10 +39,7 @@ def generate_daily_summary(articles, client):
         "- N'invente aucun fait absent des articles fournis.\n"
         "- N'utilise jamais l'expression 'En Guadeloupe' dans le texte, ni en début de phrase ni en milieu : le lecteur est déjà en contexte guadeloupéen et cette précision est superflue."
     )
-    response = client.chat.complete(
-        model=MISTRAL_MODEL,
-        messages=[{"role": "user", "content": prompt}],
-    )
+    response = mistral_chat_with_retry(client, MISTRAL_MODEL, [{"role": "user", "content": prompt}])
     return response.choices[0].message.content.strip()
 
 

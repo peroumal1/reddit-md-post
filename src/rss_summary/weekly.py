@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 from mistralai.client import Mistral
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import BGE_MODEL_ID, CLASSIFICATION_THRESHOLD, MISTRAL_MODEL, UNCLASSIFIED, batch_encode_e5, build_cls_embedding, classify_article_scored, load_classifier_head, load_e5_model, load_taxonomy
+from rss_summary.classification import BGE_MODEL_ID, CLASSIFICATION_THRESHOLD, mistral_chat_with_retry, MISTRAL_MODEL, UNCLASSIFIED, batch_encode_e5, build_cls_embedding, classify_article_scored, load_classifier_head, load_e5_model, load_taxonomy
 from rss_summary.parsing import format_article_text, parse_daily_feed_md
 from rss_summary.similarity import encode_text
 
@@ -256,10 +256,7 @@ def generate_stitched_narrative(clusters, week_num, week_start, week_end, client
         "- Aucun titre, sous-titre, texte en gras ou en italique, lien, référence entre parenthèses, ni section sources : uniquement des paragraphes de prose.\n"
         "- N'invente aucun fait absent des articles fournis."
     )
-    response = client.chat.complete(
-        model=MISTRAL_MODEL,
-        messages=[{"role": "user", "content": prompt}],
-    )
+    response = mistral_chat_with_retry(client, MISTRAL_MODEL, [{"role": "user", "content": prompt}])
     return response.choices[0].message.content.strip()
 
 
@@ -357,10 +354,7 @@ def enrich_review_with_suggestions(problematic, theme_names, client):
         + "\n\n".join(cluster_lines)
     )
 
-    response = client.chat.complete(
-        model=MISTRAL_MODEL,
-        messages=[{"role": "user", "content": prompt}],
-    )
+    response = mistral_chat_with_retry(client, MISTRAL_MODEL, [{"role": "user", "content": prompt}])
     text = response.choices[0].message.content.strip()
 
     raw_blocks = {}

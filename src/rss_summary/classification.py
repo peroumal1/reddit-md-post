@@ -1,7 +1,10 @@
+import logging
+import time
 import tomllib
 from pathlib import Path
 
 import numpy as np
+from mistralai.client.errors.sdkerror import SDKError
 
 from rss_summary.parsing import strip_html
 
@@ -14,6 +17,19 @@ E5_MODEL_ID = "intfloat/multilingual-e5-large-instruct"
 E5_PROMPT = "Instruct: Classify the following French news headline into a thematic category.\nQuery: "
 MISTRAL_MODEL = "mistral-small-latest"
 CLASSIFICATION_THRESHOLD = 0.15
+
+
+def mistral_chat_with_retry(client, model, messages, retries=5, base_delay=60):
+    """Call client.chat.complete with exponential backoff on 429 rate-limit errors."""
+    for attempt in range(retries):
+        try:
+            return client.chat.complete(model=model, messages=messages)
+        except SDKError as exc:
+            if exc.status_code != 429 or attempt == retries - 1:
+                raise
+            delay = base_delay * (2 ** attempt)
+            logging.warning("Mistral 429 — retrying in %ds (attempt %d/%d)", delay, attempt + 1, retries)
+            time.sleep(delay)
 
 
 def load_taxonomy(path=None):

@@ -1,6 +1,8 @@
 import numpy as np
 import pytest
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock, call, patch
+
+from mistralai.client.errors.sdkerror import SDKError
 
 from rss_summary.classification import (
     UNCLASSIFIED,
@@ -9,6 +11,7 @@ from rss_summary.classification import (
     encode_for_classification,
     load_classifier_head,
     load_taxonomy,
+    mistral_chat_with_retry,
 )
 
 
@@ -102,6 +105,53 @@ class TestClassifyArticleScored:
         )
         result = classify_article_scored(np.array([5.0, 0.0]), head, threshold=0.15)
         assert result["theme"] == "B"
+
+
+class TestMistralChatWithRetry:
+    def _make_client(self, side_effects):
+        client = MagicMock()
+        client.chat.complete.side_effect = side_effects
+        return client
+
+    def _sdk_error(self, status_code):
+        raw = MagicMock()
+        raw.status_code = status_code
+        raw.text = ""
+        raw.headers = {}
+        return SDKError("", raw)
+
+    def test_success_on_first_try(self):
+        response = MagicMock()
+        client = self._make_client([response])
+        with patch("rss_summary.classification.time.sleep"):
+            result = mistral_chat_with_retry(client, "model", [{"role": "user", "content": "hi"}])
+        assert result is response
+
+    def test_retries_on_429_then_succeeds(self):
+        response = MagicMock()
+        client = self._make_client([self._sdk_error(429), self._sdk_error(429), response])
+        with patch("rss_summary.classification.time.sleep") as mock_sleep:
+            result = mistral_chat_with_retry(client, "model", [{"role": "user", "content": "hi"}], base_delay=1)
+        assert result is response
+        assert client.chat.complete.call_count == 3
+        assert mock_sleep.call_count == 2
+        mock_sleep.assert_any_call(1)
+        mock_sleep.assert_any_call(2)
+
+    def test_raises_after_max_retries(self):
+        client = self._make_client([self._sdk_error(429)] * 5)
+        with patch("rss_summary.classification.time.sleep"):
+            with pytest.raises(SDKError):
+                mistral_chat_with_retry(client, "model", [], retries=5, base_delay=1)
+        assert client.chat.complete.call_count == 5
+
+    def test_non_429_raises_immediately(self):
+        client = self._make_client([self._sdk_error(500)])
+        with patch("rss_summary.classification.time.sleep") as mock_sleep:
+            with pytest.raises(SDKError):
+                mistral_chat_with_retry(client, "model", [], retries=5, base_delay=1)
+        assert client.chat.complete.call_count == 1
+        mock_sleep.assert_not_called()
 
 
 class TestClassifyArticle:
