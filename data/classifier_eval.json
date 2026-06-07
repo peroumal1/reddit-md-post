@@ -1,29 +1,29 @@
 {
-  "timestamp": "2026-05-31T19:59:19.763090",
+  "timestamp": "2026-06-07T20:01:41.893979",
   "backbone": "BAAI/bge-m3 + intfloat/multilingual-e5-large-instruct (concat 2048-dim)",
   "num_classes": 10,
-  "num_examples": 369,
+  "num_examples": 382,
   "cv_folds": 5,
-  "accuracy": 0.7560975609756098,
-  "macro_f1": 0.7629574551321145,
+  "accuracy": 0.756544502617801,
+  "macro_f1": 0.7701883612882522,
   "per_class": {
     "Culture & société": {
-      "f1": 0.7674418604651163,
-      "precision": 0.75,
-      "recall": 0.7857142857142857,
-      "support": 42.0
+      "f1": 0.7727272727272727,
+      "precision": 0.7555555555555555,
+      "recall": 0.7906976744186046,
+      "support": 43.0
     },
     "Eau & environnement": {
-      "f1": 0.6557377049180327,
-      "precision": 0.7142857142857143,
-      "recall": 0.6060606060606061,
-      "support": 33.0
+      "f1": 0.7647058823529411,
+      "precision": 0.7878787878787878,
+      "recall": 0.7428571428571429,
+      "support": 35.0
     },
     "Économie & social": {
-      "f1": 0.691358024691358,
-      "precision": 0.7368421052631579,
-      "recall": 0.6511627906976745,
-      "support": 43.0
+      "f1": 0.6511627906976745,
+      "precision": 0.6666666666666666,
+      "recall": 0.6363636363636364,
+      "support": 44.0
     },
     "Éducation": {
       "f1": 0.8461538461538461,
@@ -32,40 +32,40 @@
       "support": 25.0
     },
     "Faits divers": {
-      "f1": 0.7912087912087912,
-      "precision": 0.7058823529411765,
-      "recall": 0.9,
-      "support": 40.0
+      "f1": 0.7058823529411765,
+      "precision": 0.6818181818181818,
+      "recall": 0.7317073170731707,
+      "support": 41.0
     },
     "International": {
-      "f1": 0.8125,
-      "precision": 0.7959183673469388,
-      "recall": 0.8297872340425532,
-      "support": 47.0
+      "f1": 0.7722772277227723,
+      "precision": 0.75,
+      "recall": 0.7959183673469388,
+      "support": 49.0
     },
     "Outre-mer & Caraïbes": {
-      "f1": 0.6464646464646465,
-      "precision": 0.6808510638297872,
-      "recall": 0.6153846153846154,
-      "support": 52.0
+      "f1": 0.6728971962616822,
+      "precision": 0.72,
+      "recall": 0.631578947368421,
+      "support": 57.0
     },
     "Politique": {
-      "f1": 0.7,
-      "precision": 0.7,
-      "recall": 0.7,
+      "f1": 0.7666666666666667,
+      "precision": 0.7666666666666667,
+      "recall": 0.7666666666666667,
       "support": 30.0
     },
     "Santé": {
-      "f1": 0.8387096774193549,
-      "precision": 0.8666666666666667,
-      "recall": 0.8125,
+      "f1": 0.84375,
+      "precision": 0.84375,
+      "recall": 0.84375,
       "support": 32.0
     },
     "Sport": {
-      "f1": 0.88,
-      "precision": 0.88,
-      "recall": 0.88,
-      "support": 25.0
+      "f1": 0.9056603773584906,
+      "precision": 0.8888888888888888,
+      "recall": 0.9230769230769231,
+      "support": 26.0
     }
   }
 }
