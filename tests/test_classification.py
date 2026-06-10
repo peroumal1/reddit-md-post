@@ -5,10 +5,13 @@ from unittest.mock import MagicMock, call, patch
 from mistralai.client.errors.sdkerror import SDKError
 
 from rss_summary.classification import (
+    THEME_INTERNATIONAL,
+    THEME_OUTREMER,
     UNCLASSIFIED,
     classify_article,
     classify_article_scored,
     encode_for_classification,
+    geo_theme,
     load_classifier_head,
     load_taxonomy,
     mistral_chat_with_retry,
@@ -152,6 +155,33 @@ class TestMistralChatWithRetry:
                 mistral_chat_with_retry(client, "model", [], retries=5, base_delay=1)
         assert client.chat.complete.call_count == 1
         mock_sleep.assert_not_called()
+
+
+class TestGeoTheme:
+    @pytest.mark.parametrize("title,expected", [
+        # Sovereign Caribbean states → International
+        ("Haïti. Artibonite : manifestation populaire contre l'insécurité", THEME_INTERNATIONAL),
+        ("Cuba : pas de kérosène dans les aéroports jusqu'à avril", THEME_INTERNATIONAL),
+        ("À la Dominique, d'importantes pluies ont provoqué des inondations", THEME_INTERNATIONAL),
+        ("La Jamaïque plongée dans le noir après une panne électrique", THEME_INTERNATIONAL),
+        ("République dominicaine. 2,4 milliards de dollars investis", THEME_INTERNATIONAL),
+        ("En Haïti, la situation sécuritaire se dégrade", THEME_INTERNATIONAL),
+        # French / non-sovereign territories → Outre-mer & Caraïbes
+        ("Martinique. Une grève paralyse le port de Fort-de-France", THEME_OUTREMER),
+        ("Guyane. Pêche illégale : déroutement d'un navire", THEME_OUTREMER),
+        ("En Martinique, le carnaval bat son plein", THEME_OUTREMER),
+        ("La Réunion : une éruption du Piton de la Fournaise", THEME_OUTREMER),
+        # No explicit prefix → None (classifier decides)
+        ("Guadeloupe. Quatre parcelles de cannes en feu", None),
+        ("Un navire dérouté vers Cuba après une avarie", None),
+        ("Le chef de l'ONU en visite en Haïti la semaine prochaine", None),
+        # Person name and common noun must not match
+        ("Dominique Théophile interpelle le Premier ministre", None),
+        ("La réunion, prévue à 18h, a été annulée", None),
+        ("La réunion publique du conseil municipal reportée", None),
+    ])
+    def test_routing(self, title, expected):
+        assert geo_theme(title) == expected
 
 
 class TestClassifyArticle:

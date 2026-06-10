@@ -28,6 +28,9 @@ from sklearn.svm import LinearSVC
 from rss_summary.classification import BGE_MODEL_ID, E5_MODEL_ID, E5_PROMPT
 
 
+CV_REPEATS = 5
+
+
 def _make_clf():
     return CalibratedClassifierCV(LinearSVC(max_iter=2000, C=1.0, class_weight="balanced"), cv=5)
 
@@ -79,20 +82,43 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
     le = LabelEncoder()
     y = le.fit_transform(raw_labels)
 
-    # Cross-validation evaluation (more reliable than a single split given small data)
-    print("\nRunning 5-fold stratified cross-validation...")
-    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-    y_pred_cv = cross_val_predict(_make_clf(), X, y, cv=cv)
-
     label_to_theme = {t["label"]: t["theme"] for t in themes}
     display_names = [label_to_theme[cls] for cls in le.classes_]
 
-    report_str = classification_report(y, y_pred_cv, target_names=display_names)
-    report_dict = classification_report(
-        y, y_pred_cv, target_names=display_names, output_dict=True
-    )
-    print("\nCross-validation results:")
-    print(report_str)
+    # Repeated cross-validation: a single 5-fold run swings per-class F1 by
+    # ±5-6 points on classes this small, so average over several partitions.
+    print(f"\nRunning {CV_REPEATS}x repeated 5-fold stratified cross-validation...")
+    repeat_reports = []
+    for seed in range(CV_REPEATS):
+        cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=seed)
+        y_pred_cv = cross_val_predict(_make_clf(), X, y, cv=cv)
+        repeat_reports.append(
+            classification_report(y, y_pred_cv, target_names=display_names, output_dict=True)
+        )
+        print(f"  repeat {seed + 1}/{CV_REPEATS}: "
+              f"acc={repeat_reports[-1]['accuracy']:.3f}  "
+              f"macro F1={repeat_reports[-1]['macro avg']['f1-score']:.3f}")
+
+    def _mean_std(path_fn):
+        vals = [path_fn(r) for r in repeat_reports]
+        return float(np.mean(vals)), float(np.std(vals))
+
+    acc_mean, acc_std = _mean_std(lambda r: r["accuracy"])
+    f1_mean, f1_std = _mean_std(lambda r: r["macro avg"]["f1-score"])
+
+    print("\nCross-validation results (mean ± std over repeats):")
+    print(f"{'Theme':<25} {'F1':>14} {'precision':>10} {'recall':>8} {'support':>8}")
+    per_class = {}
+    for name in display_names:
+        c_f1, c_f1_std = _mean_std(lambda r: r[name]["f1-score"])
+        c_prec, _ = _mean_std(lambda r: r[name]["precision"])
+        c_rec, _ = _mean_std(lambda r: r[name]["recall"])
+        support = repeat_reports[0][name]["support"]
+        per_class[name] = {
+            "f1": c_f1, "f1_std": c_f1_std,
+            "precision": c_prec, "recall": c_rec, "support": support,
+        }
+        print(f"{name:<25} {c_f1:.2f} ± {c_f1_std:.2f} {c_prec:>10.2f} {c_rec:>8.2f} {support:>8.0f}")
 
     print("Training final model on all examples...")
     t0 = time.time()
@@ -126,23 +152,18 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
         "num_classes": len(themes),
         "num_examples": len(texts),
         "cv_folds": 5,
-        "accuracy": report_dict["accuracy"],
-        "macro_f1": report_dict["macro avg"]["f1-score"],
-        "per_class": {
-            name: {
-                "f1": report_dict[name]["f1-score"],
-                "precision": report_dict[name]["precision"],
-                "recall": report_dict[name]["recall"],
-                "support": report_dict[name]["support"],
-            }
-            for name in display_names
-        },
+        "cv_repeats": CV_REPEATS,
+        "accuracy": acc_mean,
+        "accuracy_std": acc_std,
+        "macro_f1": f1_mean,
+        "macro_f1_std": f1_std,
+        "per_class": per_class,
     }
     with open(eval_path, "w") as f:
         json.dump(eval_data, f, indent=2, ensure_ascii=False)
     print(f"Eval saved to {eval_path}")
-    print(f"\nOverall accuracy: {eval_data['accuracy']:.3f}")
-    print(f"Macro F1:         {eval_data['macro_f1']:.3f}")
+    print(f"\nOverall accuracy: {acc_mean:.3f} ± {acc_std:.3f}")
+    print(f"Macro F1:         {f1_mean:.3f} ± {f1_std:.3f}")
 
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@ from bs4 import BeautifulSoup
 from mistralai.client import Mistral
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import BGE_MODEL_ID, CLASSIFICATION_THRESHOLD, mistral_chat_with_retry, MISTRAL_MODEL, UNCLASSIFIED, batch_encode_e5, build_cls_embedding, classify_article_scored, load_classifier_head, load_e5_model, load_taxonomy
+from rss_summary.classification import BGE_MODEL_ID, CLASSIFICATION_THRESHOLD, mistral_chat_with_retry, MISTRAL_MODEL, UNCLASSIFIED, batch_encode_e5, build_cls_embedding, classify_article_scored, geo_theme, load_classifier_head, load_e5_model, load_taxonomy
 from rss_summary.parsing import format_article_text, parse_daily_feed_md
 from rss_summary.similarity import encode_text
 
@@ -660,8 +660,14 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enr
 
     scored = []
     for (raw_cluster, rep, rep_bge, score, most_read_tags), e5_emb in zip(cluster_meta, rep_e5_embs):
-        cls_embedding = build_cls_embedding(rep_bge, e5_emb)
-        classification = classify_article_scored(cls_embedding, head)
+        geo = geo_theme(rep["title"])
+        if geo:
+            # Deterministic geography routing — full confidence keeps the
+            # cluster out of the --suggest problematic report.
+            classification = {"theme": geo, "top_score": 1.0, "runner_up": None, "runner_up_score": None}
+        else:
+            cls_embedding = build_cls_embedding(rep_bge, e5_emb)
+            classification = classify_article_scored(cls_embedding, head)
 
         scored.append({
             "raw": raw_cluster,

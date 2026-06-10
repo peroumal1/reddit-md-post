@@ -1,4 +1,5 @@
 import logging
+import re
 import time
 import tomllib
 from pathlib import Path
@@ -11,6 +12,40 @@ from rss_summary.parsing import strip_html
 DEFAULT_TAXONOMY_PATH = Path("data/taxonomy.toml")
 DEFAULT_HEAD_PATH = Path("data/classifier_head.joblib")
 UNCLASSIFIED = "Autres"
+THEME_INTERNATIONAL = "International"
+THEME_OUTREMER = "Outre-mer & Caraïbes"
+
+# Geography gate: sovereign Caribbean states route to International, French and
+# other non-sovereign territories to Outre-mer & Caraïbes (matches the priority
+# geographic rule used in the weekly Mistral enrichment prompt).
+_GEO_SOVEREIGN = (
+    "haïti", "haiti", "cuba", "jamaïque", "république dominicaine",
+    "guyana", "sainte-lucie", "dominique", "trinidad", "barbade", "bahamas",
+)
+_GEO_TERRITORIES = (
+    "martinique", "guyane", "mayotte", "la réunion", "nouvelle-calédonie",
+    "polynésie", "saint-martin", "saint-barthélemy", "wallis", "saint-pierre",
+    "porto rico",
+)
+
+
+def geo_theme(title: str):
+    """Deterministic geography gate on explicit place-name title prefixes.
+
+    Matches the source convention 'Place. Rest of title' (also 'Place : …')
+    and leading 'À/En/Au/La/Le Place …' forms. Returns the routed theme name,
+    or None when the title carries no explicit non-Guadeloupe place prefix
+    (mid-title mentions, person names like 'Dominique Théophile', and common
+    nouns like 'La réunion publique' must not match, hence the punctuation
+    and article requirements).
+    """
+    t = title.strip().lower()
+    for places, theme in ((_GEO_SOVEREIGN, THEME_INTERNATIONAL), (_GEO_TERRITORIES, THEME_OUTREMER)):
+        for place in places:
+            p = re.escape(place)
+            if re.match(rf"{p}\s*[.:]", t) or re.match(rf"(?:à|en|au|aux|la|le)\s+(?:la\s+|le\s+)?{p}\b", t):
+                return theme
+    return None
 
 BGE_MODEL_ID = "BAAI/bge-m3"
 E5_MODEL_ID = "intfloat/multilingual-e5-large-instruct"

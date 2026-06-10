@@ -7,7 +7,7 @@ import click
 import feedparser
 from sentence_transformers import SentenceTransformer
 
-from rss_summary.classification import BGE_MODEL_ID, MISTRAL_MODEL, classify_article, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy, mistral_chat_with_retry
+from rss_summary.classification import BGE_MODEL_ID, MISTRAL_MODEL, classify_article, encode_for_classification, geo_theme, load_classifier_head, load_e5_model, load_taxonomy, mistral_chat_with_retry
 from rss_summary.formatting import format_feed_entries, format_feed_entries_classified, render_table
 from rss_summary.last_run import get_last_run_date, restore_last_run_date, set_last_run_date
 from rss_summary.parsing import extract_first_paragraph, format_article_text, get_default_image_link
@@ -128,6 +128,10 @@ def main(rss_links, feed_output, with_images, dry_run, restore, until, classify,
                 raise click.ClickException(str(e))
             model_e5 = load_e5_model()
             for item in sorted_list:
+                geo = geo_theme(item["title"])
+                if geo:
+                    item["theme"] = geo
+                    continue
                 cls_embedding = encode_for_classification(
                     format_article_text(item), model, model_e5
                 )
