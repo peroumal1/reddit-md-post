@@ -239,19 +239,19 @@ class TestSplitMixedClusters:
         return e5_mock, cls_mock
 
     def test_empty_returns_empty(self):
-        assert split_mixed_clusters([], None, None, None) == []
+        assert split_mixed_clusters([], None, None) == []
 
     def test_single_item_clusters_pass_through_without_model_calls(self):
         clusters = [[self._make_item("A")], [self._make_item("B")]]
         # No mocking needed — single-item clusters never touch models
-        result = split_mixed_clusters(clusters, None, None, None)
+        result = split_mixed_clusters(clusters, None, None)
         assert result == clusters
 
     def test_homogeneous_multi_item_cluster_passes_through(self):
         items = [self._make_item("A"), self._make_item("B")]
         e5_mock, cls_mock = self._patch(["Politique", "Politique"])
         with e5_mock, cls_mock:
-            result = split_mixed_clusters([items], None, MagicMock(), {})
+            result = split_mixed_clusters([items], MagicMock(), {})
         assert len(result) == 1
         assert result[0] == items
 
@@ -260,7 +260,7 @@ class TestSplitMixedClusters:
         politics = self._make_item("Budget vote")
         e5_mock, cls_mock = self._patch(["Faits divers", "Politique"])
         with e5_mock, cls_mock:
-            result = split_mixed_clusters([[crime, politics]], None, MagicMock(), {})
+            result = split_mixed_clusters([[crime, politics]], MagicMock(), {})
         assert len(result) == 2
         titles = {r[0]["article"]["title"] for r in result}
         assert titles == {"Crime report", "Budget vote"}
@@ -270,7 +270,7 @@ class TestSplitMixedClusters:
         other = self._make_item("Unknown")
         e5_mock, cls_mock = self._patch(["Faits divers", UNCLASSIFIED])
         with e5_mock, cls_mock:
-            result = split_mixed_clusters([[crime, other]], None, MagicMock(), {})
+            result = split_mixed_clusters([[crime, other]], MagicMock(), {})
         assert len(result) == 1
 
     def test_non_faits_divers_mixed_cluster_passes_through(self):
@@ -278,7 +278,7 @@ class TestSplitMixedClusters:
         b = self._make_item("B")
         e5_mock, cls_mock = self._patch(["Politique", "Économie & social"])
         with e5_mock, cls_mock:
-            result = split_mixed_clusters([[a, b]], None, MagicMock(), {})
+            result = split_mixed_clusters([[a, b]], MagicMock(), {})
         assert len(result) == 1
 
     def test_only_mixed_cluster_is_split_homogeneous_unchanged(self):
@@ -286,7 +286,7 @@ class TestSplitMixedClusters:
         mixed = [self._make_item("Crime"), self._make_item("School")]
         e5_mock, cls_mock = self._patch(["Santé", "Santé", "Faits divers", "Éducation"])
         with e5_mock, cls_mock:
-            result = split_mixed_clusters([homo, mixed], None, MagicMock(), {})
+            result = split_mixed_clusters([homo, mixed], MagicMock(), {})
         assert len(result) == 3  # 1 homogeneous + 2 from split
         assert homo in result
 

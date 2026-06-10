@@ -16,16 +16,14 @@ import termios
 import tty
 from pathlib import Path
 
-import tomllib
+from rss_summary.classification import load_taxonomy
 
 TAXONOMY_PATH = Path("data/taxonomy.toml")
 THEMES_JSON_PATH = Path("data/themes.json")
 
 
 def load_theme_names():
-    with open(TAXONOMY_PATH, "rb") as f:
-        data = tomllib.load(f)
-    return [t["name"] for t in data["themes"]]
+    return load_taxonomy(TAXONOMY_PATH)
 
 
 def parse_unclassified(review_path):

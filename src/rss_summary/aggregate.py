@@ -5,11 +5,10 @@ from pathlib import Path
 
 import click
 import feedparser
-from py_markdown_table.markdown_table import markdown_table
 from sentence_transformers import SentenceTransformer
 
 from rss_summary.classification import BGE_MODEL_ID, MISTRAL_MODEL, classify_article, encode_for_classification, load_classifier_head, load_e5_model, load_taxonomy, mistral_chat_with_retry
-from rss_summary.formatting import format_feed_entries, format_feed_entries_classified
+from rss_summary.formatting import format_feed_entries, format_feed_entries_classified, render_table
 from rss_summary.last_run import get_last_run_date, restore_last_run_date, set_last_run_date
 from rss_summary.parsing import extract_first_paragraph, format_article_text, get_default_image_link
 from rss_summary.similarity import encode_text, is_duplicate, title_is_duplicate
@@ -113,7 +112,6 @@ def main(rss_links, feed_output, with_images, dry_run, restore, until, classify,
                             "media_content": get_default_image_link(
                                 entry, entry.link
                             ),
-                            "embedding": embedding,
                         }
                     )
 
@@ -137,11 +135,7 @@ def main(rss_links, feed_output, with_images, dry_run, restore, until, classify,
             markdown = format_feed_entries_classified(sorted_list, theme_names, with_images)
         else:
             rows = format_feed_entries(sorted_list, with_images)
-            markdown = (
-                markdown_table(rows)
-                .set_params(row_sep="markdown", quote=False)
-                .get_markdown()
-            )
+            markdown = render_table(rows)
 
         if summarize:
             logging.info("Generating daily summary via Mistral…")

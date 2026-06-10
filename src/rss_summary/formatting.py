@@ -3,6 +3,15 @@ from py_markdown_table.markdown_table import markdown_table as _markdown_table
 from rss_summary.classification import UNCLASSIFIED
 
 
+def render_table(rows):
+    """Render row dicts as a markdown table with the project's standard params."""
+    return (
+        _markdown_table(rows)
+        .set_params(row_sep="markdown", quote=False)
+        .get_markdown()
+    )
+
+
 def format_feed_entries(entries, with_images=False):
     """Transform feed entries into a list of dicts ready for markdown table rendering."""
     rows = []
@@ -31,11 +40,6 @@ def format_feed_entries_classified(entries, theme_names, with_images=False):
         if not theme_entries:
             continue
         rows = format_feed_entries(theme_entries, with_images)
-        table = (
-            _markdown_table(rows)
-            .set_params(row_sep="markdown", quote=False)
-            .get_markdown()
-        )
-        sections.append(f"## {theme}\n\n{table}")
+        sections.append(f"## {theme}\n\n{render_table(rows)}")
 
     return "\n\n".join(sections)

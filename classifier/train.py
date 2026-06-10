@@ -106,7 +106,6 @@ def train(themes_path: str, output_path: str, eval_path: str) -> None:
         "clf": clf,
         "label_encoder": le,
         "label_to_theme": label_to_theme,
-        "theme_to_label": {t["theme"]: t["label"] for t in themes},
         "meta": {
             "trained_at": datetime.now().isoformat(),
             "bge_model": BGE_MODEL_ID,

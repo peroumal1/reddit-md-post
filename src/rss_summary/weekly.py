@@ -179,7 +179,7 @@ def _cluster_sections(clusters):
     return sections
 
 
-def split_mixed_clusters(raw_clusters, model_bge, model_e5, head):
+def split_mixed_clusters(raw_clusters, model_e5, head):
     """Split clusters that mix 'Faits divers' articles with other themes.
 
     After semantic clustering, articles about the same venue (e.g. a school)
@@ -446,7 +446,7 @@ def apply_suggestions_to_themes(suggestions, themes_path, head=None, model_bge=N
                     theme_name, predicted, predicted_score, example,
                 )
                 continue
-        if example not in set(theme_map[theme_name]["examples"]):
+        if example not in theme_map[theme_name]["examples"]:
             theme_map[theme_name]["examples"].append(example)
             added += 1
             logging.info("Added example to '%s': %.60s…", theme_name, example)
@@ -633,7 +633,7 @@ def main(data_dir, output_dir, week, year, taxonomy, top_per_theme, suggest, enr
     raw_clusters = cluster_articles(articles, model)
     logging.info("Found %d clusters.", len(raw_clusters))
 
-    raw_clusters = split_mixed_clusters(raw_clusters, model, model_e5, head)
+    raw_clusters = split_mixed_clusters(raw_clusters, model_e5, head)
     logging.info("After splitting mixed clusters: %d clusters.", len(raw_clusters))
 
     cluster_meta = []

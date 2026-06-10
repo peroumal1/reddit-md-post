@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 from pathlib import Path
-from urllib.parse import urlparse, urlsplit
+from urllib.parse import urlsplit
 
 import requests
 from bs4 import BeautifulSoup
@@ -23,7 +23,7 @@ def extract_first_paragraph(html_blob):
 def parse_daily_feed_md(path):
     """Parse a daily feed markdown table into a list of article dicts.
 
-    Returns a list of dicts with keys: title, url, summary, date, source.
+    Returns a list of dicts with keys: title, url, summary, date.
     Skips header, separator, and section-header rows automatically.
     """
     articles = []
@@ -44,13 +44,11 @@ def parse_daily_feed_md(path):
             date = datetime.fromisoformat(cols[2])
         except ValueError:
             continue
-        host = urlparse(url).hostname or ""
         articles.append({
             "title": title,
             "url": url,
             "summary": summary,
             "date": date,
-            "source": host,
         })
     return articles
 
