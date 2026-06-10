@@ -5,11 +5,14 @@ Holds the classifier fixed (LinearSVC + CalibratedClassifierCV — our current b
 and varies the embedding backbone. 5-fold stratified CV, no model files written.
 
 Variants tested:
-  - BAAI/bge-m3                          (current baseline, multilingual)
-  - intfloat/multilingual-e5-large-instruct  generic prompt
-  - intfloat/multilingual-e5-large-instruct  domain-specific prompt (Caribbean news)
-  - OrdalieTech/solon-embeddings-large-0.1   (French-specialized)
-  - bge-m3 + e5-instruct concatenated    (2048-dim ensemble)
+  - BAAI/bge-m3                          (multilingual, also used for dedup)
+  - intfloat/multilingual-e5-large-instruct  (instruct prompt)
+  - bge-m3 + e5-instruct concatenated    (2048-dim — current production backbone)
+  - Qwen/Qwen3-Embedding-0.6B            (instruct prompt, 2026 MTEB multilingual leader family)
+  - bge-m3 + Qwen3-0.6B concatenated     (2048-dim candidate replacement)
+
+Earlier runs also tested solon-embeddings-large and an e5 domain-specific prompt;
+both lost to the current concat and were dropped from the matrix.
 
 Usage:
     pdm run python classifier/benchmark_embeddings.py
@@ -26,11 +29,7 @@ from sklearn.svm import LinearSVC
 
 from rss_summary.classification import BGE_MODEL_ID, E5_MODEL_ID, E5_PROMPT
 
-PROMPT_DOMAIN = (
-    "Instruct: Classify this French Caribbean regional news article (from Guadeloupe or Martinique) "
-    "into one of these categories: faits divers, politique, culture, sport, santé, économie, "
-    "éducation, environnement, Outre-mer et Caraïbes, international.\nQuery: "
-)
+QWEN3_MODEL_ID = "Qwen/Qwen3-Embedding-0.6B"
 
 
 def load_dataset(themes_path: str):
@@ -78,24 +77,19 @@ def main() -> None:
     print(f"  shape: {X_bge.shape}\n")
 
     print(f"── Loading {E5_MODEL_ID}...")
-    X_e5_generic = encode_model(E5_MODEL_ID, texts, prompt=E5_PROMPT)
-    print(f"  shape (generic prompt): {X_e5_generic.shape}")
-    X_e5_domain = encode_model(E5_MODEL_ID, texts, prompt=PROMPT_DOMAIN)
-    print(f"  shape (domain prompt):  {X_e5_domain.shape}\n")
+    X_e5 = encode_model(E5_MODEL_ID, texts, prompt=E5_PROMPT)
+    print(f"  shape: {X_e5.shape}\n")
 
-    print("── Loading OrdalieTech/solon-embeddings-large-0.1...")
-    X_solon = encode_model("OrdalieTech/solon-embeddings-large-0.1", texts)
-    print(f"  shape: {X_solon.shape}\n")
-
-    # Concatenated ensemble
-    X_concat = np.concatenate([X_bge, X_e5_domain], axis=1)
+    print(f"── Loading {QWEN3_MODEL_ID}...")
+    X_qwen = encode_model(QWEN3_MODEL_ID, texts, prompt=E5_PROMPT)
+    print(f"  shape: {X_qwen.shape}\n")
 
     variants = {
-        "bge-m3 (baseline)": X_bge,
-        "e5-instruct generic prompt": X_e5_generic,
-        "e5-instruct domain prompt": X_e5_domain,
-        "solon-embeddings-large": X_solon,
-        "bge-m3 + e5 concat (2048-dim)": X_concat,
+        "bge-m3": X_bge,
+        "e5-instruct": X_e5,
+        "qwen3-0.6b": X_qwen,
+        "bge-m3 + e5 concat (current)": np.concatenate([X_bge, X_e5], axis=1),
+        "bge-m3 + qwen3 concat": np.concatenate([X_bge, X_qwen], axis=1),
     }
 
     results = {}
@@ -119,11 +113,12 @@ def main() -> None:
         print(row)
 
     print("\n── Summary")
-    baseline_f1 = results["bge-m3 (baseline)"]["macro avg"]["f1-score"]
+    baseline = "bge-m3 + e5 concat (current)"
+    baseline_f1 = results[baseline]["macro avg"]["f1-score"]
     for name, report in results.items():
         acc = report["accuracy"]
         f1 = report["macro avg"]["f1-score"]
-        delta = f"  ({f1 - baseline_f1:+.3f})" if name != "bge-m3 (baseline)" else "  (baseline)"
+        delta = f"  ({f1 - baseline_f1:+.3f})" if name != baseline else "  (baseline)"
         marker = " ← best" if f1 == max(r["macro avg"]["f1-score"] for r in results.values()) else ""
         print(f"  {name:<35}  acc={acc:.3f}  macro F1={f1:.3f}{delta}{marker}")
 
