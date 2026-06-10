@@ -24,11 +24,8 @@ from sklearn.model_selection import StratifiedKFold, cross_val_predict
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import LinearSVC
 
-E5_MODEL = "intfloat/multilingual-e5-large-instruct"
+from rss_summary.classification import BGE_MODEL_ID, E5_MODEL_ID, E5_PROMPT
 
-PROMPT_GENERIC = (
-    "Instruct: Classify the following French news headline into a thematic category.\nQuery: "
-)
 PROMPT_DOMAIN = (
     "Instruct: Classify this French Caribbean regional news article (from Guadeloupe or Martinique) "
     "into one of these categories: faits divers, politique, culture, sport, santé, économie, "
@@ -76,14 +73,14 @@ def main() -> None:
     display_names = [label_to_theme[c] for c in le.classes_]
 
     # --- encode each backbone once, reuse for variants ---
-    print("── Loading BAAI/bge-m3...")
-    X_bge = encode_model("BAAI/bge-m3", texts)
+    print(f"── Loading {BGE_MODEL_ID}...")
+    X_bge = encode_model(BGE_MODEL_ID, texts)
     print(f"  shape: {X_bge.shape}\n")
 
-    print("── Loading intfloat/multilingual-e5-large-instruct...")
-    X_e5_generic = encode_model(E5_MODEL, texts, prompt=PROMPT_GENERIC)
+    print(f"── Loading {E5_MODEL_ID}...")
+    X_e5_generic = encode_model(E5_MODEL_ID, texts, prompt=E5_PROMPT)
     print(f"  shape (generic prompt): {X_e5_generic.shape}")
-    X_e5_domain = encode_model(E5_MODEL, texts, prompt=PROMPT_DOMAIN)
+    X_e5_domain = encode_model(E5_MODEL_ID, texts, prompt=PROMPT_DOMAIN)
     print(f"  shape (domain prompt):  {X_e5_domain.shape}\n")
 
     print("── Loading OrdalieTech/solon-embeddings-large-0.1...")
