@@ -8,7 +8,7 @@ La crise de l’eau en Guadeloupe a été au cœur des préoccupations politique
 
 Le scandale du chlordécone a connu un nouveau rebondissement avec la confirmation du non-lieu par la cour d’appel de Paris. Les parties civiles, indignées, ont annoncé leur intention de se pourvoir en cassation. Ce dossier, qui dure depuis plus de vingt ans, reste un sujet de vive émotion en Guadeloupe, où les victimes réclament justice.
 
-Sur le plan sanitaire, le CHU de la Guadeloupe a transféré son unité de drépanocytose de l’hôpital Ricou vers le nouveau site de Belle Plaine aux Abymes. Cette transition, effective depuis le 29 juin, vise à améliorer la prise en charge des patients atteints de cette maladie. Par ailleurs, le COREDAF a célébré ses 40 ans d’engagement dans la lutte contre les addictions, avec une hausse de la fréquentation de ses stages de sensibilisation.
+Sur le plan sanitaire, le CHU de la Guadeloupe a transféré son unité de drépanocytose de l’hôpital Chauvel vers le nouveau site de Belle Plaine aux Abymes. Cette transition, effective depuis le 29 juin, vise à améliorer la prise en charge des patients atteints de cette maladie. Par ailleurs, le COREDAF a célébré ses 40 ans d’engagement dans la lutte contre les addictions, avec une hausse de la fréquentation de ses stages de sensibilisation.
 
 Dans l’actualité internationale, les séismes dévastateurs au Venezuela ont marqué la semaine. Le bilan s’est alourdi, dépassant les 1 400 morts et 7 millions de personnes affectées. La solidarité caribéenne s’est organisée avec l’envoi d’un hôpital mobile et de professionnels de santé dominicains pour porter assistance aux victimes.
 
@@ -16,7 +16,7 @@ Côté économie, le PIB par habitant de Saint-Barthélemy a atteint 90 000 euro
 
 Dans le domaine sportif, l’attaquant guadeloupéen Taïryk Arconte a rejoint le club anglais de Millwall, en Championship, après une saison remarquée à Rodez. En football international, l’équipe de France s’est qualifiée pour les seizièmes de finale de la Coupe du monde 2026, où elle affrontera la Suède le 30 juin.
 
-La culture a également été à l’honneur avec l’ouverture de la 17e édition de la Pool Art Fair à Pointe-à-Pitre, réunissant plus d’une centaine d’artistes contemporains. Par ailleurs, le Haut Commissariat des Diasporas Africaines a annoncé l’ouverture d’un bureau régional en Guadeloupe, sous la direction de Willy Rozier.
+La culture a également été à l’honneur avec l’ouverture de la 17e édition de la Pool Art Fair à Pointe-à-Pitre, réunissant plus d’une centaine d’artistes contemporains. Par ailleurs, le Haut Commissariat des Diasporas Africaines a annoncé l’ouverture d’un bureau régional en Guadeloupe, sous la direction de Willy Rosier.
 
 Enfin, les épreuves du brevet 2026 ont débuté en Guadeloupe avec 5 482 candidats inscrits, soit une légère baisse par rapport à l’année précédente. Au lycée de Baimbridge, la question de l’uniforme a suscité des tensions entre parents, élèves et direction, avant que le dialogue ne reprenne pour trouver une issue.
 
